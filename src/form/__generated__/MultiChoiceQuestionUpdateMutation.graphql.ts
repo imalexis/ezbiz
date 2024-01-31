@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<bae7aad1e325dcd55f32ecccedfb1eff>>
+ * @generated SignedSource<<8c1790801325534b7b7d3145fd5691b7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,18 +19,18 @@ export type UpdateQuestionResponseInput = {
   updatedAt?: any | null | undefined;
   value?: string | null | undefined;
 };
-export type CheckboxQuestionUpdateMutation$variables = {
+export type MultiChoiceQuestionUpdateMutation$variables = {
   id: string;
   input: UpdateQuestionResponseInput;
 };
-export type CheckboxQuestionUpdateMutation$data = {
+export type MultiChoiceQuestionUpdateMutation$data = {
   readonly updateQuestionResponse: {
     readonly id: string;
   };
 };
-export type CheckboxQuestionUpdateMutation = {
-  response: CheckboxQuestionUpdateMutation$data;
-  variables: CheckboxQuestionUpdateMutation$variables;
+export type MultiChoiceQuestionUpdateMutation = {
+  response: MultiChoiceQuestionUpdateMutation$data;
+  variables: MultiChoiceQuestionUpdateMutation$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -83,7 +83,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "CheckboxQuestionUpdateMutation",
+    "name": "MultiChoiceQuestionUpdateMutation",
     "selections": (v2/*: any*/),
     "type": "Mutation",
     "abstractKey": null
@@ -95,20 +95,20 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "CheckboxQuestionUpdateMutation",
+    "name": "MultiChoiceQuestionUpdateMutation",
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "402b5e9d90e31bb64736bbdea7f0bf7c",
+    "cacheID": "55d5764f2233ecde2d5dacdfe50f7afb",
     "id": null,
     "metadata": {},
-    "name": "CheckboxQuestionUpdateMutation",
+    "name": "MultiChoiceQuestionUpdateMutation",
     "operationKind": "mutation",
-    "text": "mutation CheckboxQuestionUpdateMutation(\n  $input: UpdateQuestionResponseInput!\n  $id: ID!\n) {\n  updateQuestionResponse(input: $input, id: $id) {\n    id\n  }\n}\n"
+    "text": "mutation MultiChoiceQuestionUpdateMutation(\n  $input: UpdateQuestionResponseInput!\n  $id: ID!\n) {\n  updateQuestionResponse(input: $input, id: $id) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "69fd39493f4604170f6fd7fc8cffdad6";
+(node as any).hash = "6fdff6efdc9d1658b418551381096ffd";
 
 export default node;

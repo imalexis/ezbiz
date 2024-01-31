@@ -53,7 +53,7 @@ const fragment = graphql`
   fragment QuestionFragment on Question {
     type
     label
-    ...CheckboxQuestionFragment
+    ...MultiChoiceQuestionFragment
     ...ShortTextQuestionFragment
     ...ParagraphQuestionFragment
     ...FileQuestionFragment

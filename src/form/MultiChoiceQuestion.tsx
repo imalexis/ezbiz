@@ -2,11 +2,11 @@ import { Card, Radio, RadioChangeEvent, Space } from "antd";
 import graphql from "babel-plugin-relay/macro";
 import { useState } from "react";
 import { useFragment, useMutation } from "react-relay";
-import { CheckboxQuestionFragment$key } from "./__generated__/CheckboxQuestionFragment.graphql";
-import { CheckboxQuestionUpdateMutation } from "./__generated__/CheckboxQuestionUpdateMutation.graphql";
+import { MultiChoiceQuestionFragment$key } from "./__generated__/MultiChoiceQuestionFragment.graphql";
+import { MultiChoiceQuestionUpdateMutation } from "./__generated__/MultiChoiceQuestionUpdateMutation.graphql";
 
 type Props = {
-  fragmentKey: CheckboxQuestionFragment$key;
+  fragmentKey: MultiChoiceQuestionFragment$key;
 };
 export function MultiChoiceQuestion({ fragmentKey }: Props) {
   const question = useFragment(fragment, fragmentKey);
@@ -16,7 +16,7 @@ export function MultiChoiceQuestion({ fragmentKey }: Props) {
   ); // A state to store created response ID by the mutation commit function [commitCreate]
 
   const [commitUpdate] =
-    useMutation<CheckboxQuestionUpdateMutation>(updateMutation);
+    useMutation<MultiChoiceQuestionUpdateMutation>(updateMutation);
 
   const handleChange = (e: RadioChangeEvent) => {
     setValue(e.target.value);
@@ -49,7 +49,7 @@ export function MultiChoiceQuestion({ fragmentKey }: Props) {
 
 // query properties about Question
 const fragment = graphql`
-  fragment CheckboxQuestionFragment on Question {
+  fragment MultiChoiceQuestionFragment on Question {
     id
     label
     title
@@ -62,7 +62,7 @@ const fragment = graphql`
 
 // update questionResponse
 const updateMutation = graphql`
-  mutation CheckboxQuestionUpdateMutation(
+  mutation MultiChoiceQuestionUpdateMutation(
     $input: UpdateQuestionResponseInput!
     $id: ID!
   ) {

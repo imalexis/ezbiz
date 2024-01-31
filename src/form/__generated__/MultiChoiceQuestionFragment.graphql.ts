@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e7733bca53d855efea4ad5e27d0f76e3>>
+ * @generated SignedSource<<e3fd1b48eac8df7f5cf9de7078015374>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,7 +11,7 @@
 import { Fragment, ReaderFragment } from 'relay-runtime';
 export type QuestionType = "checkboxes" | "date" | "drop_down" | "file" | "linear_scale" | "multi_choice" | "paragraph" | "short_text" | "time" | "%future added value";
 import { FragmentRefs } from "relay-runtime";
-export type CheckboxQuestionFragment$data = {
+export type MultiChoiceQuestionFragment$data = {
   readonly __typename: "Question";
   readonly extraData: string;
   readonly id: string;
@@ -19,18 +19,18 @@ export type CheckboxQuestionFragment$data = {
   readonly required: boolean;
   readonly title: string;
   readonly type: QuestionType;
-  readonly " $fragmentType": "CheckboxQuestionFragment";
+  readonly " $fragmentType": "MultiChoiceQuestionFragment";
 };
-export type CheckboxQuestionFragment$key = {
-  readonly " $data"?: CheckboxQuestionFragment$data;
-  readonly " $fragmentSpreads": FragmentRefs<"CheckboxQuestionFragment">;
+export type MultiChoiceQuestionFragment$key = {
+  readonly " $data"?: MultiChoiceQuestionFragment$data;
+  readonly " $fragmentSpreads": FragmentRefs<"MultiChoiceQuestionFragment">;
 };
 
 const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "CheckboxQuestionFragment",
+  "name": "MultiChoiceQuestionFragment",
   "selections": [
     {
       "alias": null,
@@ -86,6 +86,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "1177061f696c84a9d41136b2df42f703";
+(node as any).hash = "feaf4090f6c7b8aea15a4b4fde0458fc";
 
 export default node;

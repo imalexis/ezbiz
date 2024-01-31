@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<52319537cac93fbd1d64b2dee527524f>>
+ * @generated SignedSource<<4a3e3cab4ed3e27a943473a9069c8321>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,7 +14,7 @@ import { FragmentRefs } from "relay-runtime";
 export type QuestionFragment$data = {
   readonly label: string;
   readonly type: QuestionType;
-  readonly " $fragmentSpreads": FragmentRefs<"CheckboxQuestionFragment" | "DropdownQuestionFragment" | "FileQuestionFragment" | "ParagraphQuestionFragment" | "ShortTextQuestionFragment">;
+  readonly " $fragmentSpreads": FragmentRefs<"DropdownQuestionFragment" | "FileQuestionFragment" | "MultiChoiceQuestionFragment" | "ParagraphQuestionFragment" | "ShortTextQuestionFragment">;
   readonly " $fragmentType": "QuestionFragment";
 };
 export type QuestionFragment$key = {
@@ -45,7 +45,7 @@ const node: ReaderFragment = {
     {
       "args": null,
       "kind": "FragmentSpread",
-      "name": "CheckboxQuestionFragment"
+      "name": "MultiChoiceQuestionFragment"
     },
     {
       "args": null,
@@ -72,6 +72,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "111697dd7fa7867fcff0020401168e1a";
+(node as any).hash = "e056136391ab1a19ec345a66b04a2605";
 
 export default node;
