@@ -1,33 +1,40 @@
 import { Card, Radio, RadioChangeEvent, Space } from "antd";
 import graphql from "babel-plugin-relay/macro";
-import { useState } from "react";
-import { useFragment, useMutation } from "react-relay";
+import { useContext, useState } from "react";
+import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import { MultiChoiceQuestionFragment$key } from "./__generated__/MultiChoiceQuestionFragment.graphql";
 import { MultiChoiceQuestionUpdateMutation } from "./__generated__/MultiChoiceQuestionUpdateMutation.graphql";
+import { useParams } from "react-router-dom";
+import { MultiChoiceQuestionResponseQuery } from "./__generated__/MultiChoiceQuestionResponseQuery.graphql";
+import FormInstanceContext from "./FormInstanceContext";
 
 type Props = {
   fragmentKey: MultiChoiceQuestionFragment$key;
 };
 export function MultiChoiceQuestion({ fragmentKey }: Props) {
+  const { status } = useContext(FormInstanceContext);
   const question = useFragment(fragment, fragmentKey);
-  const [value, setValue] = useState(1);
-  const [createdResponseId, setCreatedResponseId] = useState<string | null>(
-    null
-  ); // A state to store created response ID by the mutation commit function [commitCreate]
+  const { instanceID } = useParams();
+  const data = useLazyLoadQuery<MultiChoiceQuestionResponseQuery>(query, {
+    questionID: question.id,
+    formInstanceID: instanceID ?? "",
+  });
+  const responseID = (data.questionResponses.edges ?? [])[0]?.node?.id ?? "";
+  const initialResponseValue =
+    (data.questionResponses.edges ?? [])[0]?.node?.value ?? "";
+  const [value, setValue] = useState(initialResponseValue);
 
   const [commitUpdate] =
     useMutation<MultiChoiceQuestionUpdateMutation>(updateMutation);
 
   const handleChange = (e: RadioChangeEvent) => {
     setValue(e.target.value);
-    if (createdResponseId) {
-      commitUpdate({
-        variables: {
-          input: { value: value.toString() },
-          id: createdResponseId,
-        },
-      });
-    }
+    commitUpdate({
+      variables: {
+        input: { questionID: question.id, value: value },
+        id: responseID,
+      },
+    });
   };
 
   return (
@@ -68,6 +75,30 @@ const updateMutation = graphql`
   ) {
     updateQuestionResponse(input: $input, id: $id) {
       id
+    }
+  }
+`;
+
+const query = graphql`
+  query MultiChoiceQuestionResponseQuery(
+    $questionID: ID!
+    $formInstanceID: ID!
+  ) {
+    questionResponses(
+      where: {
+        hasQuestionWith: [{ id: $questionID }]
+        hasFormInstanceWith: [{ id: $formInstanceID }]
+      }
+    ) {
+      edges {
+        node {
+          __typename
+          ... on QuestionResponse {
+            id
+            value
+          }
+        }
+      }
     }
   }
 `;
