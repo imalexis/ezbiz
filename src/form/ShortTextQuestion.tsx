@@ -45,9 +45,7 @@ export function ShortTextQuestion({ fragmentKey }: Props) {
               },
               id: responseID,
             },
-            onCompleted: (resp, err) => {
-              alert("ok");
-            },
+            onCompleted: () => {},
           });
         }}
         disabled={status === "submiited"}

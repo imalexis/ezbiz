@@ -2,9 +2,8 @@ import graphql from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay";
 import { FormInstanceResponseContainerQuery } from "./__generated__/FormInstanceResponseContainerQuery.graphql";
 import { FormInstanceResponsePaginatedTable } from "./FormInstanceResponsePaginatedTable";
-import { Button, Flex } from "antd";
+import { Flex } from "antd";
 import { useParams } from "react-router-dom";
-import { MenuFoldOutlined, SearchOutlined } from "@ant-design/icons";
 
 export function FormInstanceResponseContainer() {
   const { formID } = useParams();

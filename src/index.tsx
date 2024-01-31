@@ -13,12 +13,20 @@ import { FormSpecCreateEntryPoint } from "./form/FormSpecCreateEntryPoint";
 import { Spin } from "antd";
 import { FormInstanceEntryPoint } from "./form/FormInstanceEntryPoint";
 import { FormInstanceResponseContainer } from "./form/FormInstanceResponseContainer";
-import { HomePage } from "./HomePage";
+import FormSubmitted from "./form/FormSubmitted";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+  {
+    path: ":formID/instance/:instanceID/formSubmitted",
+    element: (
+      <Suspense>
+        <FormSubmitted />
+      </Suspense>
+    ),
   },
   {
     path: "/admin/forms",
@@ -57,11 +65,6 @@ const router = createBrowserRouter([
         ),
       },
     ],
-  },
-  {
-    path: "/u",
-    element: <div>user home page</div>,
-    children: [],
   },
 ]);
 

@@ -1,5 +1,5 @@
 import { Button, Flex } from "antd";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useLazyLoadQuery, useMutation } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
 import Title from "antd/es/typography/Title";
@@ -10,6 +10,7 @@ import FormInstanceContext from "./FormInstanceContext";
 import { useState } from "react";
 
 export function FormInstanceEntryPoint() {
+  const navigate = useNavigate();
   const { formID, instanceID } = useParams();
   const [commitUpdate] =
     useMutation<FormInstanceEntryPointUpdateMutation>(mutation);
@@ -65,9 +66,9 @@ export function FormInstanceEntryPoint() {
                   input: { status: "submiited" },
                   id: instanceID ?? "",
                 },
-                onCompleted: (response, errors) => {
-                  alert("submit succesfully!");
+                onCompleted: () => {
                   setIsDisabled(true);
+                  navigate(`/${formID}/instance/${instanceID}/formSubmitted`);
                 },
               });
             }}
