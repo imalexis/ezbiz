@@ -43,7 +43,7 @@ export function FormSpecPaginatedList({ fragmentKey }: Props) {
 const fragment = graphql`
   fragment FormSpecPaginatedListFragment on Query
   @refetchable(queryName: "FormSpecPaginatedListQuery") {
-    formSpecs(first: $first, after: $after)
+    formSpecs(first: $first, after: $after, orderBy: $orderBy)
       @connection(key: "FormSpecPaginatedListQuery_formSpecs") {
       totalCount
       edges {

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a1492d17a2124dd55715ec0ddea54a39>>
+ * @generated SignedSource<<a7d34797e464513e7802e950acf4b231>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,9 +10,16 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
+export type FormSpecOrderField = "CREATED_AT" | "UPDATED_AT" | "%future added value";
+export type OrderDirection = "ASC" | "DESC" | "%future added value";
+export type FormSpecOrder = {
+  direction: OrderDirection;
+  field: FormSpecOrderField;
+};
 export type FormSpecListQuery$variables = {
   after?: any | null | undefined;
   first: number;
+  orderBy: FormSpecOrder;
 };
 export type FormSpecListQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"FormSpecPaginatedListFragment" | "FormSpecPaginatedTableFragment">;
@@ -33,7 +40,12 @@ v1 = {
   "kind": "LocalArgument",
   "name": "first"
 },
-v2 = [
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "orderBy"
+},
+v3 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -43,20 +55,29 @@ v2 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "first"
+  },
+  {
+    "kind": "Variable",
+    "name": "orderBy",
+    "variableName": "orderBy"
   }
 ],
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-};
+},
+v5 = [
+  "orderBy"
+];
 return {
   "fragment": {
     "argumentDefinitions": [
       (v0/*: any*/),
-      (v1/*: any*/)
+      (v1/*: any*/),
+      (v2/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -80,14 +101,15 @@ return {
   "operation": {
     "argumentDefinitions": [
       (v1/*: any*/),
-      (v0/*: any*/)
+      (v0/*: any*/),
+      (v2/*: any*/)
     ],
     "kind": "Operation",
     "name": "FormSpecListQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "FormSpecConnection",
         "kind": "LinkedField",
         "name": "formSpecs",
@@ -116,7 +138,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -174,7 +196,7 @@ return {
                     "name": "questionGroups",
                     "plural": true,
                     "selections": [
-                      (v3/*: any*/),
+                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -183,7 +205,7 @@ return {
                         "name": "question",
                         "plural": true,
                         "selections": [
-                          (v3/*: any*/),
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -254,8 +276,8 @@ return {
       },
       {
         "alias": null,
-        "args": (v2/*: any*/),
-        "filters": null,
+        "args": (v3/*: any*/),
+        "filters": (v5/*: any*/),
         "handle": "connection",
         "key": "FormSpecPaginatedListQuery_formSpecs",
         "kind": "LinkedHandle",
@@ -263,8 +285,8 @@ return {
       },
       {
         "alias": null,
-        "args": (v2/*: any*/),
-        "filters": null,
+        "args": (v3/*: any*/),
+        "filters": (v5/*: any*/),
         "handle": "connection",
         "key": "FormSpecPaginatedTableFragmentQuery_formSpecs",
         "kind": "LinkedHandle",
@@ -273,16 +295,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "73dacc1db7978207402eb7aa551f5df3",
+    "cacheID": "c4d3a537409dd0513861798293ab9b7f",
     "id": null,
     "metadata": {},
     "name": "FormSpecListQuery",
     "operationKind": "query",
-    "text": "query FormSpecListQuery(\n  $first: Int!\n  $after: Cursor\n) {\n  ...FormSpecPaginatedListFragment\n  ...FormSpecPaginatedTableFragment\n}\n\nfragment FormSpecCardFragment on FormSpec {\n  id\n  name\n  cover\n  description\n  enabled\n  createdAt\n  updatedAt\n  createdBy\n  questionGroups {\n    id\n    question {\n      id\n      label\n      type\n    }\n  }\n}\n\nfragment FormSpecPaginatedListFragment on Query {\n  formSpecs(first: $first, after: $after) {\n    totalCount\n    edges {\n      node {\n        id\n        ...FormSpecCardFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment FormSpecPaginatedTableFragment on Query {\n  formSpecs(first: $first, after: $after) {\n    edges {\n      node {\n        id\n        name\n        ...FormSpecCardFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query FormSpecListQuery(\n  $first: Int!\n  $after: Cursor\n  $orderBy: FormSpecOrder!\n) {\n  ...FormSpecPaginatedListFragment\n  ...FormSpecPaginatedTableFragment\n}\n\nfragment FormSpecCardFragment on FormSpec {\n  id\n  name\n  cover\n  description\n  enabled\n  createdAt\n  updatedAt\n  createdBy\n  questionGroups {\n    id\n    question {\n      id\n      label\n      type\n    }\n  }\n}\n\nfragment FormSpecPaginatedListFragment on Query {\n  formSpecs(first: $first, after: $after, orderBy: $orderBy) {\n    totalCount\n    edges {\n      node {\n        id\n        ...FormSpecCardFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment FormSpecPaginatedTableFragment on Query {\n  formSpecs(first: $first, after: $after, orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        name\n        ...FormSpecCardFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "86d85f328290088ed5b8bc4df6baf4d5";
+(node as any).hash = "fa8808c3880d79a97a2408bb5b766d54";
 
 export default node;

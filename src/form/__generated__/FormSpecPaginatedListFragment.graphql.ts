@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9e6539564a7a7bb27182cccdcf823b4f>>
+ * @generated SignedSource<<a39a7bc5f9d17962692d423fdfa261e5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -40,6 +40,10 @@ return {
     {
       "kind": "RootArgument",
       "name": "first"
+    },
+    {
+      "kind": "RootArgument",
+      "name": "orderBy"
     }
   ],
   "kind": "Fragment",
@@ -69,7 +73,13 @@ return {
   "selections": [
     {
       "alias": "formSpecs",
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "orderBy",
+          "variableName": "orderBy"
+        }
+      ],
       "concreteType": "FormSpecConnection",
       "kind": "LinkedField",
       "name": "__FormSpecPaginatedListQuery_formSpecs_connection",
@@ -164,6 +174,6 @@ return {
 };
 })();
 
-(node as any).hash = "d74264d05ea3a9d1ff0f55e0266126e0";
+(node as any).hash = "da61204082269f89bb2d80c8777f938c";
 
 export default node;

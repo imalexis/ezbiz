@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<640533053175ace4d982c05934dd4f88>>
+ * @generated SignedSource<<c105d21db9879069d4d1dbb5408680da>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,9 +10,16 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
+export type FormSpecOrderField = "CREATED_AT" | "UPDATED_AT" | "%future added value";
+export type OrderDirection = "ASC" | "DESC" | "%future added value";
+export type FormSpecOrder = {
+  direction: OrderDirection;
+  field: FormSpecOrderField;
+};
 export type FormSpecPaginatedTableFragmentQuery$variables = {
   after?: any | null | undefined;
   first?: number | null | undefined;
+  orderBy?: FormSpecOrder | null | undefined;
 };
 export type FormSpecPaginatedTableFragmentQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"FormSpecPaginatedTableFragment">;
@@ -33,6 +40,11 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "first"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "orderBy"
   }
 ],
 v1 = [
@@ -45,6 +57,11 @@ v1 = [
     "kind": "Variable",
     "name": "first",
     "variableName": "first"
+  },
+  {
+    "kind": "Variable",
+    "name": "orderBy",
+    "variableName": "orderBy"
   }
 ],
 v2 = {
@@ -239,7 +256,9 @@ return {
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "filters": null,
+        "filters": [
+          "orderBy"
+        ],
         "handle": "connection",
         "key": "FormSpecPaginatedTableFragmentQuery_formSpecs",
         "kind": "LinkedHandle",
@@ -248,16 +267,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1ee3443c753bcddc11614ad42277a4e8",
+    "cacheID": "dc3b80df1afa9c36ed35ef9877a8302e",
     "id": null,
     "metadata": {},
     "name": "FormSpecPaginatedTableFragmentQuery",
     "operationKind": "query",
-    "text": "query FormSpecPaginatedTableFragmentQuery(\n  $after: Cursor\n  $first: Int\n) {\n  ...FormSpecPaginatedTableFragment\n}\n\nfragment FormSpecCardFragment on FormSpec {\n  id\n  name\n  cover\n  description\n  enabled\n  createdAt\n  updatedAt\n  createdBy\n  questionGroups {\n    id\n    question {\n      id\n      label\n      type\n    }\n  }\n}\n\nfragment FormSpecPaginatedTableFragment on Query {\n  formSpecs(first: $first, after: $after) {\n    edges {\n      node {\n        id\n        name\n        ...FormSpecCardFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query FormSpecPaginatedTableFragmentQuery(\n  $after: Cursor\n  $first: Int\n  $orderBy: FormSpecOrder\n) {\n  ...FormSpecPaginatedTableFragment\n}\n\nfragment FormSpecCardFragment on FormSpec {\n  id\n  name\n  cover\n  description\n  enabled\n  createdAt\n  updatedAt\n  createdBy\n  questionGroups {\n    id\n    question {\n      id\n      label\n      type\n    }\n  }\n}\n\nfragment FormSpecPaginatedTableFragment on Query {\n  formSpecs(first: $first, after: $after, orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        name\n        ...FormSpecCardFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "11284a222ace9f4bf53197319d5a2e4a";
+(node as any).hash = "b1ee6a5df5106de0d9727b9aa08ffc45";
 
 export default node;

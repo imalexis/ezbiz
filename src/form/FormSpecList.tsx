@@ -8,7 +8,11 @@ import { useState } from "react";
 
 export default function FormSpecList() {
   const dataSource = useLazyLoadQuery<FormSpecListQuery>(query, {
-    first: 1,
+    first: 10,
+    orderBy: {
+      direction: "DESC",
+      field: "CREATED_AT",
+    },
   });
 
   const [isChecked, setIsChecked] = useState(false);
@@ -44,7 +48,11 @@ export default function FormSpecList() {
 
 // query <Component>_*_Query
 const query = graphql`
-  query FormSpecListQuery($first: Int!, $after: Cursor) {
+  query FormSpecListQuery(
+    $first: Int!
+    $after: Cursor
+    $orderBy: FormSpecOrder!
+  ) {
     ...FormSpecPaginatedListFragment
     ...FormSpecPaginatedTableFragment
   }

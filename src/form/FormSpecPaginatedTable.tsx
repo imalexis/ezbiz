@@ -7,7 +7,7 @@ import { ColumnsType } from "antd/es/table";
 const fragment = graphql`
   fragment FormSpecPaginatedTableFragment on Query
   @refetchable(queryName: "FormSpecPaginatedTableFragmentQuery") {
-    formSpecs(first: $first, after: $after)
+    formSpecs(first: $first, after: $after, orderBy: $orderBy)
       @connection(key: "FormSpecPaginatedTableFragmentQuery_formSpecs") {
       edges {
         node {
