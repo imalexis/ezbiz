@@ -1,0 +1,25 @@
+type Mutation {
+  createFormSpec(input: CreateFormSpecInput!): FormSpec!
+  updateFormSpec(id: ID!, input: UpdateFormSpecInput!): FormSpec!
+  createFormInstance(input: CreateFormInstanceInput!): FormInstance!
+  updateFormInstance(id: ID!, input: UpdateFormInstanceInput!): FormInstance!
+  createQuestionGroup(input: CreateQuestionGroupInput!): QuestionGroup!
+  updateQuestionGroup(id: ID!, input: UpdateQuestionGroupInput!): QuestionGroup!
+  createQuestion(input: CreateQuestionInput!): Question!
+  updateQuestion(id: ID!, input: UpdateQuestionInput!): Question!
+  createQuestionResponse(input: CreateQuestionResponseInput!): QuestionResponse!
+  updateQuestionResponse(
+    id: ID!
+    input: UpdateQuestionResponseInput!
+  ): QuestionResponse!
+  signUpGoogle(accessToken: String!): AuthResponse
+}
+
+# GraphQL Schema -> 定义接口
+
+type AuthResponse {
+  accessToken: String!
+  refreshToken: String!
+}
+
+# 如果你的数据库对象 刚好需要定义，那么就用Ent来定义，他会自动生成graphql
