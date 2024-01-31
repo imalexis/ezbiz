@@ -7,6 +7,7 @@ import { QuestionGroup } from "./QuestionGroup";
 import { FormInstanceEntryPointUpdateMutation } from "./__generated__/FormInstanceEntryPointUpdateMutation.graphql";
 import { FormInstanceEntryPointQuery } from "./__generated__/FormInstanceEntryPointQuery.graphql";
 import FormInstanceContext from "./FormInstanceContext";
+import { useState } from "react";
 
 export function FormInstanceEntryPoint() {
   const { formID, instanceID } = useParams();
@@ -16,6 +17,7 @@ export function FormInstanceEntryPoint() {
     id: formID ?? "",
     instanceID: instanceID ?? "",
   });
+  const [isDisabled, setIsDisabled] = useState(false);
 
   return (
     <Flex vertical>
@@ -47,6 +49,7 @@ export function FormInstanceEntryPoint() {
         </Flex>
         <Flex flex={1}>
           <Button
+            disabled={isDisabled}
             className="button"
             style={{
               backgroundColor: "#88CF6C",
@@ -64,6 +67,7 @@ export function FormInstanceEntryPoint() {
                 },
                 onCompleted: (response, errors) => {
                   alert("submit succesfully!");
+                  setIsDisabled(true);
                 },
               });
             }}

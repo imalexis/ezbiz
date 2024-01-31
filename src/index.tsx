@@ -58,6 +58,11 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/u",
+    element: <div>user home page</div>,
+    children: [],
+  },
 ]);
 
 const root = ReactDOM.createRoot(
