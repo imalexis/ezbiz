@@ -17,8 +17,6 @@ import {
   CardHeader,
   CardPreview,
 } from "@fluentui/react-components";
-import React, { useState } from "react";
-import { Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import { FormSpecCardMutation } from "./__generated__/FormSpecCardMutation.graphql";
 

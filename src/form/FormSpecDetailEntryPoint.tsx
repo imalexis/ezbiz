@@ -2,14 +2,12 @@ import graphql from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay";
 import { FormSpecDetailEntryPointQuery } from "./__generated__/FormSpecDetailEntryPointQuery.graphql";
 import { Flex } from "antd";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { QuestionGroup } from "./QuestionGroup";
 import Title from "antd/es/typography/Title";
 
-type Props = {};
 export function FormSpecDetailEntryPoint() {
   const { formID } = useParams();
-  const navigate = useNavigate();
   const data = useLazyLoadQuery<FormSpecDetailEntryPointQuery>(
     query,
     {
@@ -21,7 +19,6 @@ export function FormSpecDetailEntryPoint() {
   );
   return (
     // if submitted: disabled
-
     <Flex vertical>
       <Flex style={{ backgroundColor: "#f5f5f5" }}>
         <Flex flex={1}>

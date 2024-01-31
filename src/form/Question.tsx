@@ -24,7 +24,6 @@ type Props = {
 
 export function Question({ fragmentKey }: Props) {
   const question = useFragment(fragment, fragmentKey);
-  const [commit] = useMutation<QuestionMutation>(mutation);
 
   return (
     <Flex>

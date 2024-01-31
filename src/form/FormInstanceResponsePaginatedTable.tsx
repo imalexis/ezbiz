@@ -2,7 +2,6 @@ import graphql from "babel-plugin-relay/macro";
 import { usePaginationFragment } from "react-relay";
 import { Button, Flex, Space, Table } from "antd";
 import { FormInstanceResponsePaginatedTable_formSpec$key } from "./__generated__/FormInstanceResponsePaginatedTable_formSpec.graphql";
-import { useParams } from "react-router-dom";
 
 type Props = {
   fragmentKey: FormInstanceResponsePaginatedTable_formSpec$key;
@@ -12,17 +11,11 @@ function isNotNull<T>(value: T | null | undefined): value is T {
   return value != null;
 }
 
-// 无论任何时候 要用到什么参数
-// 总是从真正的组件那一方开始
-// 比如 Container 包含一个 Card 组件
-// 那么我们应该从Card组件开始
-
 export function FormInstanceResponsePaginatedTable({ fragmentKey }: Props) {
   const { data, loadNext, hasNext } = usePaginationFragment(
     fragment,
     fragmentKey
   );
-  const { formID } = useParams();
 
   const rows = (data.formInstances.edges ?? []).map((edge) => {
     let r: { [key: string]: string } = {};

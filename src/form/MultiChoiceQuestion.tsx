@@ -31,7 +31,7 @@ export function MultiChoiceQuestion({ fragmentKey }: Props) {
     setValue(e.target.value);
     commitUpdate({
       variables: {
-        input: { questionID: question.id, value: value },
+        input: { questionID: question.id, value: e.target.value },
         id: responseID,
       },
     });
@@ -43,7 +43,11 @@ export function MultiChoiceQuestion({ fragmentKey }: Props) {
       bordered={false}
       style={{ margin: "8px", width: "100%" }}
     >
-      <Radio.Group onChange={handleChange} value={value}>
+      <Radio.Group
+        onChange={handleChange}
+        value={value}
+        disabled={status === "submiited"}
+      >
         <Space direction="vertical">
           {Array.from(JSON.parse(question.extraData)).map((option, index) => (
             <Radio value={option}>{option as string}</Radio>

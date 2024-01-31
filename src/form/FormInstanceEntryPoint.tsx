@@ -18,7 +18,11 @@ export function FormInstanceEntryPoint() {
     id: formID ?? "",
     instanceID: instanceID ?? "",
   });
-  const [isDisabled, setIsDisabled] = useState(false);
+  const status =
+    (data.node?.formInstances?.edges ?? [])[0]?.node?.status ?? "pending";
+  // when we initialise a state,
+  // we need to consider if we should pass value from database
+  const [isDisabled, setIsDisabled] = useState(status === "submiited");
 
   return (
     <Flex vertical>
@@ -28,9 +32,7 @@ export function FormInstanceEntryPoint() {
         </Flex>
         <FormInstanceContext.Provider
           value={{
-            status:
-              (data.node?.formInstances?.edges ?? [])[0]?.node?.status ??
-              "pending",
+            status: status,
           }}
         >
           <Flex vertical flex={6}>

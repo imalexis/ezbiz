@@ -1,18 +1,9 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Modal } from "antd";
-import React, { useState } from "react";
-import { Input } from "antd";
 import graphql from "babel-plugin-relay/macro";
-import {
-  FormTemplateCreateCardMutation,
-  FormTemplateCreateCardMutation$data,
-  FormTemplateCreateCardMutation$variables,
-} from "./__generated__/FormTemplateCreateCardMutation.graphql";
+import { FormTemplateCreateCardMutation } from "./__generated__/FormTemplateCreateCardMutation.graphql";
 import { useMutation } from "react-relay";
 import { useNavigate } from "react-router-dom";
 import { FormTemplateCreateCardUpdateMutation } from "./__generated__/FormTemplateCreateCardUpdateMutation.graphql";
-
-const { TextArea } = Input;
 
 export function FormTemplateCreateCard() {
   const navigate = useNavigate();
