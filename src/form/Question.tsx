@@ -1,8 +1,7 @@
 import graphql from "babel-plugin-relay/macro";
 import { QuestionFragment$key } from "./__generated__/QuestionFragment.graphql";
-import { useFragment, useMutation } from "react-relay";
+import { useFragment } from "react-relay";
 import { Flex } from "antd";
-import { QuestionMutation } from "./__generated__/QuestionMutation.graphql";
 import { MultiChoiceQuestion } from "./MultiChoiceQuestion";
 import { ShortTextQuestion } from "./ShortTextQuestion";
 import { ParagraphQuestion } from "./ParagraphQuestion";
@@ -57,13 +56,5 @@ const fragment = graphql`
     ...ParagraphQuestionFragment
     ...FileQuestionFragment
     ...DropdownQuestionFragment
-  }
-`;
-
-const mutation = graphql`
-  mutation QuestionMutation($input: CreateQuestionResponseInput!) {
-    createQuestionResponse(input: $input) {
-      id
-    }
   }
 `;
