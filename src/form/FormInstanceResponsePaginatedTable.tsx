@@ -63,7 +63,7 @@ export function FormInstanceResponsePaginatedTable({ fragmentKey }: Props) {
     dataIndex: label,
     key: label,
   }));
-  columns.unshift({
+  columns.push({
     title: "Action",
     dataIndex: "action",
     key: "action",

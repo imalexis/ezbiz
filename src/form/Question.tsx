@@ -3,7 +3,7 @@ import { QuestionFragment$key } from "./__generated__/QuestionFragment.graphql";
 import { useFragment, useMutation } from "react-relay";
 import { Flex } from "antd";
 import { QuestionMutation } from "./__generated__/QuestionMutation.graphql";
-import { CheckboxQuestion } from "./CheckboxQuestion";
+import { MultiChoiceQuestion } from "./MultiChoiceQuestion";
 import { ShortTextQuestion } from "./ShortTextQuestion";
 import { ParagraphQuestion } from "./ParagraphQuestion";
 import { FileQuestion } from "./FileQuestion";
@@ -29,7 +29,7 @@ export function Question({ fragmentKey }: Props) {
   return (
     <Flex>
       {question.type === "checkboxes" && (
-        <CheckboxQuestion fragmentKey={question} />
+        <MultiChoiceQuestion fragmentKey={question} />
       )}
       {question.type === "short_text" && (
         <ShortTextQuestion fragmentKey={question} />

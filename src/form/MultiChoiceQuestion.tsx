@@ -8,7 +8,7 @@ import { CheckboxQuestionUpdateMutation } from "./__generated__/CheckboxQuestion
 type Props = {
   fragmentKey: CheckboxQuestionFragment$key;
 };
-export function CheckboxQuestion({ fragmentKey }: Props) {
+export function MultiChoiceQuestion({ fragmentKey }: Props) {
   const question = useFragment(fragment, fragmentKey);
   const [value, setValue] = useState(1);
   const [createdResponseId, setCreatedResponseId] = useState<string | null>(
