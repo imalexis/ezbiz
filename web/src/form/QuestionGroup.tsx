@@ -1,8 +1,8 @@
 import graphql from "babel-plugin-relay/macro";
-import { Question } from "./Question";
 import { QuestionGroupFragment$key } from "./__generated__/QuestionGroupFragment.graphql";
 import { useFragment } from "react-relay";
 import { Flex } from "antd";
+import GeneralQuestion from "./GeneralQuestion";
 
 type Props = {
   fragmentKey: QuestionGroupFragment$key;
@@ -30,7 +30,7 @@ export function QuestionGroup({ fragmentKey }: Props) {
       />
 
       {group.question?.map((q) => (
-        <Question fragmentKey={q} />
+        <GeneralQuestion mode="response" fragmentKey={q} />
       ))}
     </Flex>
   );
@@ -41,7 +41,6 @@ const fragment = graphql`
     id
     name
     question {
-      # spread 子组件的Fragment
       ...QuestionFragment
     }
   }

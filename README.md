@@ -23,9 +23,17 @@ Forms module provides below features:
 
 ### Question
 
-- Question Precondition: Question is enabled when the precondtion is satified
+- Question Precondition: Question is enabled when the precondition is satified
 - Question
 - Question Response Validator
+
+#### About General Question
+All instances related to Question utilize the `<GeneralQuestion />` component.
+
+In design mode: `<GeneralQuestion mode="design" generalFragmentKey={...} />`.
+In response mode: `<GeneralQuestion mode="response" fragmentKey={...} />`.
+Within the GeneralQuestion component, the behavior is determined based on the provided parameters.
+Underlying components, such as ShortTextQuestion, have corresponding versions like DesignModeShortTextQuestion.
 
 ### Action
 
@@ -37,3 +45,4 @@ For normal users, the actions are predefined:
 - Send SMS
 
 For developers: the actions is extensiable:
+

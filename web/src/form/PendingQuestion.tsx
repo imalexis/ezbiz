@@ -15,7 +15,6 @@ const { Text } = Typography;
 
 export function PendingQuestion() {
   const { formID } = useParams();
-  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [commitCreateQuestion] =
     useMutation<PendingQuestionPointMutation>(mutation);

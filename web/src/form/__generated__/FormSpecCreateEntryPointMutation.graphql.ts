@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f0b75e622f908108fd1af9f62534fcf7>>
+ * @generated SignedSource<<4ac32a1bed235a0129b21e614e870ab8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,8 +13,10 @@ export type QuestionType = "checkboxes" | "date" | "drop_down" | "file" | "linea
 export type CreateQuestionInput = {
   createdAt?: any | null | undefined;
   createdBy: number;
+  extraData?: string | null | undefined;
   fromQuestionGroupID?: string | null | undefined;
   label: string;
+  questionResponseIDs?: ReadonlyArray<string> | null | undefined;
   required: boolean;
   title?: string | null | undefined;
   type: QuestionType;
@@ -25,8 +27,9 @@ export type FormSpecCreateEntryPointMutation$variables = {
 };
 export type FormSpecCreateEntryPointMutation$data = {
   readonly createQuestion: {
-    readonly __typename: "Question";
     readonly id: string;
+    readonly label: string;
+    readonly title: string;
   };
 };
 export type FormSpecCreateEntryPointMutation = {
@@ -61,14 +64,21 @@ v1 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "__typename",
+        "name": "id",
         "storageKey": null
       },
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "id",
+        "name": "title",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "label",
         "storageKey": null
       }
     ],
@@ -93,16 +103,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "91d7c4562f90548b4f59c7bb8b52d8d4",
+    "cacheID": "38c5fe9448454371c1566f701434781c",
     "id": null,
     "metadata": {},
     "name": "FormSpecCreateEntryPointMutation",
     "operationKind": "mutation",
-    "text": "mutation FormSpecCreateEntryPointMutation(\n  $input: CreateQuestionInput!\n) {\n  createQuestion(input: $input) {\n    __typename\n    id\n  }\n}\n"
+    "text": "mutation FormSpecCreateEntryPointMutation(\n  $input: CreateQuestionInput!\n) {\n  createQuestion(input: $input) {\n    id\n    title\n    label\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "90db8ba5ce16d4e2b0caff16a9680602";
+(node as any).hash = "35e3a0290c349c519c0ced3d3d1818b0";
 
 export default node;
