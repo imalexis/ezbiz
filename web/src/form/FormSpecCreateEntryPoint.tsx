@@ -1,4 +1,4 @@
-import { Button, Flex } from "antd";
+import { Button, Card, Flex, Input } from "antd";
 
 import { PlusCircleOutlined } from "@ant-design/icons";
 
@@ -18,6 +18,10 @@ export function FormSpecCreateEntryPoint() {
           setPendingQuestions([...pendingQuestions, <PendingQuestion />]);
         }}
       ></Button>
+      <Card style={{ width: "60%", margin: "1vw" }}>
+        <Input placeholder="Untitled form" size="large"></Input>
+        <Input placeholder="Form description" style={{ border: "0" }}></Input>
+      </Card>
       {pendingQuestions.map((q) => q)}
     </Flex>
   );

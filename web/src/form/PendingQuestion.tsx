@@ -55,7 +55,7 @@ export function PendingQuestion() {
 
   return (
     <Card
-      style={{ width: "75%" }}
+      style={{ width: "60%" }}
       onBlur={() => {
         commitCreateQuestion({
           variables: {
