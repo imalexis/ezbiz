@@ -1,12 +1,9 @@
 import { Card, Flex, Input, Select, Typography } from "antd";
 import graphql from "babel-plugin-relay/macro";
-import { useNavigate, useParams } from "react-router-dom";
-import { FormSpecCreateEntryPointMutation } from "./__generated__/FormSpecCreateEntryPointMutation.graphql";
+import { useParams } from "react-router-dom";
 import { useLazyLoadQuery, useMutation } from "react-relay";
-import { FormSpecCreateEntryPointUpdateMutation } from "./__generated__/FormSpecCreateEntryPointUpdateMutation.graphql";
 import { useState } from "react";
-import { FormSpecCreateEntryPointQuery } from "./__generated__/FormSpecCreateEntryPointQuery.graphql";
-import { QuestionType } from "./__generated__/FormSpecCardFragment.graphql";
+import { QuestionType } from "../__generated__/FormSpecCardFragment.graphql";
 import { PendingQuestionPointMutation } from "./__generated__/PendingQuestionPointMutation.graphql";
 import { PendingQuestionPointUpdateMutation } from "./__generated__/PendingQuestionPointUpdateMutation.graphql";
 import { PendingQuestionPointQuery } from "./__generated__/PendingQuestionPointQuery.graphql";

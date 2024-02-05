@@ -1,12 +1,12 @@
 import { Card, Input } from "antd";
 import graphql from "babel-plugin-relay/macro";
-import { ShortTextQuestionFragment$key } from "./__generated__/ShortTextQuestionFragment.graphql";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import { useContext, useState } from "react";
-import { ShortTextQuestionUpdateMutation } from "./__generated__/ShortTextQuestionUpdateMutation.graphql";
-import FormInstanceContext from "./FormInstanceContext";
 import { useParams } from "react-router-dom";
+import FormInstanceContext from "../../FormInstanceContext";
+import { ShortTextQuestionFragment$key } from "./__generated__/ShortTextQuestionFragment.graphql";
 import { ShortTextQuestionResponseQuery } from "./__generated__/ShortTextQuestionResponseQuery.graphql";
+import { ShortTextQuestionUpdateMutation } from "./__generated__/ShortTextQuestionUpdateMutation.graphql";
 
 type Props = {
   fragmentKey: ShortTextQuestionFragment$key;

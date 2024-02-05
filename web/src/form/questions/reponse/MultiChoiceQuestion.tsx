@@ -2,11 +2,11 @@ import { Card, Radio, RadioChangeEvent, Space } from "antd";
 import graphql from "babel-plugin-relay/macro";
 import { useContext, useState } from "react";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
+import { useParams } from "react-router-dom";
+import FormInstanceContext from "../../FormInstanceContext";
 import { MultiChoiceQuestionFragment$key } from "./__generated__/MultiChoiceQuestionFragment.graphql";
 import { MultiChoiceQuestionUpdateMutation } from "./__generated__/MultiChoiceQuestionUpdateMutation.graphql";
-import { useParams } from "react-router-dom";
 import { MultiChoiceQuestionResponseQuery } from "./__generated__/MultiChoiceQuestionResponseQuery.graphql";
-import FormInstanceContext from "./FormInstanceContext";
 
 type Props = {
   fragmentKey: MultiChoiceQuestionFragment$key;

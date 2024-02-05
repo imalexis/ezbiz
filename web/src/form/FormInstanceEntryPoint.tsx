@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useLazyLoadQuery, useMutation } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
 import Title from "antd/es/typography/Title";
-import { QuestionGroup } from "./QuestionGroup";
+import { QuestionGroup } from "./questions/QuestionGroup";
 import { FormInstanceEntryPointUpdateMutation } from "./__generated__/FormInstanceEntryPointUpdateMutation.graphql";
 import { FormInstanceEntryPointQuery } from "./__generated__/FormInstanceEntryPointQuery.graphql";
 import FormInstanceContext from "./FormInstanceContext";

@@ -1,7 +1,7 @@
 import { Card, Input } from "antd";
 import graphql from "babel-plugin-relay/macro";
-import { ParagraphQuestionFragment$key } from "./__generated__/ParagraphQuestionFragment.graphql";
 import { useFragment } from "react-relay";
+import { ParagraphQuestionFragment$key } from "./__generated__/ParagraphQuestionFragment.graphql";
 
 type Props = {
   fragmentKey: ParagraphQuestionFragment$key;

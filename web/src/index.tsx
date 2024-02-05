@@ -6,7 +6,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import FormEntrypoint from "./form/FormEntrypoint";
+import FormEntrypoint from "./form/questions/reponse/FormEntrypoint";
 import { FormEntryPointContent } from "./form/FormEntryPointContent";
 import { FormSpecDetailEntryPoint } from "./form/FormSpecDetailEntryPoint";
 import { FormSpecCreateEntryPoint } from "./form/FormSpecCreateEntryPoint";

@@ -6,13 +6,13 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import graphql from "babel-plugin-relay/macro";
 import { useLazyLoadQuery, useMutation } from "react-relay";
-import { FormSpecCreateEntryPointQuery } from "./__generated__/FormSpecCreateEntryPointQuery.graphql";
-import { QuestionType } from "./__generated__/FormSpecCardFragment.graphql";
+import GeneralQuestion from "./questions/GeneralQuestion";
+import { QuestionType } from "./questions/design/__generated__/DesignModeShortTextQuestionFragment.graphql";
 import { FormSpecCreateEntryPointMutation } from "./__generated__/FormSpecCreateEntryPointMutation.graphql";
 import { FormSpecCreateEntryPointUpdateQuestionGroupMutation } from "./__generated__/FormSpecCreateEntryPointUpdateQuestionGroupMutation.graphql";
-import GeneralQuestion from "./GeneralQuestion";
+import { FormSpecCreateEntryPointQuery } from "./__generated__/FormSpecCreateEntryPointQuery.graphql";
 
-type QuestionMetadata = {
+export type QuestionMetadata = {
   title: string;
   label: string;
   type: QuestionType;
@@ -42,6 +42,9 @@ export function FormSpecCreateEntryPoint() {
       };
     })
   );
+  const [localQuestions, setLocalQuestions] = useState<Array<QuestionMetadata>>(
+    []
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // question state
@@ -58,8 +61,9 @@ export function FormSpecCreateEntryPoint() {
           setIsModalOpen(false);
         }}
         onOk={() => {
-          setPendingQuestions([
-            ...pendingQuestions,
+          setLocalQuestions([
+            ...localQuestions, // come from database
+            // local state
             {
               title,
               label,
@@ -114,46 +118,39 @@ export function FormSpecCreateEntryPoint() {
         <Input placeholder="Untitled form" size="large"></Input>
         <Input placeholder="Form description" style={{ border: "0" }}></Input>
       </Card>
+      {/* The question stream is composed by pendingQuestions(database) and localQuestions */}
       {pendingQuestions.map((q) => {
-        const fragmentKey = (data.node?.questionGroups ??
-          [])[0].question?.filter((qq) => q.label === qq.label)[0];
-        if (fragmentKey == null || fragmentKey == undefined) {
-          return <div>wrong information</div>;
-        }
-        return (
-          <GeneralQuestion
-            mode="design"
-            generalQuestionFragmentKey={fragmentKey}
-          />
-        );
+        return <GeneralQuestion mode="design" questionMetadata={q} />;
+      })}
+      {localQuestions.map((q) => {
+        // <input type="text" placeholder={q.label} />
+        return <GeneralQuestion mode="design" questionMetadata={q} />;
       })}
       <Button
         onClick={() => {
-          pendingQuestions
-            .filter((q) => q.createdAt == null)
-            .map((q) => {
-              create({
-                variables: {
-                  input: {
-                    title: q.title,
-                    label: q.label,
-                    type: q.type,
-                    createdBy: 1,
-                    required: true,
-                  },
+          localQuestions.forEach((q) => {
+            create({
+              variables: {
+                input: {
+                  title: q.title,
+                  label: q.label,
+                  type: q.type,
+                  createdBy: 1,
+                  required: true,
                 },
-                onCompleted: (resp, err) => {
-                  addQuestion({
-                    variables: {
-                      id: defaultGroupID,
-                      input: {
-                        addQuestionIDs: [resp.createQuestion.id],
-                      },
+              },
+              onCompleted: (resp, err) => {
+                addQuestion({
+                  variables: {
+                    id: defaultGroupID,
+                    input: {
+                      addQuestionIDs: [resp.createQuestion.id],
                     },
-                  });
-                },
-              });
+                  },
+                });
+              },
             });
+          });
         }}
       >
         Submit
@@ -174,7 +171,6 @@ const query = graphql`
             type
             createdAt
             ...QuestionFragment
-            ...GeneralQuestionFragment
           }
         }
       }

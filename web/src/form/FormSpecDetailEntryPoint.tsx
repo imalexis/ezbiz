@@ -3,7 +3,7 @@ import { useLazyLoadQuery } from "react-relay";
 import { FormSpecDetailEntryPointQuery } from "./__generated__/FormSpecDetailEntryPointQuery.graphql";
 import { Flex } from "antd";
 import { useParams } from "react-router-dom";
-import { QuestionGroup } from "./QuestionGroup";
+import { QuestionGroup } from "./questions/QuestionGroup";
 import Title from "antd/es/typography/Title";
 
 export function FormSpecDetailEntryPoint() {

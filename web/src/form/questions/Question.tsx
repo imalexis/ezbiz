@@ -2,11 +2,11 @@ import graphql from "babel-plugin-relay/macro";
 import { QuestionFragment$key } from "./__generated__/QuestionFragment.graphql";
 import { useFragment } from "react-relay";
 import { Flex } from "antd";
-import { MultiChoiceQuestion } from "./MultiChoiceQuestion";
-import { ShortTextQuestion } from "./ShortTextQuestion";
-import { ParagraphQuestion } from "./ParagraphQuestion";
-import { FileQuestion } from "./FileQuestion";
-import { DropdownQuestion } from "./DropdownQuestion";
+import { MultiChoiceQuestion } from "./reponse/MultiChoiceQuestion";
+import { ParagraphQuestion } from "./reponse/ParagraphQuestion";
+import { FileQuestion } from "./reponse/FileQuestion";
+import { DropdownQuestion } from "./reponse/DropdownQuestion";
+import { ShortTextQuestion } from "./reponse/ShortTextQuestion";
 
 type Props = {
   fragmentKey: QuestionFragment$key;

@@ -1,8 +1,8 @@
 import graphql from "babel-plugin-relay/macro";
-import { DropdownQuestionFragment$key } from "./__generated__/DropdownQuestionFragment.graphql";
 import { useFragment } from "react-relay";
 import { Card, Dropdown, MenuProps, Space, message } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import { DropdownQuestionFragment$key } from "./__generated__/DropdownQuestionFragment.graphql";
 
 type Props = {
   fragmentKey: DropdownQuestionFragment$key;

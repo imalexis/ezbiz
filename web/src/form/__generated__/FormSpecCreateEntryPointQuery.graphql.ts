@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<66172aeaa49775bccf75817289ef8be1>>
+ * @generated SignedSource<<2051cf59c65cd037c98b0ae6a7bfbe78>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -23,7 +23,7 @@ export type FormSpecCreateEntryPointQuery$data = {
         readonly label: string;
         readonly title: string;
         readonly type: QuestionType;
-        readonly " $fragmentSpreads": FragmentRefs<"GeneralQuestionFragment" | "QuestionFragment">;
+        readonly " $fragmentSpreads": FragmentRefs<"QuestionFragment">;
       }> | null | undefined;
     }> | null | undefined;
   } | null | undefined;
@@ -133,11 +133,6 @@ return {
                         "args": null,
                         "kind": "FragmentSpread",
                         "name": "QuestionFragment"
-                      },
-                      {
-                        "args": null,
-                        "kind": "FragmentSpread",
-                        "name": "GeneralQuestionFragment"
                       }
                     ],
                     "storageKey": null
@@ -228,16 +223,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d0f6c9be11a002446b64b2ad2d61b215",
+    "cacheID": "2859b7b9ddd99e34b79dd090c68aa8a9",
     "id": null,
     "metadata": {},
     "name": "FormSpecCreateEntryPointQuery",
     "operationKind": "query",
-    "text": "query FormSpecCreateEntryPointQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on FormSpec {\n      questionGroups {\n        id\n        question {\n          label\n          title\n          type\n          createdAt\n          ...QuestionFragment\n          ...GeneralQuestionFragment\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment DesignModeShortTextQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n\nfragment DropdownQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment FileQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment GeneralQuestionFragment on Question {\n  type\n  label\n  ...MultiChoiceQuestionFragment\n  ...ShortTextQuestionFragment\n  ...ParagraphQuestionFragment\n  ...FileQuestionFragment\n  ...DropdownQuestionFragment\n  ...DesignModeShortTextQuestionFragment\n}\n\nfragment MultiChoiceQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ParagraphQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment QuestionFragment on Question {\n  type\n  label\n  ...MultiChoiceQuestionFragment\n  ...ShortTextQuestionFragment\n  ...ParagraphQuestionFragment\n  ...FileQuestionFragment\n  ...DropdownQuestionFragment\n}\n\nfragment ShortTextQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n"
+    "text": "query FormSpecCreateEntryPointQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on FormSpec {\n      questionGroups {\n        id\n        question {\n          label\n          title\n          type\n          createdAt\n          ...QuestionFragment\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment DropdownQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment FileQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment MultiChoiceQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ParagraphQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment QuestionFragment on Question {\n  type\n  label\n  ...MultiChoiceQuestionFragment\n  ...ShortTextQuestionFragment\n  ...ParagraphQuestionFragment\n  ...FileQuestionFragment\n  ...DropdownQuestionFragment\n}\n\nfragment ShortTextQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n"
   }
 };
 })();
 
-(node as any).hash = "65c15cd150bf159ed339281ff8415511";
+(node as any).hash = "c581f413ab0899de5525231945c2fd24";
 
 export default node;
