@@ -7,19 +7,15 @@ type Props = {
 };
 
 export function DesignModeShortTextQuestion({ questionMetadata }: Props) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState("Short-answer text");
   return (
-    <Card
-      title={questionMetadata.title}
-      bordered={false}
-      style={{ margin: "8px", width: "100%" }}
-    >
+    <>
       <Input
         type="text"
         placeholder={questionMetadata.type}
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
-    </Card>
+    </>
   );
 }

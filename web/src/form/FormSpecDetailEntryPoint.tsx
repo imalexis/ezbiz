@@ -27,7 +27,10 @@ export function FormSpecDetailEntryPoint() {
         <Flex vertical flex={6}>
           <Title level={3}>{data.node?.name}</Title>
           {data.node?.questionGroups?.map((g) => (
-            <QuestionGroup fragmentKey={g} />
+            <QuestionGroup
+              fragmentKey={g}
+              setLocalQuestionExtraData={(idx, extra) => {}}
+            />
           ))}
         </Flex>
         <Flex flex={1}>

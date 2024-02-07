@@ -6,9 +6,13 @@ import GeneralQuestion from "./GeneralQuestion";
 
 type Props = {
   fragmentKey: QuestionGroupFragment$key;
+  setLocalQuestionExtraData: (idx: number, extraData: string) => void;
 };
 
-export function QuestionGroup({ fragmentKey }: Props) {
+export function QuestionGroup({
+  fragmentKey,
+  setLocalQuestionExtraData,
+}: Props) {
   const group = useFragment(fragment, fragmentKey);
   return (
     <Flex vertical>
@@ -29,8 +33,13 @@ export function QuestionGroup({ fragmentKey }: Props) {
         }}
       />
 
-      {group.question?.map((q) => (
-        <GeneralQuestion mode="response" fragmentKey={q} />
+      {group.question?.map((q, idx) => (
+        <GeneralQuestion
+          mode="response"
+          fragmentKey={q}
+          setLocalQuestionExtraData={setLocalQuestionExtraData}
+          questionIndex={idx}
+        />
       ))}
     </Flex>
   );

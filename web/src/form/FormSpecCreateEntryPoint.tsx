@@ -17,10 +17,12 @@ export type QuestionMetadata = {
   label: string;
   type: QuestionType;
   createdAt: string | null;
+  extraData?: string | null;
 };
 
 export function FormSpecCreateEntryPoint() {
-  const [create] = useMutation<FormSpecCreateEntryPointMutation>(mutation);
+  const [createQuestion] =
+    useMutation<FormSpecCreateEntryPointMutation>(mutation);
   const [addQuestion] =
     useMutation<FormSpecCreateEntryPointUpdateQuestionGroupMutation>(
       updateQuestionGroup
@@ -30,21 +32,29 @@ export function FormSpecCreateEntryPoint() {
     id: formID ?? "",
   });
   const defaultGroupID = (data.node?.questionGroups ?? [])[0].id;
-  const [pendingQuestions, setPendingQuestions] = useState<
-    Array<QuestionMetadata>
-  >(
+  const [pendingQuestions] = useState<Array<QuestionMetadata>>(
     ((data.node?.questionGroups ?? [])[0].question ?? []).map((q) => {
       return {
         title: q.title,
         label: q.label,
         type: q.type,
         createdAt: q.createdAt,
+        extraData: q.extraData,
       };
     })
   );
   const [localQuestions, setLocalQuestions] = useState<Array<QuestionMetadata>>(
     []
   );
+
+  const setLocalQuestionExtraData = (idx: number, extraData: string) => {
+    if (idx >= 0 && idx < localQuestions.length) {
+      const newArray = [...localQuestions];
+      newArray[idx].extraData = extraData;
+      setLocalQuestions(newArray);
+    }
+  };
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // question state
@@ -67,7 +77,7 @@ export function FormSpecCreateEntryPoint() {
             {
               title,
               label,
-              type: "short_text",
+              type: questionType as QuestionType,
               createdAt: null,
             },
           ]);
@@ -119,17 +129,52 @@ export function FormSpecCreateEntryPoint() {
         <Input placeholder="Form description" style={{ border: "0" }}></Input>
       </Card>
       {/* The question stream is composed by pendingQuestions(database) and localQuestions */}
-      {pendingQuestions.map((q) => {
-        return <GeneralQuestion mode="design" questionMetadata={q} />;
+      {pendingQuestions.map((q, idx) => {
+        return (
+          <Card
+            title={q.title}
+            style={{
+              width: "60%",
+              margin: "1vw",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              border: "1px solid #e8e8e8",
+              backgroundColor: "#fff",
+            }}
+          >
+            <GeneralQuestion
+              mode="design"
+              questionMetadata={q}
+              setLocalQuestionExtraData={setLocalQuestionExtraData}
+              questionIndex={idx}
+            />
+          </Card>
+        );
       })}
-      {localQuestions.map((q) => {
-        // <input type="text" placeholder={q.label} />
-        return <GeneralQuestion mode="design" questionMetadata={q} />;
+      {localQuestions.map((q, idx) => {
+        return (
+          <Card
+            title={q.title}
+            style={{
+              width: "60%",
+              margin: "1vw",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              border: "1px solid #e8e8e8",
+              backgroundColor: "#fff",
+            }}
+          >
+            <GeneralQuestion
+              mode="design"
+              questionMetadata={q}
+              setLocalQuestionExtraData={setLocalQuestionExtraData}
+              questionIndex={idx}
+            />
+          </Card>
+        );
       })}
       <Button
         onClick={() => {
           localQuestions.forEach((q) => {
-            create({
+            createQuestion({
               variables: {
                 input: {
                   title: q.title,
@@ -137,6 +182,7 @@ export function FormSpecCreateEntryPoint() {
                   type: q.type,
                   createdBy: 1,
                   required: true,
+                  extraData: q.extraData,
                 },
               },
               onCompleted: (resp, err) => {
@@ -148,6 +194,7 @@ export function FormSpecCreateEntryPoint() {
                     },
                   },
                 });
+                localQuestions.length = 0;
               },
             });
           });
@@ -170,6 +217,7 @@ const query = graphql`
             title
             type
             createdAt
+            extraData
             ...QuestionFragment
           }
         }
