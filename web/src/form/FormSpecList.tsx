@@ -11,7 +11,7 @@ export default function FormSpecList() {
     first: 10,
     orderBy: {
       direction: "DESC",
-      field: "CREATED_AT",
+      field: "UPDATED_AT",
     },
   });
 

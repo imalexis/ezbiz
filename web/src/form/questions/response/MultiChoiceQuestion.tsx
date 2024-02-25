@@ -23,10 +23,8 @@ export function MultiChoiceQuestion({ fragmentKey }: Props) {
   const initialResponseValue =
     (data.questionResponses.edges ?? [])[0]?.node?.value ?? "";
   const [value, setValue] = useState(initialResponseValue);
-
   const [commitUpdate] =
     useMutation<MultiChoiceQuestionUpdateMutation>(updateMutation);
-
   const handleChange = (e: RadioChangeEvent) => {
     setValue(e.target.value);
     commitUpdate({
@@ -36,7 +34,6 @@ export function MultiChoiceQuestion({ fragmentKey }: Props) {
       },
     });
   };
-
   return (
     <Card
       title={question.title}

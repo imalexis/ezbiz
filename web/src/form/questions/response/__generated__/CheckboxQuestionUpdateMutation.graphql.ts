@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<dfcf08f53702e61923e85a888d1764d3>>
+ * @generated SignedSource<<bae7aad1e325dcd55f32ecccedfb1eff>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,29 +9,28 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Mutation } from 'relay-runtime';
-export type UpdateQuestionGroupInput = {
-  addQuestionIDs?: ReadonlyArray<string> | null | undefined;
-  clearFormSpec?: boolean | null | undefined;
+export type UpdateQuestionResponseInput = {
+  clearFormInstance?: boolean | null | undefined;
   clearQuestion?: boolean | null | undefined;
   createdAt?: any | null | undefined;
-  createdBy?: number | null | undefined;
-  formSpecID?: string | null | undefined;
-  name?: string | null | undefined;
-  removeQuestionIDs?: ReadonlyArray<string> | null | undefined;
+  formInstanceID?: string | null | undefined;
+  label?: string | null | undefined;
+  questionID?: string | null | undefined;
   updatedAt?: any | null | undefined;
+  value?: string | null | undefined;
 };
-export type PendingQuestionPointUpdateMutation$variables = {
+export type CheckboxQuestionUpdateMutation$variables = {
   id: string;
-  input: UpdateQuestionGroupInput;
+  input: UpdateQuestionResponseInput;
 };
-export type PendingQuestionPointUpdateMutation$data = {
-  readonly updateQuestionGroup: {
+export type CheckboxQuestionUpdateMutation$data = {
+  readonly updateQuestionResponse: {
     readonly id: string;
   };
 };
-export type PendingQuestionPointUpdateMutation = {
-  response: PendingQuestionPointUpdateMutation$data;
-  variables: PendingQuestionPointUpdateMutation$variables;
+export type CheckboxQuestionUpdateMutation = {
+  response: CheckboxQuestionUpdateMutation$data;
+  variables: CheckboxQuestionUpdateMutation$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -60,9 +59,9 @@ v2 = [
         "variableName": "input"
       }
     ],
-    "concreteType": "QuestionGroup",
+    "concreteType": "QuestionResponse",
     "kind": "LinkedField",
-    "name": "updateQuestionGroup",
+    "name": "updateQuestionResponse",
     "plural": false,
     "selections": [
       {
@@ -84,7 +83,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "PendingQuestionPointUpdateMutation",
+    "name": "CheckboxQuestionUpdateMutation",
     "selections": (v2/*: any*/),
     "type": "Mutation",
     "abstractKey": null
@@ -96,20 +95,20 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "PendingQuestionPointUpdateMutation",
+    "name": "CheckboxQuestionUpdateMutation",
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "7ad8ef6b9da47016e97dc09f8d1a44a2",
+    "cacheID": "402b5e9d90e31bb64736bbdea7f0bf7c",
     "id": null,
     "metadata": {},
-    "name": "PendingQuestionPointUpdateMutation",
+    "name": "CheckboxQuestionUpdateMutation",
     "operationKind": "mutation",
-    "text": "mutation PendingQuestionPointUpdateMutation(\n  $input: UpdateQuestionGroupInput!\n  $id: ID!\n) {\n  updateQuestionGroup(input: $input, id: $id) {\n    id\n  }\n}\n"
+    "text": "mutation CheckboxQuestionUpdateMutation(\n  $input: UpdateQuestionResponseInput!\n  $id: ID!\n) {\n  updateQuestionResponse(input: $input, id: $id) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "4a2d16d3f94cb3442026aaaf6a4c4ccf";
+(node as any).hash = "69fd39493f4604170f6fd7fc8cffdad6";
 
 export default node;

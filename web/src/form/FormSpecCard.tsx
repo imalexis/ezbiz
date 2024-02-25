@@ -71,7 +71,6 @@ export function FormSpecCard({ formSpec }: Props) {
       </CardPreview>
 
       <CardFooter>
-        <Button icon={<ArrowReplyRegular fontSize={16} />}>Reply</Button>
         <Button
           icon={<ShareRegular fontSize={16} />}
           onClick={() => {
@@ -92,7 +91,7 @@ export function FormSpecCard({ formSpec }: Props) {
             navigate(`${data?.id}/response`);
           }}
         >
-          view response
+          View Response
         </Button>
         <Button
           icon={<Link />}
@@ -100,7 +99,7 @@ export function FormSpecCard({ formSpec }: Props) {
             navigate(`create/${data?.id}`);
           }}
         >
-          Open
+          View Form
         </Button>
       </CardFooter>
     </Card>

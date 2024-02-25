@@ -2,11 +2,12 @@ import graphql from "babel-plugin-relay/macro";
 import { QuestionFragment$key } from "./__generated__/QuestionFragment.graphql";
 import { useFragment } from "react-relay";
 import { Flex } from "antd";
-import { MultiChoiceQuestion } from "./reponse/MultiChoiceQuestion";
-import { ParagraphQuestion } from "./reponse/ParagraphQuestion";
-import { FileQuestion } from "./reponse/FileQuestion";
-import { DropdownQuestion } from "./reponse/DropdownQuestion";
-import { ShortTextQuestion } from "./reponse/ShortTextQuestion";
+import { MultiChoiceQuestion } from "./MultiChoiceQuestion";
+import { ParagraphQuestion } from "./ParagraphQuestion";
+import { FileQuestion } from "./FileQuestion";
+import { DropdownQuestion } from "./DropdownQuestion";
+import { ShortTextQuestion } from "./ShortTextQuestion";
+import { CheckboxQuestion } from "./CheckboxQuestion";
 
 type Props = {
   fragmentKey: QuestionFragment$key;
@@ -22,9 +23,9 @@ export function Question({ fragmentKey }: Props) {
         <MultiChoiceQuestion fragmentKey={question} />
       )}
 
-      {/* {question.type === "checkboxes" && (
-        <MultiChoiceQuestion fragmentKey={question} />
-      )} */}
+      {question.type === "checkboxes" && (
+        <CheckboxQuestion fragmentKey={question} />
+      )}
 
       {question.type === "short_text" && (
         <ShortTextQuestion fragmentKey={question} />
@@ -48,6 +49,7 @@ const fragment = graphql`
     type
     label
     ...MultiChoiceQuestionFragment
+    ...CheckboxQuestionFragment
     ...ShortTextQuestionFragment
     ...ParagraphQuestionFragment
     ...FileQuestionFragment
