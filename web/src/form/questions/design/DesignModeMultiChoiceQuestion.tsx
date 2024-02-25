@@ -1,7 +1,7 @@
 import { Button, Flex, Radio, Space } from "antd";
-import { QuestionMetadata } from "../../FormSpecCreateEntryPoint";
 import { useState } from "react";
 import { EZBizRadio } from "./EzbizRadio";
+import { QuestionMetadata } from "../GeneralQuestion";
 
 type Props = {
   questionMetadata: QuestionMetadata;
@@ -15,43 +15,50 @@ export default function DesignModeMultiChoiceQuestion({
   questionIndex,
 }: Props) {
   const initialExtraData = questionMetadata.extraData;
-  const initialOptions = JSON.parse(initialExtraData ?? "") as Array<string>;
+  const initialOptions: Array<string> =
+    initialExtraData !== ""
+      ? (JSON.parse(initialExtraData ?? "") as Array<string>)
+      : [];
   const [options, setOptions] = useState(initialOptions);
-  const setOption = (idx: number, modifiedOption: string) => {
-    // Check if the index is valid.
+  const deleteOption = (idx: number) => {
     if (idx >= 0 && idx < options.length) {
-      // Create a newOptions array where the element at index idx is replaced with newOption.
+      setOptions(options.filter((v, index) => idx !== index));
+    }
+  };
+  const updateOption = (idx: number, modifiedOption: string) => {
+    if (idx >= 0 && idx < options.length) {
       const newOptions = [...options];
       newOptions[idx] = modifiedOption;
-      // Update the state using setOptions.
       setOptions(newOptions);
     } else {
       console.error("invalid option index.");
     }
   };
-
-  const extraData = JSON.stringify(options);
-
+  const handleAddOption = () => {
+    setOptions([...options, "option"]);
+  };
   return (
     <Flex vertical>
       <Radio.Group
         onBlur={() => {
+          const extraData = JSON.stringify(options);
           setLocalQuestionExtraData(questionIndex, extraData);
         }}
       >
         <Space direction="vertical">
           {options.map((opt, idx) => (
-            <EZBizRadio index={idx} option={opt} setOption={setOption} />
+            <EZBizRadio
+              index={idx}
+              option={opt}
+              key={idx}
+              setOption={updateOption}
+              deleteOption={deleteOption}
+            />
           ))}
         </Space>
       </Radio.Group>
 
-      <Button
-        style={{ margin: "10px" }}
-        onClick={() => {
-          setOptions([...options, "option"]);
-        }}
-      >
+      <Button style={{ margin: "10px" }} onClick={handleAddOption}>
         Add option
       </Button>
     </Flex>

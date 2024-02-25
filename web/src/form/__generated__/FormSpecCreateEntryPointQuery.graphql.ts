@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<89f85e82a19ec9b7e966811d719c2831>>
+ * @generated SignedSource<<3287e21cbb3e8eec8a1d12b1440197d7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,11 +16,14 @@ export type FormSpecCreateEntryPointQuery$variables = {
 };
 export type FormSpecCreateEntryPointQuery$data = {
   readonly node: {
+    readonly description?: string;
+    readonly name?: string;
     readonly questionGroups?: ReadonlyArray<{
       readonly id: string;
       readonly question: ReadonlyArray<{
         readonly createdAt: any;
         readonly extraData: string;
+        readonly id: string;
         readonly label: string;
         readonly title: string;
         readonly type: QuestionType;
@@ -53,45 +56,59 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "name",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "label",
+  "name": "description",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "id",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "type",
+  "name": "label",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "createdAt",
+  "name": "title",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "extraData",
+  "name": "type",
   "storageKey": null
 },
 v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "extraData",
+  "storageKey": null
+},
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -116,6 +133,8 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -124,7 +143,7 @@ return {
                 "name": "questionGroups",
                 "plural": true,
                 "selections": [
-                  (v2/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -133,11 +152,12 @@ return {
                     "name": "question",
                     "plural": true,
                     "selections": [
-                      (v3/*: any*/),
                       (v4/*: any*/),
                       (v5/*: any*/),
                       (v6/*: any*/),
                       (v7/*: any*/),
+                      (v8/*: any*/),
+                      (v9/*: any*/),
                       {
                         "args": null,
                         "kind": "FragmentSpread",
@@ -174,10 +194,12 @@ return {
         "name": "node",
         "plural": false,
         "selections": [
-          (v8/*: any*/),
+          (v10/*: any*/),
           {
             "kind": "InlineFragment",
             "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -186,7 +208,7 @@ return {
                 "name": "questionGroups",
                 "plural": true,
                 "selections": [
-                  (v2/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -195,12 +217,12 @@ return {
                     "name": "question",
                     "plural": true,
                     "selections": [
-                      (v3/*: any*/),
                       (v4/*: any*/),
                       (v5/*: any*/),
                       (v6/*: any*/),
                       (v7/*: any*/),
-                      (v2/*: any*/),
+                      (v8/*: any*/),
+                      (v9/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -208,7 +230,7 @@ return {
                         "name": "required",
                         "storageKey": null
                       },
-                      (v8/*: any*/)
+                      (v10/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -219,23 +241,23 @@ return {
             "type": "FormSpec",
             "abstractKey": null
           },
-          (v2/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "77e4a3badeb4b3bb40244f15330e8d88",
+    "cacheID": "1edd0e80d75690bb0bb1cb8c760444f3",
     "id": null,
     "metadata": {},
     "name": "FormSpecCreateEntryPointQuery",
     "operationKind": "query",
-    "text": "query FormSpecCreateEntryPointQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on FormSpec {\n      questionGroups {\n        id\n        question {\n          label\n          title\n          type\n          createdAt\n          extraData\n          ...QuestionFragment\n          id\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment DropdownQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment FileQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment MultiChoiceQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ParagraphQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment QuestionFragment on Question {\n  type\n  label\n  ...MultiChoiceQuestionFragment\n  ...ShortTextQuestionFragment\n  ...ParagraphQuestionFragment\n  ...FileQuestionFragment\n  ...DropdownQuestionFragment\n}\n\nfragment ShortTextQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n"
+    "text": "query FormSpecCreateEntryPointQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on FormSpec {\n      name\n      description\n      questionGroups {\n        id\n        question {\n          id\n          label\n          title\n          type\n          createdAt\n          extraData\n          ...QuestionFragment\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment DropdownQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment FileQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment MultiChoiceQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ParagraphQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment QuestionFragment on Question {\n  type\n  label\n  ...MultiChoiceQuestionFragment\n  ...ShortTextQuestionFragment\n  ...ParagraphQuestionFragment\n  ...FileQuestionFragment\n  ...DropdownQuestionFragment\n}\n\nfragment ShortTextQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n"
   }
 };
 })();
 
-(node as any).hash = "36ac102cc2784c1c98e2b2024d1aaa9a";
+(node as any).hash = "8be81112904bf845c9244bb6dccf14e7";
 
 export default node;

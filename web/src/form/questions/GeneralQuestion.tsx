@@ -1,10 +1,10 @@
 import { Flex } from "antd";
 import { DesignModeShortTextQuestion } from "./design/DesignModeShortTextQuestion";
-import { QuestionMetadata } from "../FormSpecCreateEntryPoint";
 import { Question } from "./Question";
 import { QuestionFragment$key } from "./__generated__/QuestionFragment.graphql";
 import DesignModeParagraphQuestion from "./design/DesignModeParagraphQuestion";
 import DesignModeMultiChoiceQuestion from "./design/DesignModeMultiChoiceQuestion";
+import { QuestionType } from "../__generated__/FormSpecCardFragment.graphql";
 
 type Props = {
   fragmentKey?: QuestionFragment$key; // for response mode
@@ -12,6 +12,15 @@ type Props = {
   mode: "design" | "response";
   setLocalQuestionExtraData: (idx: number, extraData: string) => void;
   questionIndex: number;
+};
+
+export type QuestionMetadata = {
+  id: string;
+  title: string;
+  label: string;
+  type: QuestionType;
+  createdAt: string | null;
+  extraData?: string | null;
 };
 
 // fragmentKey renders GeneralQuestion component

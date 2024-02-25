@@ -50,6 +50,7 @@ export function FormSpecCard({ formSpec }: Props) {
         image={<img src={resolveAsset("avatar_elvia.svg")} alt={""} />}
         header={
           <Body1>
+            <p>id: {data?.id}</p>
             <b>title: {data?.name}</b>
             <p>Created By: {data?.createdBy}</p>
             <p>Created At: {data?.createdAt}</p>

@@ -1,6 +1,6 @@
-import { Card, Input } from "antd";
+import { Input } from "antd";
 import { useState } from "react";
-import { QuestionMetadata } from "../../FormSpecCreateEntryPoint";
+import { QuestionMetadata } from "../GeneralQuestion";
 
 type Props = {
   questionMetadata: QuestionMetadata;

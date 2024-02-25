@@ -1,6 +1,6 @@
 import { Input } from "antd";
-import { QuestionMetadata } from "../../FormSpecCreateEntryPoint";
 import { useState } from "react";
+import { QuestionMetadata } from "../GeneralQuestion";
 
 const { TextArea } = Input;
 type Props = {

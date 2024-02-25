@@ -32,7 +32,6 @@ export function QuestionGroup({
           margin: 0,
         }}
       />
-
       {group.question?.map((q, idx) => (
         <GeneralQuestion
           mode="response"

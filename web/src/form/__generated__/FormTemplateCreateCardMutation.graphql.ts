@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<eb327cff610a07fbe2ce512be65967ae>>
+ * @generated SignedSource<<e787c7da572a38bd3a2d47091d50ffef>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -30,8 +30,8 @@ export type CreateQuestionGroupInput = {
   updatedAt?: any | null | undefined;
 };
 export type FormTemplateCreateCardMutation$variables = {
-  input: CreateFormSpecInput;
-  input2: CreateQuestionGroupInput;
+  createFormSpecInput: CreateFormSpecInput;
+  createQuestionGroupInput: CreateQuestionGroupInput;
 };
 export type FormTemplateCreateCardMutation$data = {
   readonly createFormSpec: {
@@ -51,12 +51,12 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input"
+    "name": "createFormSpecInput"
   },
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input2"
+    "name": "createQuestionGroupInput"
   }
 ],
 v1 = [
@@ -75,7 +75,7 @@ v2 = [
       {
         "kind": "Variable",
         "name": "input",
-        "variableName": "input"
+        "variableName": "createFormSpecInput"
       }
     ],
     "concreteType": "FormSpec",
@@ -91,7 +91,7 @@ v2 = [
       {
         "kind": "Variable",
         "name": "input",
-        "variableName": "input2"
+        "variableName": "createQuestionGroupInput"
       }
     ],
     "concreteType": "QuestionGroup",
@@ -120,16 +120,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "685abb735972c67d1e7065f0d8a4d3d7",
+    "cacheID": "77ad1f6a77aaec7cccf6134fea00a58b",
     "id": null,
     "metadata": {},
     "name": "FormTemplateCreateCardMutation",
     "operationKind": "mutation",
-    "text": "mutation FormTemplateCreateCardMutation(\n  $input: CreateFormSpecInput!\n  $input2: CreateQuestionGroupInput!\n) {\n  createFormSpec(input: $input) {\n    id\n  }\n  createQuestionGroup(input: $input2) {\n    id\n  }\n}\n"
+    "text": "mutation FormTemplateCreateCardMutation(\n  $createFormSpecInput: CreateFormSpecInput!\n  $createQuestionGroupInput: CreateQuestionGroupInput!\n) {\n  createFormSpec(input: $createFormSpecInput) {\n    id\n  }\n  createQuestionGroup(input: $createQuestionGroupInput) {\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "536010699253dd2ead1a403e7b2c1ac8";
+(node as any).hash = "ba943053d69c6fd3ea3ba56f05e35204";
 
 export default node;

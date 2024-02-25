@@ -7,61 +7,55 @@ import { FormTemplateCreateCardUpdateMutation } from "./__generated__/FormTempla
 
 export function FormTemplateCreateCard() {
   const navigate = useNavigate();
-  const [commitCreation] =
-    useMutation<FormTemplateCreateCardMutation>(mutation);
-  const [commitUpdateFormSpec] =
-    useMutation<FormTemplateCreateCardUpdateMutation>(mutation2);
-
+  const [commitCreateMutation] = useMutation<FormTemplateCreateCardMutation>(
+    createFormSpecMutation
+  );
+  const [commitUpdateMutation] =
+    useMutation<FormTemplateCreateCardUpdateMutation>(updateFormSpecMutation);
+  const handleClick = () => {
+    commitCreateMutation({
+      variables: {
+        createFormSpecInput: { name: "Default form title", createdBy: 1 },
+        createQuestionGroupInput: {
+          name: "Default question group",
+          createdBy: 1,
+        },
+      },
+      onCompleted: (response, errors) => {
+        commitUpdateMutation({
+          variables: {
+            id: response.createFormSpec.id,
+            input: {
+              addQuestionGroupIDs: [response.createQuestionGroup.id],
+            },
+          },
+        });
+        navigate(`create/${response.createFormSpec.id}`);
+      },
+    });
+  };
   return (
-    <div className="form_template_card_default">
-      <PlusOutlined
-        style={{
-          fontSize: "64px",
-          color: "green",
-          margin: "auto 0",
-          justifyItems: "center",
-        }}
-        onClick={() => {
-          commitCreation({
-            variables: {
-              input: { name: "Default form title", createdBy: 1 },
-              input2: { name: "Default question group", createdBy: 1 },
-            },
-            onCompleted: (response, errors) => {
-              commitUpdateFormSpec({
-                variables: {
-                  id: response.createFormSpec.id,
-                  input: {
-                    addQuestionGroupIDs: [response.createQuestionGroup.id],
-                  },
-                },
-              });
-              navigate(`create/${response.createFormSpec.id}`);
-            },
-          });
-        }}
-      />
+    <div className={"form_template_card_default"} onClick={handleClick}>
+      <PlusOutlined style={styles.plus} />
     </div>
   );
 }
 
-// create
-const mutation = graphql`
+const createFormSpecMutation = graphql`
   mutation FormTemplateCreateCardMutation(
-    $input: CreateFormSpecInput!
-    $input2: CreateQuestionGroupInput!
+    $createFormSpecInput: CreateFormSpecInput!
+    $createQuestionGroupInput: CreateQuestionGroupInput!
   ) {
-    createFormSpec(input: $input) {
+    createFormSpec(input: $createFormSpecInput) {
       id
     }
-    createQuestionGroup(input: $input2) {
+    createQuestionGroup(input: $createQuestionGroupInput) {
       id
     }
   }
 `;
 
-// update
-const mutation2 = graphql`
+const updateFormSpecMutation = graphql`
   mutation FormTemplateCreateCardUpdateMutation(
     $input: UpdateFormSpecInput!
     $id: ID!
@@ -71,3 +65,12 @@ const mutation2 = graphql`
     }
   }
 `;
+
+const styles = {
+  plus: {
+    fontSize: "64px",
+    color: "green",
+    margin: "auto 0",
+    justifyItems: "center",
+  },
+};

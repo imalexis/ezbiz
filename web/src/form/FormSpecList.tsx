@@ -46,7 +46,6 @@ export default function FormSpecList() {
   );
 }
 
-// query <Component>_*_Query
 const query = graphql`
   query FormSpecListQuery(
     $first: Int!
@@ -57,11 +56,3 @@ const query = graphql`
     ...FormSpecPaginatedTableFragment
   }
 `;
-
-/**
- * FormSpec -> Define
- * FormQuestionGroup
- * FormQuestion
- * FormInstance -> Create when you send to user
- * FormResponse ->
- */

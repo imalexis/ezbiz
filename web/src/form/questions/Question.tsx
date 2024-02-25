@@ -18,9 +18,14 @@ export function Question({ fragmentKey }: Props) {
 
   return (
     <Flex>
+      {question.type === "multi_choice" && (
+        <MultiChoiceQuestion fragmentKey={question} />
+      )}
+
       {question.type === "checkboxes" && (
         <MultiChoiceQuestion fragmentKey={question} />
       )}
+
       {question.type === "short_text" && (
         <ShortTextQuestion fragmentKey={question} />
       )}
@@ -29,9 +34,8 @@ export function Question({ fragmentKey }: Props) {
         <ParagraphQuestion fragmentKey={question} />
       )}
 
-      {/* {question.type === "date" && <ParagraphQuestion fragmentKey={question} />} */}
-
       {question.type === "file" && <FileQuestion fragmentKey={question} />}
+
       {question.type === "drop_down" && (
         <DropdownQuestion fragmentKey={question} />
       )}

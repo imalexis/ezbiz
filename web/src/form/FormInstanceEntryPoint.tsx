@@ -20,10 +20,19 @@ export function FormInstanceEntryPoint() {
   });
   const status =
     (data.node?.formInstances?.edges ?? [])[0]?.node?.status ?? "pending";
-  // when we initialise a state,
-  // we need to consider if we should pass value from database
   const [isDisabled, setIsDisabled] = useState(status === "submiited");
-
+  const handleSubmit = () => {
+    commitUpdate({
+      variables: {
+        input: { status: "submiited" },
+        id: instanceID ?? "",
+      },
+      onCompleted: () => {
+        setIsDisabled(true);
+        navigate(`/${formID}/instance/${instanceID}/formSubmitted`);
+      },
+    });
+  };
   return (
     <Flex vertical>
       <Flex style={{ backgroundColor: "#f5f5f5" }}>
@@ -37,8 +46,9 @@ export function FormInstanceEntryPoint() {
         >
           <Flex vertical flex={6}>
             <Title level={3}>{data.node?.name}</Title>
-            {data.node?.questionGroups?.map((g) => (
+            {data.node?.questionGroups?.map((g, index) => (
               <QuestionGroup
+                key={index}
                 fragmentKey={g}
                 setLocalQuestionExtraData={(idx, extra) => {}}
               />
@@ -65,18 +75,7 @@ export function FormInstanceEntryPoint() {
               fontSize: "128%",
               width: "100%",
             }}
-            onClick={() => {
-              commitUpdate({
-                variables: {
-                  input: { status: "submiited" },
-                  id: instanceID ?? "",
-                },
-                onCompleted: () => {
-                  setIsDisabled(true);
-                  navigate(`/${formID}/instance/${instanceID}/formSubmitted`);
-                },
-              });
-            }}
+            onClick={handleSubmit}
           >
             Sumit
           </Button>

@@ -1,52 +1,56 @@
-import { Button, Card, Flex, Input, Modal } from "antd";
+import { Button, Card, Dropdown, Flex, Input, MenuProps, Modal } from "antd";
 
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { DownOutlined, PlusCircleOutlined } from "@ant-design/icons";
 
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import graphql from "babel-plugin-relay/macro";
 import { useLazyLoadQuery, useMutation } from "react-relay";
-import GeneralQuestion from "./questions/GeneralQuestion";
+import GeneralQuestion, { QuestionMetadata } from "./questions/GeneralQuestion";
 import { QuestionType } from "./questions/design/__generated__/DesignModeShortTextQuestionFragment.graphql";
 import { FormSpecCreateEntryPointMutation } from "./__generated__/FormSpecCreateEntryPointMutation.graphql";
 import { FormSpecCreateEntryPointUpdateQuestionGroupMutation } from "./__generated__/FormSpecCreateEntryPointUpdateQuestionGroupMutation.graphql";
 import { FormSpecCreateEntryPointQuery } from "./__generated__/FormSpecCreateEntryPointQuery.graphql";
-
-export type QuestionMetadata = {
-  title: string;
-  label: string;
-  type: QuestionType;
-  createdAt: string | null;
-  extraData?: string | null;
-};
+import { FormSpecCreateEntryPointUpdateFormSpecMutation } from "./__generated__/FormSpecCreateEntryPointUpdateFormSpecMutation.graphql";
+import { FormSpecCreateEntryPointUpdateQuestionMutation } from "./__generated__/FormSpecCreateEntryPointUpdateQuestionMutation.graphql";
 
 export function FormSpecCreateEntryPoint() {
-  const [createQuestion] =
-    useMutation<FormSpecCreateEntryPointMutation>(mutation);
+  const navigate = useNavigate();
+  const [createQuestion] = useMutation<FormSpecCreateEntryPointMutation>(
+    createQuestionMutation
+  );
+  const [updateQuestion] =
+    useMutation<FormSpecCreateEntryPointUpdateQuestionMutation>(
+      updateQuestionMutaiton
+    );
   const [addQuestion] =
     useMutation<FormSpecCreateEntryPointUpdateQuestionGroupMutation>(
       updateQuestionGroup
+    );
+  const [updateFormSpec] =
+    useMutation<FormSpecCreateEntryPointUpdateFormSpecMutation>(
+      updateFormSpecMutation
     );
   const { formID } = useParams();
   const data = useLazyLoadQuery<FormSpecCreateEntryPointQuery>(query, {
     id: formID ?? "",
   });
   const defaultGroupID = (data.node?.questionGroups ?? [])[0].id;
-  const [pendingQuestions] = useState<Array<QuestionMetadata>>(
-    ((data.node?.questionGroups ?? [])[0].question ?? []).map((q) => {
-      return {
-        title: q.title,
-        label: q.label,
-        type: q.type,
-        createdAt: q.createdAt,
-        extraData: q.extraData,
-      };
-    })
-  );
-  const [localQuestions, setLocalQuestions] = useState<Array<QuestionMetadata>>(
-    []
-  );
-
+  const persistentQuestions = (
+    (data.node?.questionGroups ?? [])[0].question ?? []
+  ).map((q) => {
+    return {
+      id: q.id,
+      title: q.title,
+      label: q.label,
+      type: q.type,
+      createdAt: q.createdAt,
+      extraData: q.extraData,
+    };
+  });
+  const [localQuestions, setLocalQuestions] =
+    useState<Array<QuestionMetadata>>(persistentQuestions);
+  const [newQuestions, setNewQuestions] = useState<Array<string>>([]);
   const setLocalQuestionExtraData = (idx: number, extraData: string) => {
     if (idx >= 0 && idx < localQuestions.length) {
       const newArray = [...localQuestions];
@@ -54,14 +58,91 @@ export function FormSpecCreateEntryPoint() {
       setLocalQuestions(newArray);
     }
   };
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // question state
   const [title, setTitle] = useState("");
   const [label, setLabel] = useState("");
-  const [questionType, setQuestionType] = useState("");
-
+  const [questionType, setQuestionType] = useState("short_text");
+  const items: MenuProps["items"] = [
+    { label: "short_text", key: "short_text" },
+    { label: "multi_choice", key: "multi_choice" },
+    { label: "checkboxes", key: "checkboxes" },
+    { label: "file", key: "file" },
+    { label: "date", key: "date" },
+    { label: "time", key: "time" },
+    { label: "paragraph", key: "paragraph" },
+  ];
+  const [formTitle, setFormTitle] = useState(data.node?.name);
+  const [formDescription, setFormDescription] = useState(
+    data.node?.description
+  );
+  const onCreateNewQuestion = () => {
+    setLocalQuestions([
+      ...localQuestions,
+      {
+        title,
+        label,
+        type: questionType as QuestionType,
+        createdAt: null,
+        extraData: "",
+        id: "",
+      },
+    ]);
+    setNewQuestions([...newQuestions, label]);
+    setIsModalOpen(false);
+  };
+  const onSubmit = () => {
+    updateFormSpec({
+      variables: {
+        id: formID ?? "",
+        input: { name: formTitle, description: formDescription },
+      },
+    });
+    localQuestions
+      .filter((q) => !newQuestions.includes(q.label))
+      .forEach((q) => {
+        updateQuestion({
+          variables: {
+            id: q.id,
+            input: {
+              title: q.title,
+              label: q.label,
+              type: q.type,
+              createdBy: 1,
+              required: true,
+              extraData: q.extraData,
+            },
+          },
+        });
+      });
+    localQuestions
+      .filter((q) => newQuestions.includes(q.label))
+      .forEach((q) => {
+        createQuestion({
+          variables: {
+            input: {
+              title: q.title,
+              label: q.label,
+              type: q.type,
+              createdBy: 1,
+              required: true,
+              extraData: q.extraData,
+            },
+          },
+          onCompleted: (resp, err) => {
+            addQuestion({
+              variables: {
+                id: defaultGroupID,
+                input: {
+                  addQuestionIDs: [resp.createQuestion.id],
+                },
+              },
+            });
+            localQuestions.length = 0;
+            navigate("/admin/forms");
+          },
+        });
+      });
+  };
   return (
     <Flex vertical align="center">
       <Modal
@@ -70,98 +151,72 @@ export function FormSpecCreateEntryPoint() {
         onCancel={() => {
           setIsModalOpen(false);
         }}
-        onOk={() => {
-          setLocalQuestions([
-            ...localQuestions, // come from database
-            // local state
-            {
-              title,
-              label,
-              type: questionType as QuestionType,
-              createdAt: null,
-            },
-          ]);
-
-          setIsModalOpen(false);
-        }}
+        onOk={onCreateNewQuestion}
       >
-        <p>
-          label:{" "}
-          <input
-            type="text"
-            value={label}
-            onChange={(e) => {
-              setLabel(e.target.value);
-            }}
-          />
-        </p>
-        <p>
-          title:{" "}
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-          />
-        </p>
-        <p>
-          type:{" "}
-          <input
-            type="text"
-            value={questionType}
-            onChange={(e) => {
-              setQuestionType(e.target.value);
-            }}
-          />
-        </p>
-      </Modal>
-      <h1>formID: {formID}</h1>
-      <h1>defaultGroupID: {defaultGroupID}</h1>
-      <Button
-        icon={<PlusCircleOutlined />}
-        onClick={() => {
-          setIsModalOpen(true);
-        }}
-      ></Button>
-      <Card style={{ width: "60%", margin: "1vw" }}>
-        <Input placeholder="Untitled form" size="large"></Input>
-        <Input placeholder="Form description" style={{ border: "0" }}></Input>
-      </Card>
-      {/* The question stream is composed by pendingQuestions(database) and localQuestions */}
-      {pendingQuestions.map((q, idx) => {
-        return (
-          <Card
-            title={q.title}
-            style={{
-              width: "60%",
-              margin: "1vw",
-              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-              border: "1px solid #e8e8e8",
-              backgroundColor: "#fff",
-            }}
-          >
-            <GeneralQuestion
-              mode="design"
-              questionMetadata={q}
-              setLocalQuestionExtraData={setLocalQuestionExtraData}
-              questionIndex={idx}
+        <Flex vertical>
+          <Flex justify="space-between">
+            label:
+            <input
+              type="text"
+              value={label}
+              onChange={(e) => {
+                setLabel(e.target.value);
+              }}
             />
-          </Card>
-        );
-      })}
+          </Flex>
+          <Flex justify="space-between">
+            title:
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            />
+          </Flex>
+          <Flex justify="space-around">
+            question type:
+            <Dropdown.Button
+              icon={<DownOutlined />}
+              menu={{
+                items,
+                onClick: (e) => {
+                  setQuestionType(e.key);
+                },
+              }}
+            >
+              {questionType}
+            </Dropdown.Button>
+          </Flex>
+        </Flex>
+      </Modal>
+      <Flex align="center" gap={20}>
+        <Flex>formID: {formID} </Flex>
+        <Flex>defaultGroupID: {defaultGroupID}</Flex>
+        <Button
+          icon={<PlusCircleOutlined />}
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        />
+      </Flex>
+      <Card style={{ width: "60%", margin: "1vw" }}>
+        <Input
+          size="large"
+          value={formTitle}
+          onChange={(e) => setFormTitle(e.target.value)}
+        ></Input>
+        <Input
+          style={{ border: "0" }}
+          value={formDescription}
+          onChange={(e) => {
+            setFormDescription(e.target.value);
+          }}
+        ></Input>
+      </Card>
       {localQuestions.map((q, idx) => {
         return (
-          <Card
-            title={q.title}
-            style={{
-              width: "60%",
-              margin: "1vw",
-              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-              border: "1px solid #e8e8e8",
-              backgroundColor: "#fff",
-            }}
-          >
+          <Card key={idx} title={q.title} style={styles.card}>
             <GeneralQuestion
               mode="design"
               questionMetadata={q}
@@ -171,37 +226,7 @@ export function FormSpecCreateEntryPoint() {
           </Card>
         );
       })}
-      <Button
-        onClick={() => {
-          localQuestions.forEach((q) => {
-            createQuestion({
-              variables: {
-                input: {
-                  title: q.title,
-                  label: q.label,
-                  type: q.type,
-                  createdBy: 1,
-                  required: true,
-                  extraData: q.extraData,
-                },
-              },
-              onCompleted: (resp, err) => {
-                addQuestion({
-                  variables: {
-                    id: defaultGroupID,
-                    input: {
-                      addQuestionIDs: [resp.createQuestion.id],
-                    },
-                  },
-                });
-                localQuestions.length = 0;
-              },
-            });
-          });
-        }}
-      >
-        Submit
-      </Button>
+      <Button onClick={onSubmit}>Submit</Button>
     </Flex>
   );
 }
@@ -210,9 +235,12 @@ const query = graphql`
   query FormSpecCreateEntryPointQuery($id: ID!) {
     node(id: $id) {
       ... on FormSpec {
+        name
+        description
         questionGroups {
           id
           question {
+            id
             label
             title
             type
@@ -226,12 +254,23 @@ const query = graphql`
   }
 `;
 
-const mutation = graphql`
+const createQuestionMutation = graphql`
   mutation FormSpecCreateEntryPointMutation($input: CreateQuestionInput!) {
     createQuestion(input: $input) {
       id
       title
       label
+    }
+  }
+`;
+
+const updateQuestionMutaiton = graphql`
+  mutation FormSpecCreateEntryPointUpdateQuestionMutation(
+    $id: ID!
+    $input: UpdateQuestionInput!
+  ) {
+    updateQuestion(id: $id, input: $input) {
+      id
     }
   }
 `;
@@ -246,3 +285,24 @@ const updateQuestionGroup = graphql`
     }
   }
 `;
+
+const updateFormSpecMutation = graphql`
+  mutation FormSpecCreateEntryPointUpdateFormSpecMutation(
+    $id: ID!
+    $input: UpdateFormSpecInput!
+  ) {
+    updateFormSpec(id: $id, input: $input) {
+      id
+    }
+  }
+`;
+
+const styles = {
+  card: {
+    width: "60%",
+    margin: "1vw",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    border: "1px solid #e8e8e8",
+    backgroundColor: "#fff",
+  },
+};
