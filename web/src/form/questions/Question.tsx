@@ -22,9 +22,9 @@ export function Question({ fragmentKey }: Props) {
         <MultiChoiceQuestion fragmentKey={question} />
       )}
 
-      {question.type === "checkboxes" && (
+      {/* {question.type === "checkboxes" && (
         <MultiChoiceQuestion fragmentKey={question} />
-      )}
+      )} */}
 
       {question.type === "short_text" && (
         <ShortTextQuestion fragmentKey={question} />

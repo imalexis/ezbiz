@@ -97,7 +97,7 @@ export function FormSpecCard({ formSpec }: Props) {
         <Button
           icon={<Link />}
           onClick={() => {
-            navigate(`${data?.id}/detail`);
+            navigate(`create/${data?.id}`);
           }}
         >
           Open

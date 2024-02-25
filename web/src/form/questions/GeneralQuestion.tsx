@@ -5,6 +5,7 @@ import { QuestionFragment$key } from "./__generated__/QuestionFragment.graphql";
 import DesignModeParagraphQuestion from "./design/DesignModeParagraphQuestion";
 import DesignModeMultiChoiceQuestion from "./design/DesignModeMultiChoiceQuestion";
 import { QuestionType } from "../__generated__/FormSpecCardFragment.graphql";
+import DesignModeCheckboxQuestion from "./design/DesignModeCheckboxQuestion";
 
 type Props = {
   fragmentKey?: QuestionFragment$key; // for response mode
@@ -63,6 +64,13 @@ function DesignModeQuestion({
       )}
       {questionMetadata.type === "multi_choice" && (
         <DesignModeMultiChoiceQuestion
+          questionMetadata={questionMetadata}
+          setLocalQuestionExtraData={setLocalQuestionExtraData}
+          questionIndex={questionIndex}
+        />
+      )}
+      {questionMetadata.type === "checkboxes" && (
+        <DesignModeCheckboxQuestion
           questionMetadata={questionMetadata}
           setLocalQuestionExtraData={setLocalQuestionExtraData}
           questionIndex={questionIndex}
