@@ -4,6 +4,7 @@ import { DesignModeShortTextQuestion } from "./DesignModeShortTextQuestion";
 import DesignModeParagraphQuestion from "./DesignModeParagraphQuestion";
 import DesignModeMultiChoiceQuestion from "./DesignModeMultiChoiceQuestion";
 import DesignModeCheckboxQuestion from "./DesignModeCheckboxQuestion";
+import DesignModeFileQuestion from "./DesignModeFileQuestion";
 
 export function DesignModeQuestion({
   questionMetadata,
@@ -31,6 +32,13 @@ export function DesignModeQuestion({
       )}
       {questionMetadata.type === "checkboxes" && (
         <DesignModeCheckboxQuestion
+          questionMetadata={questionMetadata}
+          setLocalQuestionExtraData={setLocalQuestionExtraData}
+          questionIndex={questionIndex}
+        />
+      )}
+      {questionMetadata.type === "file" && (
+        <DesignModeFileQuestion
           questionMetadata={questionMetadata}
           setLocalQuestionExtraData={setLocalQuestionExtraData}
           questionIndex={questionIndex}
