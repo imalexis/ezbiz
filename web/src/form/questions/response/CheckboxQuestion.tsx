@@ -24,7 +24,9 @@ export function CheckboxQuestion({ fragmentKey }: Props) {
   const initialResponseValue =
     (data.questionResponses.edges ?? [])[0]?.node?.value ?? "";
   const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(
-    JSON.parse(initialResponseValue) as CheckboxValueType[]
+    initialResponseValue !== ""
+      ? (JSON.parse(initialResponseValue) as CheckboxValueType[])
+      : []
   );
   const [commitUpdate] = useMutation<CheckboxQuestionUpdateMutation>(
     updateQuestionResponseMutation
@@ -51,7 +53,9 @@ export function CheckboxQuestion({ fragmentKey }: Props) {
       >
         <Space direction="vertical">
           {Array.from(JSON.parse(question.extraData)).map((option, index) => (
-            <Checkbox value={option}>{option as string}</Checkbox>
+            <Checkbox value={option} key={index}>
+              {option as string}
+            </Checkbox>
           ))}
         </Space>
       </Checkbox.Group>

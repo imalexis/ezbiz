@@ -34,6 +34,7 @@ export function QuestionGroup({
       />
       {group.question?.map((q, idx) => (
         <GeneralQuestion
+          key={idx}
           mode="response"
           fragmentKey={q}
           setLocalQuestionExtraData={setLocalQuestionExtraData}

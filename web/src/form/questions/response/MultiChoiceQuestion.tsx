@@ -47,7 +47,9 @@ export function MultiChoiceQuestion({ fragmentKey }: Props) {
       >
         <Space direction="vertical">
           {Array.from(JSON.parse(question.extraData)).map((option, index) => (
-            <Radio value={option}>{option as string}</Radio>
+            <Radio value={option} key={index}>
+              {option as string}
+            </Radio>
           ))}
         </Space>
       </Radio.Group>

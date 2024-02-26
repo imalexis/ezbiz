@@ -13,9 +13,7 @@ export default function DesignModeParagraphQuestion({
   const [value, setValue] = useState("Long-answer text");
   return (
     <TextArea
-      rows={2}
       placeholder={questionMetadata.type}
-      maxLength={6}
       value={value}
       onChange={(event) => setValue(event.target.value)}
     />
