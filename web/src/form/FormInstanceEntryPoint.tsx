@@ -67,14 +67,29 @@ export function FormInstanceEntryPoint() {
           <Button
             disabled={isDisabled}
             className="button"
-            style={{
-              backgroundColor: "#88CF6C",
-              color: "#FDFFF4",
-              textAlign: "center",
-              padding: "0",
-              fontSize: "128%",
-              width: "100%",
-            }}
+            style={
+              status === "submiited"
+                ? {
+                    backgroundColor: "#4CAF50", // 更换为另一种绿色以表示成功
+                    color: "#FFFFFF", // 文字颜色可能需要调整以适应新的背景颜色
+                    textAlign: "center",
+                    padding: "0",
+                    fontSize: "128%",
+                    width: "100%",
+                    border: "none", // 移除边框，使其看起来更清晰
+                    borderRadius: "5px", // 圆角可能会增加外观的吸引力
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)", // 添加阴影以提升立体感
+                    transition: "background-color 0.3s ease", // 添加过渡效果，使颜色变化更平滑
+                  }
+                : {
+                    backgroundColor: "#88CF6C",
+                    color: "#FDFFF4",
+                    textAlign: "center",
+                    padding: "0",
+                    fontSize: "128%",
+                    width: "100%",
+                  }
+            }
             onClick={handleSubmit}
           >
             Sumit

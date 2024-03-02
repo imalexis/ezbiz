@@ -9,6 +9,7 @@ import { DropdownQuestion } from "./DropdownQuestion";
 import { ShortTextQuestion } from "./ShortTextQuestion";
 import { CheckboxQuestion } from "./CheckboxQuestion";
 import DateQuestion from "./DateQuestion";
+import LinearScaleQuestion from "./LinearScaleQuestion";
 
 type Props = {
   fragmentKey: QuestionFragment$key;
@@ -42,6 +43,9 @@ export function Question({ fragmentKey }: Props) {
         <DropdownQuestion fragmentKey={question} />
       )}
       {question.type === "date" && <DateQuestion fragmentKey={question} />}
+      {question.type === "linear_scale" && (
+        <LinearScaleQuestion fragmentKey={question} />
+      )}
     </Flex>
   );
 }
@@ -57,5 +61,6 @@ const fragment = graphql`
     ...FileQuestionFragment
     ...DropdownQuestionFragment
     ...DateQuestionFragment
+    ...LinearScaleQuestionFragment
   }
 `;

@@ -70,6 +70,7 @@ export function FormSpecCreateEntryPoint() {
     { label: "date", key: "date" },
     { label: "time", key: "time" },
     { label: "paragraph", key: "paragraph" },
+    { label: "linear_scale", key: "linear_scale" },
   ];
   const [formTitle, setFormTitle] = useState(data.node?.name);
   const [formDescription, setFormDescription] = useState(

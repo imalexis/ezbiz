@@ -6,6 +6,7 @@ import DesignModeMultiChoiceQuestion from "./DesignModeMultiChoiceQuestion";
 import DesignModeCheckboxQuestion from "./DesignModeCheckboxQuestion";
 import DesignModeFileQuestion from "./DesignModeFileQuestion";
 import DesignModeDateQuestion from "./DesignModeDateQuestion";
+import DesignModeLinearScaleQuestion from "./DesignModeLinearScaleQuestion";
 
 export function DesignModeQuestion({
   questionMetadata,
@@ -46,6 +47,13 @@ export function DesignModeQuestion({
         />
       )}
       {questionMetadata.type === "date" && <DesignModeDateQuestion />}
+      {questionMetadata.type === "linear_scale" && (
+        <DesignModeLinearScaleQuestion
+          questionMetadata={questionMetadata}
+          setLocalQuestionExtraData={setLocalQuestionExtraData}
+          questionIndex={questionIndex}
+        />
+      )}
     </Flex>
   );
 }

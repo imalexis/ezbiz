@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f035b988a574249dc44603f61a6b179a>>
+ * @generated SignedSource<<f2ab8cc52307b6e9eccc8f9504274bb9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,7 +14,7 @@ import { FragmentRefs } from "relay-runtime";
 export type QuestionFragment$data = {
   readonly label: string;
   readonly type: QuestionType;
-  readonly " $fragmentSpreads": FragmentRefs<"CheckboxQuestionFragment" | "DateQuestionFragment" | "DropdownQuestionFragment" | "FileQuestionFragment" | "MultiChoiceQuestionFragment" | "ParagraphQuestionFragment" | "ShortTextQuestionFragment">;
+  readonly " $fragmentSpreads": FragmentRefs<"CheckboxQuestionFragment" | "DateQuestionFragment" | "DropdownQuestionFragment" | "FileQuestionFragment" | "LinearScaleQuestionFragment" | "MultiChoiceQuestionFragment" | "ParagraphQuestionFragment" | "ShortTextQuestionFragment">;
   readonly " $fragmentType": "QuestionFragment";
 };
 export type QuestionFragment$key = {
@@ -76,12 +76,17 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "DateQuestionFragment"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "LinearScaleQuestionFragment"
     }
   ],
   "type": "Question",
   "abstractKey": null
 };
 
-(node as any).hash = "aedeeda580d9b7928883d334055188ed";
+(node as any).hash = "0165a1c04077e3f1eb02a9e92cace62b";
 
 export default node;
