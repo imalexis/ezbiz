@@ -5,6 +5,7 @@ import DesignModeParagraphQuestion from "./DesignModeParagraphQuestion";
 import DesignModeMultiChoiceQuestion from "./DesignModeMultiChoiceQuestion";
 import DesignModeCheckboxQuestion from "./DesignModeCheckboxQuestion";
 import DesignModeFileQuestion from "./DesignModeFileQuestion";
+import DesignModeDateQuestion from "./DesignModeDateQuestion";
 
 export function DesignModeQuestion({
   questionMetadata,
@@ -44,6 +45,7 @@ export function DesignModeQuestion({
           questionIndex={questionIndex}
         />
       )}
+      {questionMetadata.type === "date" && <DesignModeDateQuestion />}
     </Flex>
   );
 }

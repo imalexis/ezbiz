@@ -1406,6 +1406,19 @@ input UserWhereInput {
   hasFormInstances: Boolean
   hasFormInstancesWith: [FormInstanceWhereInput!]
 }
+scalar Upload
+
+# type File {
+#   id: Int!
+#   name: String!
+#   content: String!
+# }
+
+# input UploadFile {
+#   id: Int!
+#   file: Upload!
+# }
+
 type Mutation {
   createFormSpec(input: CreateFormSpecInput!): FormSpec!
   updateFormSpec(id: ID!, input: UpdateFormSpecInput!): FormSpec!
@@ -1420,14 +1433,17 @@ type Mutation {
     id: ID!
     input: UpdateQuestionResponseInput!
   ): QuestionResponse!
-  signUpGoogle(accessToken: String!): AuthResponse
+  singleUpload(file: Upload!): File!
+  multipleUpload(req: [UploadFile!]!): [File!]!
 }
 
-# GraphQL Schema -> 定义接口
-
-type AuthResponse {
-  accessToken: String!
-  refreshToken: String!
+type File {
+  name: String!
+  size: Int!
+  content: String!
 }
 
-# 如果你的数据库对象 刚好需要定义，那么就用Ent来定义，他会自动生成graphql
+input UploadFile {
+  id: Int!
+  file: Upload!
+}

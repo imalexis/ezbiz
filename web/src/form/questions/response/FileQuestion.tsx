@@ -1,39 +1,109 @@
-import { Button, Card, Input, Upload, UploadProps, message } from "antd";
-import { useFragment } from "react-relay";
+import { Card } from "antd";
+import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
 import { FileQuestionFragment$key } from "./__generated__/FileQuestionFragment.graphql";
-import { UploadOutlined } from "@ant-design/icons";
+import { useContext, useState } from "react";
+import { FileQuestionUploadFileMutation } from "./__generated__/FileQuestionUploadFileMutation.graphql";
+import { FileQuestionUpdateMutation } from "./__generated__/FileQuestionUpdateMutation.graphql";
+import { useParams } from "react-router-dom";
+import { FileQuestionResponseQuery } from "./__generated__/FileQuestionResponseQuery.graphql";
+import FormInstanceContext from "../../FormInstanceContext";
 
 type Props = { fragmentKey: FileQuestionFragment$key };
 
 export function FileQuestion({ fragmentKey }: Props) {
+  const { status } = useContext(FormInstanceContext);
+  const { instanceID } = useParams();
   const question = useFragment(fragment, fragmentKey);
-  const props: UploadProps = {
-    name: "file",
-    action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-    headers: {
-      authorization: "authorization-text",
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
+  const [uploadFile, uploadFileInFlight] =
+    useMutation<FileQuestionUploadFileMutation>(uploadFileMutation);
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadFileStatus, setUploadFileStatus] = useState<
+    "success" | "failed" | null
+  >(null);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files != null) {
+      setFile(e.target.files[0]);
+    }
   };
+  const [updateQuestionResponse] = useMutation<FileQuestionUpdateMutation>(
+    updateQuestionResponseMutation
+  );
+  const data = useLazyLoadQuery<FileQuestionResponseQuery>(query, {
+    questionID: question.id,
+    formInstanceID: instanceID ?? "",
+  });
+  const responseID = (data.questionResponses.edges ?? [])[0]?.node?.id ?? "";
+  const filename = (data.questionResponses.edges ?? [])[0]?.node?.value ?? "";
   return (
     <Card
       title={question.title}
       bordered={false}
       style={{ margin: "8px", width: "100%" }}
     >
-      <Upload>
-        <Button icon={<UploadOutlined />}>Click to Upload</Button>
-      </Upload>
+      {status === "pending" && (
+        <>
+          <form id="myform" encType="multipart/form-data">
+            <input type="file" id="file" onChange={handleFileChange} multiple />
+            {file != null && (
+              <div>
+                <p>filename: {file.name}</p>
+                <p>filesize: {file.size}</p>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (file == null) {
+                      return;
+                    }
+                    const form = document.getElementById(
+                      "myform"
+                    ) as HTMLFormElement;
+                    if (form == null) {
+                      return;
+                    }
+                    const formData = new FormData(form);
+                    formData.append("file", file);
+                    console.log("formdata = ", formData);
+                    uploadFile({
+                      variables: {
+                        file: formData,
+                      },
+                      uploadables: {
+                        file,
+                      },
+                      onCompleted: (resp, err) => {
+                        if (err != null) {
+                          setUploadFileStatus("failed");
+                        } else {
+                          setUploadFileStatus("success");
+                        }
+                        updateQuestionResponse({
+                          variables: {
+                            input: {
+                              questionID: question.id,
+                              value: file.name,
+                            },
+                            id: responseID,
+                          },
+                        });
+                      },
+                      onError: (err) => {
+                        setUploadFileStatus("failed");
+                      },
+                    });
+                  }}
+                  disabled={uploadFileInFlight}
+                >
+                  Upload
+                </button>
+              </div>
+            )}
+          </form>
+          {uploadFileStatus === "success" && <div>upload success</div>}
+          {uploadFileStatus === "failed" && <div>upload failed</div>}
+        </>
+      )}
+      {status === "submiited" && <div>{filename}</div>}
     </Card>
   );
 }
@@ -47,5 +117,45 @@ const fragment = graphql`
     required
     extraData
     __typename
+  }
+`;
+
+const uploadFileMutation = graphql`
+  mutation FileQuestionUploadFileMutation($file: Upload!) {
+    singleUpload(file: $file) {
+      name
+    }
+  }
+`;
+
+const updateQuestionResponseMutation = graphql`
+  mutation FileQuestionUpdateMutation(
+    $input: UpdateQuestionResponseInput!
+    $id: ID!
+  ) {
+    updateQuestionResponse(input: $input, id: $id) {
+      id
+    }
+  }
+`;
+
+const query = graphql`
+  query FileQuestionResponseQuery($questionID: ID!, $formInstanceID: ID!) {
+    questionResponses(
+      where: {
+        hasQuestionWith: [{ id: $questionID }]
+        hasFormInstanceWith: [{ id: $formInstanceID }]
+      }
+    ) {
+      edges {
+        node {
+          __typename
+          ... on QuestionResponse {
+            id
+            value
+          }
+        }
+      }
+    }
   }
 `;

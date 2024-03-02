@@ -6,8 +6,13 @@ package ezbiz
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io"
 	"log"
+	"os"
+
+	"github.com/99designs/gqlgen/graphql"
 
 	"ezbiz.com/ent"
 )
@@ -83,9 +88,41 @@ func (r *mutationResolver) UpdateQuestionResponse(ctx context.Context, id int, i
 	return r.client.QuestionResponse.UpdateOneID(id).SetInput(input).Save(ctx)
 }
 
-// SignUpGoogle is the resolver for the signUpGoogle field.
-func (r *mutationResolver) SignUpGoogle(ctx context.Context, accessToken string) (*AuthResponse, error) {
-	panic(fmt.Errorf("not implemented: SignUpGoogle - signUpGoogle"))
+// SingleUpload is the resolver for the singleUpload field.
+func (r *mutationResolver) SingleUpload(ctx context.Context, file graphql.Upload) (*File, error) {
+	fmt.Println("SingleUpload", file.Filename)
+	content, err := io.ReadAll(file.File)
+	if err != nil {
+		log.Println("read file error", err)
+	}
+	err = os.WriteFile(file.Filename, content, 0644)
+	if err != nil {
+		log.Println("write file error", err)
+	}
+	ret := &File{
+		Name: file.Filename,
+		Size: int(file.Size),
+	}
+	return ret, nil
+}
+
+// MultipleUpload is the resolver for the multipleUpload field.
+func (r *mutationResolver) MultipleUpload(ctx context.Context, req []*UploadFile) ([]*File, error) {
+	if len(req) == 0 {
+		return nil, errors.New("empty list")
+	}
+	var resp []*File
+	for i := range req {
+		content, err := io.ReadAll(req[i].File.File)
+		if err != nil {
+			return []*File{}, err
+		}
+		resp = append(resp, &File{
+			Name:    req[i].File.Filename,
+			Content: string(content),
+		})
+	}
+	return resp, nil
 }
 
 // Mutation returns MutationResolver implementation.

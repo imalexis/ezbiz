@@ -2,7 +2,17 @@
 
 package ezbiz
 
-type AuthResponse struct {
-	AccessToken  string `json:"accessToken"`
-	RefreshToken string `json:"refreshToken"`
+import (
+	"github.com/99designs/gqlgen/graphql"
+)
+
+type File struct {
+	Name    string `json:"name"`
+	Size    int    `json:"size"`
+	Content string `json:"content"`
+}
+
+type UploadFile struct {
+	ID   int            `json:"id"`
+	File graphql.Upload `json:"file"`
 }
