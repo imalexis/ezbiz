@@ -1,17 +1,17 @@
 import { Card } from "antd";
 import graphql from "babel-plugin-relay/macro";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
-import { ParagraphQuestionFragment$key } from "./__generated__/ParagraphQuestionFragment.graphql";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { ParagraphQuestionResponseQuery } from "./__generated__/ParagraphQuestionResponseQuery.graphql";
 import { ParagraphQuestionUpdateMutation } from "./__generated__/ParagraphQuestionUpdateMutation.graphql";
+import { ResponseModeParagraphQuestionFragment$key } from "./__generated__/ResponseModeParagraphQuestionFragment.graphql";
 
 type Props = {
-  fragmentKey: ParagraphQuestionFragment$key;
+  fragmentKey: ResponseModeParagraphQuestionFragment$key;
 };
-export function ParagraphQuestion({ fragmentKey }: Props) {
+export function RespondModeParagraphQuestion({ fragmentKey }: Props) {
   const { instanceID } = useParams();
   const question = useFragment(fragment, fragmentKey);
   const data = useLazyLoadQuery<ParagraphQuestionResponseQuery>(query, {
@@ -50,7 +50,7 @@ export function ParagraphQuestion({ fragmentKey }: Props) {
 }
 
 const fragment = graphql`
-  fragment ParagraphQuestionFragment on Question {
+  fragment ResponseModeParagraphQuestionFragment on Question {
     id
     label
     title
@@ -62,7 +62,10 @@ const fragment = graphql`
 `;
 
 const query = graphql`
-  query ParagraphQuestionResponseQuery($questionID: ID!, $formInstanceID: ID!) {
+  query ResponseModeParagraphQuestionResponseQuery(
+    $questionID: ID!
+    $formInstanceID: ID!
+  ) {
     questionResponses(
       where: {
         hasQuestionWith: [{ id: $questionID }]
@@ -82,7 +85,7 @@ const query = graphql`
 `;
 
 const updateParagraphMutation = graphql`
-  mutation ParagraphQuestionUpdateMutation(
+  mutation ResponseModeParagraphQuestionUpdateMutation(
     $input: UpdateQuestionResponseInput!
     $id: ID!
   ) {

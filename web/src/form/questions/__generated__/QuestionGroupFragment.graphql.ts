@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<86859fa10bd9e9358f37e3248448406d>>
+ * @generated SignedSource<<342a5fbfe5072020a42e63f4a7fc42eb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,7 +14,7 @@ export type QuestionGroupFragment$data = {
   readonly id: string;
   readonly name: string;
   readonly question: ReadonlyArray<{
-    readonly " $fragmentSpreads": FragmentRefs<"QuestionFragment">;
+    readonly " $fragmentSpreads": FragmentRefs<"ResponseModeQuestionFragment">;
   }> | null | undefined;
   readonly " $fragmentType": "QuestionGroupFragment";
 };
@@ -54,7 +54,7 @@ const node: ReaderFragment = {
         {
           "args": null,
           "kind": "FragmentSpread",
-          "name": "QuestionFragment"
+          "name": "ResponseModeQuestionFragment"
         }
       ],
       "storageKey": null
@@ -64,6 +64,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "2d4a042a5c8ec99dd044c248f31321aa";
+(node as any).hash = "cfe3de1544586de746e901a5f98559a3";
 
 export default node;

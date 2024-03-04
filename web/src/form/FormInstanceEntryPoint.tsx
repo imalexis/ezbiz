@@ -1,4 +1,4 @@
-import { Button, Flex } from "antd";
+import { Button, Flex, notification } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { useLazyLoadQuery, useMutation } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
@@ -8,9 +8,9 @@ import { FormInstanceEntryPointUpdateMutation } from "./__generated__/FormInstan
 import { FormInstanceEntryPointQuery } from "./__generated__/FormInstanceEntryPointQuery.graphql";
 import FormInstanceContext from "./FormInstanceContext";
 import { useState } from "react";
+import { NotificationPlacement } from "antd/es/notification/interface";
 
 export function FormInstanceEntryPoint() {
-  const navigate = useNavigate();
   const { formID, instanceID } = useParams();
   const [commitUpdate] =
     useMutation<FormInstanceEntryPointUpdateMutation>(mutation);
@@ -21,6 +21,14 @@ export function FormInstanceEntryPoint() {
   const status =
     (data.node?.formInstances?.edges ?? [])[0]?.node?.status ?? "pending";
   const [isDisabled, setIsDisabled] = useState(status === "submiited");
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement: NotificationPlacement) => {
+    api.info({
+      message: `Notification ${placement}`,
+      description: "Your response has been submited",
+      placement,
+    });
+  };
   const handleSubmit = () => {
     commitUpdate({
       variables: {
@@ -29,12 +37,14 @@ export function FormInstanceEntryPoint() {
       },
       onCompleted: () => {
         setIsDisabled(true);
-        navigate(`/${formID}/instance/${instanceID}/formSubmitted`);
+        // navigate(`/${formID}/instance/${instanceID}/formSubmitted`);
+        openNotification("top");
       },
     });
   };
   return (
     <Flex vertical>
+      {contextHolder}
       <Flex style={{ backgroundColor: "#f5f5f5" }}>
         <Flex flex={1}>
           <div></div>

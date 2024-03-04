@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5dd99108a9063ad0c7042af6bd2ce9b2>>
+ * @generated SignedSource<<c25cf9053e0c8ebab04ca10ffcacf224>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -223,12 +223,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "25873c45f521e21616fffb9c90a676dc",
+    "cacheID": "8d91f9a75cace311b408e5766cf3ab96",
     "id": null,
     "metadata": {},
     "name": "FormSpecDetailEntryPointQuery",
     "operationKind": "query",
-    "text": "query FormSpecDetailEntryPointQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on FormSpec {\n      id\n      name\n      cover\n      description\n      questionGroups {\n        name\n        ...QuestionGroupFragment\n        id\n      }\n    }\n    id\n  }\n}\n\nfragment CheckboxQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment DateQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n\nfragment DropdownQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment FileQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment LinearScaleQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment MultiChoiceQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ParagraphQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment QuestionFragment on Question {\n  type\n  label\n  ...MultiChoiceQuestionFragment\n  ...CheckboxQuestionFragment\n  ...ShortTextQuestionFragment\n  ...ParagraphQuestionFragment\n  ...FileQuestionFragment\n  ...DropdownQuestionFragment\n  ...DateQuestionFragment\n  ...LinearScaleQuestionFragment\n}\n\nfragment QuestionGroupFragment on QuestionGroup {\n  id\n  name\n  question {\n    ...QuestionFragment\n    id\n  }\n}\n\nfragment ShortTextQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n"
+    "text": "query FormSpecDetailEntryPointQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on FormSpec {\n      id\n      name\n      cover\n      description\n      questionGroups {\n        name\n        ...QuestionGroupFragment\n        id\n      }\n    }\n    id\n  }\n}\n\nfragment QuestionGroupFragment on QuestionGroup {\n  id\n  name\n  question {\n    ...ResponseModeQuestionFragment\n    id\n  }\n}\n\nfragment ResponseModeCheckboxQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeDateQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n\nfragment ResponseModeDropdownQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeFileQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeLinearScaleQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeMultiChoiceQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeParagraphQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeQuestionFragment on Question {\n  type\n  label\n  ...ResponseModeMultiChoiceQuestionFragment\n  ...ResponseModeCheckboxQuestionFragment\n  ...ResponseModeShortTextQuestionFragment\n  ...ResponseModeParagraphQuestionFragment\n  ...ResponseModeFileQuestionFragment\n  ...ResponseModeDropdownQuestionFragment\n  ...ResponseModeDateQuestionFragment\n  ...ResponseModeLinearScaleQuestionFragment\n}\n\nfragment ResponseModeShortTextQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n"
   }
 };
 })();

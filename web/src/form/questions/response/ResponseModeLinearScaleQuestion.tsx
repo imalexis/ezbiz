@@ -1,14 +1,14 @@
 import { Card, Col, Flex, InputNumber, Slider } from "antd";
 import graphql from "babel-plugin-relay/macro";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
-import { LinearScaleQuestionFragment$key } from "./__generated__/LinearScaleQuestionFragment.graphql";
 import { useState } from "react";
 import { LinearScaleQuestionUpdateMutation } from "./__generated__/LinearScaleQuestionUpdateMutation.graphql";
 import { LinearScaleQuestionResponseQuery } from "./__generated__/LinearScaleQuestionResponseQuery.graphql";
 import { useParams } from "react-router-dom";
+import { ResponseModeLinearScaleQuestionFragment$key } from "./__generated__/ResponseModeLinearScaleQuestionFragment.graphql";
 
 type Props = {
-  fragmentKey: LinearScaleQuestionFragment$key;
+  fragmentKey: ResponseModeLinearScaleQuestionFragment$key;
 };
 
 type Range = {
@@ -16,7 +16,9 @@ type Range = {
   maxValue: number;
 };
 
-export default function LinearScaleQuestion({ fragmentKey }: Props) {
+export default function ResponseModeLinearScaleQuestion({
+  fragmentKey,
+}: Props) {
   const { instanceID } = useParams();
   const question = useFragment(fragment, fragmentKey);
   const extraData = JSON.parse(question.extraData) as Range;
@@ -77,7 +79,7 @@ export default function LinearScaleQuestion({ fragmentKey }: Props) {
 
 // query properties about Question
 const fragment = graphql`
-  fragment LinearScaleQuestionFragment on Question {
+  fragment ResponseModeLinearScaleQuestionFragment on Question {
     id
     label
     title
@@ -90,7 +92,7 @@ const fragment = graphql`
 
 // update questionResponse
 const updateMutation = graphql`
-  mutation LinearScaleQuestionUpdateMutation(
+  mutation ResponseModeLinearScaleQuestionUpdateMutation(
     $input: UpdateQuestionResponseInput!
     $id: ID!
   ) {
@@ -101,7 +103,7 @@ const updateMutation = graphql`
 `;
 
 const query = graphql`
-  query LinearScaleQuestionResponseQuery(
+  query ResponseModeLinearScaleQuestionResponseQuery(
     $questionID: ID!
     $formInstanceID: ID!
   ) {

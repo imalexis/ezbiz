@@ -6,13 +6,14 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import graphql from "babel-plugin-relay/macro";
 import { useLazyLoadQuery, useMutation } from "react-relay";
-import GeneralQuestion, { QuestionMetadata } from "./questions/GeneralQuestion";
+import GeneralQuestion from "./questions/GeneralQuestion";
 import { QuestionType } from "./questions/design/__generated__/DesignModeShortTextQuestionFragment.graphql";
 import { FormSpecCreateEntryPointMutation } from "./__generated__/FormSpecCreateEntryPointMutation.graphql";
 import { FormSpecCreateEntryPointUpdateQuestionGroupMutation } from "./__generated__/FormSpecCreateEntryPointUpdateQuestionGroupMutation.graphql";
 import { FormSpecCreateEntryPointQuery } from "./__generated__/FormSpecCreateEntryPointQuery.graphql";
 import { FormSpecCreateEntryPointUpdateFormSpecMutation } from "./__generated__/FormSpecCreateEntryPointUpdateFormSpecMutation.graphql";
 import { FormSpecCreateEntryPointUpdateQuestionMutation } from "./__generated__/FormSpecCreateEntryPointUpdateQuestionMutation.graphql";
+import { GeneralQuestionMetadata } from "./GeneralQuestionMetadata";
 
 export function FormSpecCreateEntryPoint() {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ export function FormSpecCreateEntryPoint() {
     };
   });
   const [localQuestions, setLocalQuestions] =
-    useState<Array<QuestionMetadata>>(persistentQuestions);
+    useState<Array<GeneralQuestionMetadata>>(persistentQuestions);
   const [newQuestions, setNewQuestions] = useState<Array<string>>([]);
   const setLocalQuestionExtraData = (idx: number, extraData: string) => {
     if (idx >= 0 && idx < localQuestions.length) {
@@ -247,7 +248,7 @@ const query = graphql`
             type
             createdAt
             extraData
-            ...QuestionFragment
+            ...ResponseModeQuestionFragment
           }
         }
       }

@@ -1,41 +1,35 @@
-import { Card, Checkbox, Space } from "antd";
+import { Card, Radio, RadioChangeEvent, Space } from "antd";
 import graphql from "babel-plugin-relay/macro";
 import { useContext, useState } from "react";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import { useParams } from "react-router-dom";
 import FormInstanceContext from "../../FormInstanceContext";
-import { CheckboxQuestionFragment$key } from "./__generated__/CheckboxQuestionFragment.graphql";
-import { CheckboxQuestionResponseQuery } from "./__generated__/CheckboxQuestionResponseQuery.graphql";
-import { CheckboxQuestionUpdateMutation } from "./__generated__/CheckboxQuestionUpdateMutation.graphql";
-import { CheckboxValueType } from "antd/es/checkbox/Group";
+import { MultiChoiceQuestionUpdateMutation } from "./__generated__/MultiChoiceQuestionUpdateMutation.graphql";
+import { MultiChoiceQuestionResponseQuery } from "./__generated__/MultiChoiceQuestionResponseQuery.graphql";
+import { ResponseModeMultiChoiceQuestionFragment$key } from "./__generated__/ResponseModeMultiChoiceQuestionFragment.graphql";
 
 type Props = {
-  fragmentKey: CheckboxQuestionFragment$key;
+  fragmentKey: ResponseModeMultiChoiceQuestionFragment$key;
 };
-export function CheckboxQuestion({ fragmentKey }: Props) {
+export function ResponseModeMultiChoiceQuestion({ fragmentKey }: Props) {
   const { status } = useContext(FormInstanceContext);
   const question = useFragment(fragment, fragmentKey);
   const { instanceID } = useParams();
-  const data = useLazyLoadQuery<CheckboxQuestionResponseQuery>(query, {
+  const data = useLazyLoadQuery<MultiChoiceQuestionResponseQuery>(query, {
     questionID: question.id,
     formInstanceID: instanceID ?? "",
   });
   const responseID = (data.questionResponses.edges ?? [])[0]?.node?.id ?? "";
   const initialResponseValue =
     (data.questionResponses.edges ?? [])[0]?.node?.value ?? "";
-  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(
-    initialResponseValue !== ""
-      ? (JSON.parse(initialResponseValue) as CheckboxValueType[])
-      : []
-  );
-  const [commitUpdate] = useMutation<CheckboxQuestionUpdateMutation>(
-    updateQuestionResponseMutation
-  );
-  const handleChange = (list: CheckboxValueType[]) => {
-    setCheckedList(list);
+  const [value, setValue] = useState(initialResponseValue);
+  const [commitUpdate] =
+    useMutation<MultiChoiceQuestionUpdateMutation>(updateMutation);
+  const handleChange = (e: RadioChangeEvent) => {
+    setValue(e.target.value);
     commitUpdate({
       variables: {
-        input: { questionID: question.id, value: JSON.stringify(list) },
+        input: { questionID: question.id, value: e.target.value },
         id: responseID,
       },
     });
@@ -46,25 +40,26 @@ export function CheckboxQuestion({ fragmentKey }: Props) {
       bordered={false}
       style={{ margin: "8px", width: "100%" }}
     >
-      <Checkbox.Group
+      <Radio.Group
         onChange={handleChange}
-        value={checkedList}
+        value={value}
         disabled={status === "submiited"}
       >
         <Space direction="vertical">
           {Array.from(JSON.parse(question.extraData)).map((option, index) => (
-            <Checkbox value={option} key={index}>
+            <Radio value={option} key={index}>
               {option as string}
-            </Checkbox>
+            </Radio>
           ))}
         </Space>
-      </Checkbox.Group>
+      </Radio.Group>
     </Card>
   );
 }
 
+// query properties about Question
 const fragment = graphql`
-  fragment CheckboxQuestionFragment on Question {
+  fragment ResponseModeMultiChoiceQuestionFragment on Question {
     id
     label
     title
@@ -75,8 +70,9 @@ const fragment = graphql`
   }
 `;
 
-const updateQuestionResponseMutation = graphql`
-  mutation CheckboxQuestionUpdateMutation(
+// update questionResponse
+const updateMutation = graphql`
+  mutation ResponseModeMultiChoiceQuestionUpdateMutation(
     $input: UpdateQuestionResponseInput!
     $id: ID!
   ) {
@@ -87,7 +83,10 @@ const updateQuestionResponseMutation = graphql`
 `;
 
 const query = graphql`
-  query CheckboxQuestionResponseQuery($questionID: ID!, $formInstanceID: ID!) {
+  query ResponseModeMultiChoiceQuestionResponseQuery(
+    $questionID: ID!
+    $formInstanceID: ID!
+  ) {
     questionResponses(
       where: {
         hasQuestionWith: [{ id: $questionID }]

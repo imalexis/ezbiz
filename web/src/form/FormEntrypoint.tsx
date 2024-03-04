@@ -27,7 +27,6 @@ export default function FormEntrypoint() {
           />
         </Flex>
       </Flex>
-
       <Outlet />
     </Flex>
   );

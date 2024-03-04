@@ -1,10 +1,10 @@
 import { Button, Flex, Radio, Space } from "antd";
 import { useState } from "react";
 import { EZBizRadio } from "./EzbizRadio";
-import { QuestionMetadata } from "../GeneralQuestion";
+import { GeneralQuestionMetadata } from "../../GeneralQuestionMetadata";
 
 type Props = {
-  questionMetadata: QuestionMetadata;
+  questionMetadata: GeneralQuestionMetadata;
   setLocalQuestionExtraData: (idx: number, extraData: string) => void;
   questionIndex: number;
 };

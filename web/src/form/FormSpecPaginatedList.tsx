@@ -1,7 +1,7 @@
 import graphql from "babel-plugin-relay/macro";
 import { FormSpecPaginatedListFragment$key } from "./__generated__/FormSpecPaginatedListFragment.graphql";
 import { usePaginationFragment } from "react-relay";
-import { Col, Row } from "antd";
+import { Button, Col, Flex, Row } from "antd";
 import { FormSpecCard } from "./FormSpecCard";
 
 type Props = {
@@ -14,29 +14,33 @@ export function FormSpecPaginatedList({ fragmentKey }: Props) {
     fragmentKey
   );
   return (
-    <>
-      totalCount: {data.formSpecs.totalCount}
-      <div>
+    <Flex vertical>
+      <Flex align="center">
+        <Flex> totalCount: {data.formSpecs.totalCount}</Flex>
         {hasNext && (
-          <button
-            onClick={() => {
-              loadNext(10);
-            }}
-          >
-            load more
-          </button>
+          <Flex>
+            <Button
+              onClick={() => {
+                loadNext(10);
+              }}
+            >
+              load more
+            </Button>
+          </Flex>
         )}
-      </div>
-      <Row gutter={16} align={"middle"} justify={"center"}>
-        {(data.formSpecs.edges ?? []).map((edge) =>
+      </Flex>
+      <Flex gap={20} wrap="wrap" align="center" justify="center">
+        {(data.formSpecs.edges ?? []).map((edge, index) =>
           edge?.node != null ? (
-            <Col span={8}>
-              <FormSpecCard formSpec={edge?.node} />
-            </Col>
-          ) : null
+            <Flex key={index}>
+              <FormSpecCard formSpec={edge?.node} index={index} />
+            </Flex>
+          ) : (
+            <></>
+          )
         )}
-      </Row>
-    </>
+      </Flex>
+    </Flex>
   );
 }
 

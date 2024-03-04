@@ -1,17 +1,17 @@
 import { Card } from "antd";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
-import { FileQuestionFragment$key } from "./__generated__/FileQuestionFragment.graphql";
 import { useContext, useState } from "react";
 import { FileQuestionUploadFileMutation } from "./__generated__/FileQuestionUploadFileMutation.graphql";
 import { FileQuestionUpdateMutation } from "./__generated__/FileQuestionUpdateMutation.graphql";
 import { useParams } from "react-router-dom";
 import { FileQuestionResponseQuery } from "./__generated__/FileQuestionResponseQuery.graphql";
 import FormInstanceContext from "../../FormInstanceContext";
+import { ResponseModeFileQuestionFragment$key } from "./__generated__/ResponseModeFileQuestionFragment.graphql";
 
-type Props = { fragmentKey: FileQuestionFragment$key };
+type Props = { fragmentKey: ResponseModeFileQuestionFragment$key };
 
-export function FileQuestion({ fragmentKey }: Props) {
+export function ResponseModeFileQuestion({ fragmentKey }: Props) {
   const { status } = useContext(FormInstanceContext);
   const { instanceID } = useParams();
   const question = useFragment(fragment, fragmentKey);
@@ -109,7 +109,7 @@ export function FileQuestion({ fragmentKey }: Props) {
 }
 
 const fragment = graphql`
-  fragment FileQuestionFragment on Question {
+  fragment ResponseModeFileQuestionFragment on Question {
     id
     label
     title
@@ -121,7 +121,7 @@ const fragment = graphql`
 `;
 
 const uploadFileMutation = graphql`
-  mutation FileQuestionUploadFileMutation($file: Upload!) {
+  mutation ResponseModeFileQuestionUploadFileMutation($file: Upload!) {
     singleUpload(file: $file) {
       name
     }
@@ -129,7 +129,7 @@ const uploadFileMutation = graphql`
 `;
 
 const updateQuestionResponseMutation = graphql`
-  mutation FileQuestionUpdateMutation(
+  mutation ResponseModeFileQuestionUpdateMutation(
     $input: UpdateQuestionResponseInput!
     $id: ID!
   ) {
@@ -140,7 +140,10 @@ const updateQuestionResponseMutation = graphql`
 `;
 
 const query = graphql`
-  query FileQuestionResponseQuery($questionID: ID!, $formInstanceID: ID!) {
+  query ResponseModeFileQuestionResponseQuery(
+    $questionID: ID!
+    $formInstanceID: ID!
+  ) {
     questionResponses(
       where: {
         hasQuestionWith: [{ id: $questionID }]

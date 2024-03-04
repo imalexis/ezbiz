@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<20c6f249d0d317e1bd4d6a678553e43b>>
+ * @generated SignedSource<<edd06a7ff6efa8e49d2188ca6c81fe5a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -27,7 +27,7 @@ export type FormSpecCreateEntryPointQuery$data = {
         readonly label: string;
         readonly title: string;
         readonly type: QuestionType;
-        readonly " $fragmentSpreads": FragmentRefs<"QuestionFragment">;
+        readonly " $fragmentSpreads": FragmentRefs<"ResponseModeQuestionFragment">;
       }> | null | undefined;
     }> | null | undefined;
   } | null | undefined;
@@ -161,7 +161,7 @@ return {
                       {
                         "args": null,
                         "kind": "FragmentSpread",
-                        "name": "QuestionFragment"
+                        "name": "ResponseModeQuestionFragment"
                       }
                     ],
                     "storageKey": null
@@ -248,16 +248,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e184c20a2c9e7c9d34f55d75953b38dc",
+    "cacheID": "406cfa84e10d7d1ccc5a059dd104d477",
     "id": null,
     "metadata": {},
     "name": "FormSpecCreateEntryPointQuery",
     "operationKind": "query",
-    "text": "query FormSpecCreateEntryPointQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on FormSpec {\n      name\n      description\n      questionGroups {\n        id\n        question {\n          id\n          label\n          title\n          type\n          createdAt\n          extraData\n          ...QuestionFragment\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment CheckboxQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment DateQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n\nfragment DropdownQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment FileQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment LinearScaleQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment MultiChoiceQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ParagraphQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment QuestionFragment on Question {\n  type\n  label\n  ...MultiChoiceQuestionFragment\n  ...CheckboxQuestionFragment\n  ...ShortTextQuestionFragment\n  ...ParagraphQuestionFragment\n  ...FileQuestionFragment\n  ...DropdownQuestionFragment\n  ...DateQuestionFragment\n  ...LinearScaleQuestionFragment\n}\n\nfragment ShortTextQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n"
+    "text": "query FormSpecCreateEntryPointQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on FormSpec {\n      name\n      description\n      questionGroups {\n        id\n        question {\n          id\n          label\n          title\n          type\n          createdAt\n          extraData\n          ...ResponseModeQuestionFragment\n        }\n      }\n    }\n    id\n  }\n}\n\nfragment ResponseModeCheckboxQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeDateQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n\nfragment ResponseModeDropdownQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeFileQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeLinearScaleQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeMultiChoiceQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeParagraphQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n  __typename\n}\n\nfragment ResponseModeQuestionFragment on Question {\n  type\n  label\n  ...ResponseModeMultiChoiceQuestionFragment\n  ...ResponseModeCheckboxQuestionFragment\n  ...ResponseModeShortTextQuestionFragment\n  ...ResponseModeParagraphQuestionFragment\n  ...ResponseModeFileQuestionFragment\n  ...ResponseModeDropdownQuestionFragment\n  ...ResponseModeDateQuestionFragment\n  ...ResponseModeLinearScaleQuestionFragment\n}\n\nfragment ResponseModeShortTextQuestionFragment on Question {\n  id\n  label\n  title\n  type\n  required\n  extraData\n}\n"
   }
 };
 })();
 
-(node as any).hash = "8be81112904bf845c9244bb6dccf14e7";
+(node as any).hash = "498859e414d950d909c5ae1a822d82ca";
 
 export default node;

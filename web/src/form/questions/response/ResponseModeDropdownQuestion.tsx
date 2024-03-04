@@ -2,12 +2,13 @@ import graphql from "babel-plugin-relay/macro";
 import { useFragment } from "react-relay";
 import { Card, Dropdown, MenuProps, Space, message } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { DropdownQuestionFragment$key } from "./__generated__/DropdownQuestionFragment.graphql";
+import { ResponseModeDropdownQuestionFragment$key } from "./__generated__/ResponseModeDropdownQuestionFragment.graphql";
 
 type Props = {
-  fragmentKey: DropdownQuestionFragment$key;
+  fragmentKey: ResponseModeDropdownQuestionFragment$key;
 };
-export function DropdownQuestion({ fragmentKey }: Props) {
+
+export function ResponseModeDropdownQuestion({ fragmentKey }: Props) {
   const question = useFragment(fragment, fragmentKey);
 
   const onClick: MenuProps["onClick"] = ({ key }) => {
@@ -28,19 +29,17 @@ export function DropdownQuestion({ fragmentKey }: Props) {
       style={{ margin: "8px", width: "100%" }}
     >
       <Dropdown menu={{ items, onClick }}>
-        <a onClick={(e) => e.preventDefault()}>
-          <Space>
-            {question.label}
-            <DownOutlined />
-          </Space>
-        </a>
+        <Space>
+          {question.label}
+          <DownOutlined />
+        </Space>
       </Dropdown>
     </Card>
   );
 }
 
 const fragment = graphql`
-  fragment DropdownQuestionFragment on Question {
+  fragment ResponseModeDropdownQuestionFragment on Question {
     id
     label
     title

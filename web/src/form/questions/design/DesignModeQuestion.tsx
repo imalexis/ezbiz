@@ -1,5 +1,4 @@
 import { Flex } from "antd";
-import { QuestionMetadata } from "../GeneralQuestion";
 import { DesignModeShortTextQuestion } from "./DesignModeShortTextQuestion";
 import DesignModeParagraphQuestion from "./DesignModeParagraphQuestion";
 import DesignModeMultiChoiceQuestion from "./DesignModeMultiChoiceQuestion";
@@ -7,13 +6,14 @@ import DesignModeCheckboxQuestion from "./DesignModeCheckboxQuestion";
 import DesignModeFileQuestion from "./DesignModeFileQuestion";
 import DesignModeDateQuestion from "./DesignModeDateQuestion";
 import DesignModeLinearScaleQuestion from "./DesignModeLinearScaleQuestion";
+import { GeneralQuestionMetadata } from "../../GeneralQuestionMetadata";
 
 export function DesignModeQuestion({
   questionMetadata,
   setLocalQuestionExtraData,
   questionIndex,
 }: {
-  questionMetadata: QuestionMetadata;
+  questionMetadata: GeneralQuestionMetadata;
   setLocalQuestionExtraData: (idx: number, extraData: string) => void;
   questionIndex: number;
 }) {

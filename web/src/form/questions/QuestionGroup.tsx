@@ -1,8 +1,9 @@
 import graphql from "babel-plugin-relay/macro";
 import { QuestionGroupFragment$key } from "./__generated__/QuestionGroupFragment.graphql";
 import { useFragment } from "react-relay";
-import { Flex } from "antd";
+import { Divider, Flex } from "antd";
 import GeneralQuestion from "./GeneralQuestion";
+import Title from "antd/es/typography/Title";
 
 type Props = {
   fragmentKey: QuestionGroupFragment$key;
@@ -16,29 +17,15 @@ export function QuestionGroup({
   const group = useFragment(fragment, fragmentKey);
   return (
     <Flex vertical>
-      <p
-        style={{
-          color: "grey",
-          fontSize: "16px",
-          fontWeight: "bold",
-          marginBottom: "5px",
-        }}
-      >
-        Group name: {group.name}
-      </p>
-      <hr
-        style={{
-          borderTop: "1px solid lightgrey",
-          margin: 0,
-        }}
-      />
-      {group.question?.map((q, idx) => (
+      <Title>Group name: {group.name}</Title>
+      <Divider />
+      {group.question?.map((question, index) => (
         <GeneralQuestion
-          key={idx}
+          key={index}
           mode="response"
-          fragmentKey={q}
+          fragmentKey={question}
           setLocalQuestionExtraData={setLocalQuestionExtraData}
-          questionIndex={idx}
+          questionIndex={index}
         />
       ))}
     </Flex>
@@ -50,7 +37,7 @@ const fragment = graphql`
     id
     name
     question {
-      ...QuestionFragment
+      ...ResponseModeQuestionFragment
     }
   }
 `;

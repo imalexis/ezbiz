@@ -4,15 +4,15 @@ import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import FormInstanceContext from "../../FormInstanceContext";
-import { ShortTextQuestionFragment$key } from "./__generated__/ShortTextQuestionFragment.graphql";
 import { ShortTextQuestionResponseQuery } from "./__generated__/ShortTextQuestionResponseQuery.graphql";
 import { ShortTextQuestionUpdateMutation } from "./__generated__/ShortTextQuestionUpdateMutation.graphql";
+import { ResponseModeShortTextQuestionFragment$key } from "./__generated__/ResponseModeShortTextQuestionFragment.graphql";
 
 type Props = {
-  fragmentKey: ShortTextQuestionFragment$key;
+  fragmentKey: ResponseModeShortTextQuestionFragment$key;
 };
 
-export function ShortTextQuestion({ fragmentKey }: Props) {
+export function RespondModeShortTextQuestion({ fragmentKey }: Props) {
   const question = useFragment(fragment, fragmentKey);
   const { instanceID } = useParams();
   const data = useLazyLoadQuery<ShortTextQuestionResponseQuery>(query, {
@@ -55,7 +55,7 @@ export function ShortTextQuestion({ fragmentKey }: Props) {
 }
 
 const fragment = graphql`
-  fragment ShortTextQuestionFragment on Question {
+  fragment ResponseModeShortTextQuestionFragment on Question {
     id
     label
     title
@@ -66,7 +66,10 @@ const fragment = graphql`
 `;
 
 const query = graphql`
-  query ShortTextQuestionResponseQuery($questionID: ID!, $formInstanceID: ID!) {
+  query ResponseModeShortTextQuestionResponseQuery(
+    $questionID: ID!
+    $formInstanceID: ID!
+  ) {
     questionResponses(
       where: {
         hasQuestionWith: [{ id: $questionID }]
@@ -88,7 +91,7 @@ const query = graphql`
 
 // update questionResponse
 const mutation = graphql`
-  mutation ShortTextQuestionUpdateMutation(
+  mutation ResponseModeShortTextQuestionUpdateMutation(
     $input: UpdateQuestionResponseInput!
     $id: ID!
   ) {

@@ -1,6 +1,5 @@
 import { Card, DatePicker, DatePickerProps } from "antd";
 import graphql from "babel-plugin-relay/macro";
-import { DateQuestionFragment$key } from "./__generated__/DateQuestionFragment.graphql";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import { useContext, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
@@ -8,11 +7,12 @@ import { DateQuestionUpdateMutation } from "./__generated__/DateQuestionUpdateMu
 import { useParams } from "react-router-dom";
 import { DateQuestionResponseQuery } from "./__generated__/DateQuestionResponseQuery.graphql";
 import FormInstanceContext from "../../FormInstanceContext";
+import { ResponseModeDateQuestionFragment$key } from "./__generated__/ResponseModeDateQuestionFragment.graphql";
 
 type Props = {
-  fragmentKey: DateQuestionFragment$key;
+  fragmentKey: ResponseModeDateQuestionFragment$key;
 };
-export default function DateQuestion({ fragmentKey }: Props) {
+export default function ResponseModeDateQuestion({ fragmentKey }: Props) {
   const question = useFragment(fragment, fragmentKey);
   const { instanceID } = useParams();
 
@@ -55,7 +55,7 @@ export default function DateQuestion({ fragmentKey }: Props) {
 }
 
 const fragment = graphql`
-  fragment DateQuestionFragment on Question {
+  fragment ResponseModeDateQuestionFragment on Question {
     id
     label
     title
@@ -66,7 +66,7 @@ const fragment = graphql`
 `;
 
 const mutation = graphql`
-  mutation DateQuestionUpdateMutation(
+  mutation ResponseModeDateQuestionUpdateMutation(
     $input: UpdateQuestionResponseInput!
     $id: ID!
   ) {
@@ -76,7 +76,10 @@ const mutation = graphql`
   }
 `;
 const query = graphql`
-  query DateQuestionResponseQuery($questionID: ID!, $formInstanceID: ID!) {
+  query ResponseModeDateQuestionResponseQuery(
+    $questionID: ID!
+    $formInstanceID: ID!
+  ) {
     questionResponses(
       where: {
         hasQuestionWith: [{ id: $questionID }]

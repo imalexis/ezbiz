@@ -1,9 +1,9 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Flex, Upload } from "antd";
-import { QuestionMetadata } from "../GeneralQuestion";
+import { GeneralQuestionMetadata } from "../../GeneralQuestionMetadata";
 
 type Props = {
-  questionMetadata: QuestionMetadata;
+  questionMetadata: GeneralQuestionMetadata;
   setLocalQuestionExtraData: (idx: number, extraData: string) => void;
   questionIndex: number;
 };

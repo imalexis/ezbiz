@@ -1,23 +1,14 @@
-import { Question } from "./response/Question";
-import { QuestionType } from "../__generated__/FormSpecCardFragment.graphql";
+import { Question } from "./response/ResponseModeQuestion";
 import { DesignModeQuestion } from "./design/DesignModeQuestion";
-import { QuestionFragment$key } from "./response/__generated__/QuestionFragment.graphql";
+import { GeneralQuestionMetadata } from "../GeneralQuestionMetadata";
+import { ResponseModeQuestionFragment$key } from "./response/__generated__/ResponseModeQuestionFragment.graphql";
 
 type Props = {
-  fragmentKey?: QuestionFragment$key; // for response mode
-  questionMetadata?: QuestionMetadata; // for design mode
+  fragmentKey?: ResponseModeQuestionFragment$key;
+  questionMetadata?: GeneralQuestionMetadata;
   mode: "design" | "response";
   setLocalQuestionExtraData: (idx: number, extraData: string) => void;
   questionIndex: number;
-};
-
-export type QuestionMetadata = {
-  id: string;
-  title: string;
-  label: string;
-  type: QuestionType;
-  createdAt: string | null;
-  extraData?: string | null;
 };
 
 export default function GeneralQuestion({

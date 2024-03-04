@@ -1,9 +1,9 @@
 import { Input } from "antd";
 import { useState } from "react";
-import { QuestionMetadata } from "../GeneralQuestion";
+import { GeneralQuestionMetadata } from "../../GeneralQuestionMetadata";
 
 type Props = {
-  questionMetadata: QuestionMetadata;
+  questionMetadata: GeneralQuestionMetadata;
 };
 
 export function DesignModeShortTextQuestion({ questionMetadata }: Props) {

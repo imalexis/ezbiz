@@ -38,7 +38,6 @@ export function FormSpecPaginatedTable({ fragmentKey }: Props) {
     fragment,
     fragmentKey
   );
-
   const dataSource = (data.formSpecs.edges ?? [])
     .map((edge) => {
       if (edge == null || edge.node == null) {
@@ -51,7 +50,6 @@ export function FormSpecPaginatedTable({ fragmentKey }: Props) {
       };
     })
     .filter(isNotNull);
-
   const columns: ColumnsType<Type> = [
     {
       title: "ID",
@@ -63,8 +61,12 @@ export function FormSpecPaginatedTable({ fragmentKey }: Props) {
       dataIndex: "name",
       key: "name",
     },
+    {
+      title: "CreatedAt",
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
   ];
-
   return (
     <Flex vertical>
       {hasNext && (
@@ -76,9 +78,6 @@ export function FormSpecPaginatedTable({ fragmentKey }: Props) {
           Load More Data
         </Button>
       )}
-      {data.formSpecs.edges?.map((edge) => (
-        <div>{edge?.node?.id}</div>
-      ))}
       {<Table columns={columns} dataSource={dataSource} />}
     </Flex>
   );

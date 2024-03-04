@@ -2,15 +2,8 @@ import graphql from "babel-plugin-relay/macro";
 import { FormSpecCardFragment$key } from "./__generated__/FormSpecCardFragment.graphql";
 import { useFragment, useMutation } from "react-relay";
 
-import {
-  makeStyles,
-  Body1,
-  Caption1,
-  Button,
-  shorthands,
-  Link,
-} from "@fluentui/react-components";
-import { ArrowReplyRegular, ShareRegular } from "@fluentui/react-icons";
+import { Body1, Caption1, Button } from "@fluentui/react-components";
+import { ShareRegular } from "@fluentui/react-icons";
 import {
   Card,
   CardFooter,
@@ -19,9 +12,11 @@ import {
 } from "@fluentui/react-components";
 import { useNavigate } from "react-router-dom";
 import { FormSpecCardMutation } from "./__generated__/FormSpecCardMutation.graphql";
+import { FormOutlined, OrderedListOutlined } from "@ant-design/icons";
 
 type Props = {
   formSpec: FormSpecCardFragment$key | null;
+  index: number;
 };
 
 const resolveAsset = (asset: string) => {
@@ -30,30 +25,18 @@ const resolveAsset = (asset: string) => {
   return `${ASSET_URL}${asset}`;
 };
 
-const useStyles = makeStyles({
-  card: {
-    ...shorthands.margin("auto"),
-    width: "720px",
-    maxWidth: "100%",
-  },
-});
-
-export function FormSpecCard({ formSpec }: Props) {
-  const styles = useStyles();
+export function FormSpecCard({ formSpec, index }: Props) {
   const navigate = useNavigate();
   const data = useFragment(fragment, formSpec);
   const [commit] = useMutation<FormSpecCardMutation>(mutation);
-
   return (
-    <Card className={styles.card}>
+    <Card style={{ width: 600 }} tabIndex={index}>
       <CardHeader
         image={<img src={resolveAsset("avatar_elvia.svg")} alt={""} />}
         header={
           <Body1>
             <p>id: {data?.id}</p>
             <b>title: {data?.name}</b>
-            <p>Created By: {data?.createdBy}</p>
-            <p>Created At: {data?.createdAt}</p>
           </Body1>
         }
         description={<Caption1>Description: {data?.description}</Caption1>}
@@ -87,6 +70,7 @@ export function FormSpecCard({ formSpec }: Props) {
           Share
         </Button>
         <Button
+          icon={<OrderedListOutlined size={16} />}
           onClick={() => {
             navigate(`${data?.id}/response`);
           }}
@@ -94,7 +78,7 @@ export function FormSpecCard({ formSpec }: Props) {
           View Response
         </Button>
         <Button
-          icon={<Link />}
+          icon={<FormOutlined size={16} />}
           onClick={() => {
             navigate(`create/${data?.id}`);
           }}
@@ -107,10 +91,6 @@ export function FormSpecCard({ formSpec }: Props) {
 }
 
 const fragment = graphql`
-  # fragment represents all fields are subset of parent <FormSpec>
-  # <Component>_*_Fragment
-  # on represents the data is from which Type
-  # on FormSpec -> from FormSpec
   fragment FormSpecCardFragment on FormSpec {
     id
     name

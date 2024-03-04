@@ -1,11 +1,10 @@
-import { Button, Checkbox, Flex, Radio, Space } from "antd";
+import { Button, Checkbox, Flex, Space } from "antd";
 import { useState } from "react";
-import { EZBizRadio } from "./EzbizRadio";
-import { QuestionMetadata } from "../GeneralQuestion";
 import EzbizCheckbox from "./EzbizCheckbox";
+import { GeneralQuestionMetadata } from "../../GeneralQuestionMetadata";
 
 type Props = {
-  questionMetadata: QuestionMetadata;
+  questionMetadata: GeneralQuestionMetadata;
   setLocalQuestionExtraData: (idx: number, extraData: string) => void;
   questionIndex: number;
 };

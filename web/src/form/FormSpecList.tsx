@@ -14,7 +14,6 @@ export default function FormSpecList() {
       field: "UPDATED_AT",
     },
   });
-
   const [isChecked, setIsChecked] = useState(false);
   const onChange = () => {
     setIsChecked(!isChecked);
@@ -22,7 +21,7 @@ export default function FormSpecList() {
 
   return (
     <Flex vertical>
-      <Flex justify="space-even">
+      <Flex justify="start">
         <Flex flex={10}>
           <div></div>
         </Flex>
@@ -36,7 +35,6 @@ export default function FormSpecList() {
           />
         </Flex>
       </Flex>
-
       {isChecked ? (
         <FormSpecPaginatedTable fragmentKey={dataSource} />
       ) : (

@@ -1,9 +1,9 @@
 import { Col, Flex, InputNumber, Slider } from "antd";
 import { useState } from "react";
-import { QuestionMetadata } from "../GeneralQuestion";
+import { GeneralQuestionMetadata } from "../../GeneralQuestionMetadata";
 
 type Props = {
-  questionMetadata: QuestionMetadata;
+  questionMetadata: GeneralQuestionMetadata;
   setLocalQuestionExtraData: (idx: number, extraData: string) => void;
   questionIndex: number;
 };
