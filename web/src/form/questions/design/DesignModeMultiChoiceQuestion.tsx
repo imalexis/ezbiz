@@ -2,6 +2,7 @@ import { Button, Flex, Radio, Space } from "antd";
 import { useState } from "react";
 import { EZBizRadio } from "./EzbizRadio";
 import { GeneralQuestionMetadata } from "../../GeneralQuestionMetadata";
+import TextArea from "antd/es/input/TextArea";
 
 type Props = {
   questionMetadata: GeneralQuestionMetadata;
@@ -57,10 +58,10 @@ export default function DesignModeMultiChoiceQuestion({
           ))}
         </Space>
       </Radio.Group>
-
       <Button style={{ margin: "10px" }} onClick={handleAddOption}>
         Add option
       </Button>
+      <TextArea placeholder="precondition" />
     </Flex>
   );
 }

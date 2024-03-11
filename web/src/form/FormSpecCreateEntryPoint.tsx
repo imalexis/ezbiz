@@ -1,4 +1,13 @@
-import { Button, Card, Dropdown, Flex, Input, MenuProps, Modal } from "antd";
+import {
+  Button,
+  Card,
+  Dropdown,
+  Flex,
+  Input,
+  MenuProps,
+  Modal,
+  Typography,
+} from "antd";
 
 import { DownOutlined, PlusCircleOutlined } from "@ant-design/icons";
 
@@ -14,6 +23,8 @@ import { FormSpecCreateEntryPointQuery } from "./__generated__/FormSpecCreateEnt
 import { FormSpecCreateEntryPointUpdateFormSpecMutation } from "./__generated__/FormSpecCreateEntryPointUpdateFormSpecMutation.graphql";
 import { FormSpecCreateEntryPointUpdateQuestionMutation } from "./__generated__/FormSpecCreateEntryPointUpdateQuestionMutation.graphql";
 import { GeneralQuestionMetadata } from "./GeneralQuestionMetadata";
+
+const { Text } = Typography;
 
 export function FormSpecCreateEntryPoint() {
   const navigate = useNavigate();
@@ -145,56 +156,90 @@ export function FormSpecCreateEntryPoint() {
         });
       });
   };
-  return (
-    <Flex vertical align="center">
-      <Modal
-        title="create a new question"
-        open={isModalOpen}
-        onCancel={() => {
-          setIsModalOpen(false);
-        }}
-        onOk={onCreateNewQuestion}
-      >
-        <Flex vertical>
-          <Flex justify="space-between">
-            label:
-            <input
-              type="text"
-              value={label}
-              onChange={(e) => {
-                setLabel(e.target.value);
-              }}
-            />
-          </Flex>
-          <Flex justify="space-between">
-            title:
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-              }}
-            />
-          </Flex>
-          <Flex justify="space-around">
-            question type:
-            <Dropdown.Button
-              icon={<DownOutlined />}
-              menu={{
-                items,
-                onClick: (e) => {
-                  setQuestionType(e.key);
-                },
-              }}
-            >
-              {questionType}
-            </Dropdown.Button>
-          </Flex>
+
+  const modal = (
+    <Modal
+      title="create a new question"
+      open={isModalOpen}
+      onCancel={() => {
+        setIsModalOpen(false);
+      }}
+      onOk={onCreateNewQuestion}
+    >
+      <Flex vertical>
+        <Flex justify="space-between">
+          label:
+          <input
+            type="text"
+            value={label}
+            onChange={(e) => {
+              setLabel(e.target.value);
+            }}
+          />
         </Flex>
-      </Modal>
-      <Flex align="center" gap={20}>
-        <Flex>formID: {formID} </Flex>
-        <Flex>defaultGroupID: {defaultGroupID}</Flex>
+        <Flex justify="space-between">
+          title:
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+          />
+        </Flex>
+        <Flex justify="space-around">
+          question type:
+          <Dropdown.Button
+            icon={<DownOutlined />}
+            menu={{
+              items,
+              onClick: (e) => {
+                setQuestionType(e.key);
+              },
+            }}
+          >
+            {questionType}
+          </Dropdown.Button>
+        </Flex>
+      </Flex>
+    </Modal>
+  );
+
+  return (
+    <Flex>
+      <Flex flex={1}>
+        <div></div>
+      </Flex>
+      <Flex
+        vertical
+        align="center"
+        flex={8}
+        style={{ width: "100%" }}
+        justify="center"
+      >
+        {modal}
+        <Header
+          formTitle={formTitle ?? ""}
+          formDescription={formDescription ?? ""}
+          setFormDescription={setFormDescription}
+          setFormTitle={setFormTitle}
+        />
+        {localQuestions.map((q, idx) => {
+          return (
+            <Card key={idx} title={q.title} style={styles.card}>
+              <GeneralQuestion
+                mode="design"
+                questionMetadata={q}
+                setLocalQuestionExtraData={setLocalQuestionExtraData}
+                questionIndex={idx}
+              />
+            </Card>
+          );
+        })}
+        <Button onClick={onSubmit}>Submit</Button>
+      </Flex>
+
+      <Flex flex={1}>
         <Button
           icon={<PlusCircleOutlined />}
           onClick={() => {
@@ -202,33 +247,6 @@ export function FormSpecCreateEntryPoint() {
           }}
         />
       </Flex>
-      <Card style={{ width: "60%", margin: "1vw" }}>
-        <Input
-          size="large"
-          value={formTitle}
-          onChange={(e) => setFormTitle(e.target.value)}
-        ></Input>
-        <Input
-          style={{ border: "0" }}
-          value={formDescription}
-          onChange={(e) => {
-            setFormDescription(e.target.value);
-          }}
-        ></Input>
-      </Card>
-      {localQuestions.map((q, idx) => {
-        return (
-          <Card key={idx} title={q.title} style={styles.card}>
-            <GeneralQuestion
-              mode="design"
-              questionMetadata={q}
-              setLocalQuestionExtraData={setLocalQuestionExtraData}
-              questionIndex={idx}
-            />
-          </Card>
-        );
-      })}
-      <Button onClick={onSubmit}>Submit</Button>
     </Flex>
   );
 }
@@ -301,10 +319,54 @@ const updateFormSpecMutation = graphql`
 
 const styles = {
   card: {
-    width: "60%",
+    width: "80%",
     margin: "1vw",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
     border: "1px solid #e8e8e8",
     backgroundColor: "#fff",
   },
 };
+
+type HeaderProps = {
+  formTitle: string;
+  setFormTitle: (formTitle: string) => void;
+  formDescription: string;
+  setFormDescription: (formDescription: string) => void;
+};
+
+function Header({
+  formTitle,
+  formDescription,
+  setFormDescription,
+  setFormTitle,
+}: HeaderProps) {
+  return (
+    <Card style={styles.card} tabIndex={1}>
+      <Flex>
+        <Flex flex={2}>
+          <Text>Form Title</Text>
+        </Flex>
+        <Flex flex={8}>
+          <Input
+            size="large"
+            value={formTitle}
+            onChange={(e) => setFormTitle(e.target.value)}
+          />
+        </Flex>
+      </Flex>
+      <Flex>
+        <Flex flex={2}>
+          <Text>Form Description</Text>
+        </Flex>
+        <Flex flex={8}>
+          <Input
+            value={formDescription}
+            onChange={(e) => {
+              setFormDescription(e.target.value);
+            }}
+          />
+        </Flex>
+      </Flex>
+    </Card>
+  );
+}
