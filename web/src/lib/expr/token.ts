@@ -1,5 +1,3 @@
-import { tagGroupClassNames } from "@fluentui/react-components";
-
 type TokenType =
   | "illegal"
   | "eof"
@@ -12,7 +10,8 @@ type TokenType =
   | "("
   | ")"
   | "{"
-  | "}";
+  | "}"
+  | "let";
 
 const ILLEGAL: TokenType = "illegal";
 const EOF: TokenType = "eof";
@@ -30,6 +29,8 @@ const LPAREN: TokenType = "(";
 const RPAREN: TokenType = ")";
 const LBRACE: TokenType = "{";
 const RBRACE: TokenType = "}";
+
+const KW_LET: TokenType = "let";
 
 type Token = {
   type: TokenType;
@@ -154,9 +155,16 @@ class Lexer {
       }
       default: {
         if (this.__isLetter()) {
-          tok = { type: ID, literal: this.__readIdentifier() };
+          const identifier = this.__readIdentifier();
+          if (identifier === KW_LET) {
+            tok = { type: KW_LET, literal: "let" };
+          } else {
+            tok = { type: ID, literal: identifier };
+          }
+          return tok;
         } else if (this.__isDigit()) {
           tok = { type: INT, literal: this.__readNumber() };
+          return tok;
         } else {
           tok = { type: ILLEGAL, literal: "" };
         }
@@ -181,11 +189,12 @@ const testCases: Array<{ source: string; result: Array<Token> }> = [
     ],
   },
   {
-    source: "a = 123",
+    source: "a = 123;",
     result: [
       { type: ID, literal: "a" },
       { type: ASSIGN, literal: "=" },
       { type: INT, literal: "123" },
+      { type: SEMICOLON, literal: ";" },
       { type: EOF, literal: "" },
     ],
   },
@@ -210,4 +219,217 @@ for (const testCase of testCases) {
       );
     }
   }
+}
+
+export namespace parser {
+  interface Node {
+    // return the literal value of the token it's associated with
+    // a + b -> a
+    tokenLiteral(): string;
+
+    // return the Node full text string
+    // a + b -> a + b
+    toString(): string;
+  }
+
+  interface Expression extends Node {}
+
+  class Identifier implements Expression {
+    token: Token;
+    value: string;
+
+    tokenLiteral(): string {
+      return this.token.literal;
+    }
+
+    toString(): string {
+      return this.token.literal;
+    }
+
+    constructor(token: Token, value: string) {
+      this.token = token;
+      this.value = value;
+    }
+  }
+
+  interface Statement extends Node {}
+
+  class LetStatement implements Statement {
+    token: Token;
+    lhs: Identifier | undefined;
+    rhs: Expression | undefined;
+
+    tokenLiteral(): string {
+      return this.token.literal;
+    }
+
+    toString(): string {
+      return this.token.literal;
+    }
+
+    setLhs(lhs: Identifier) {
+      this.lhs = lhs;
+    }
+
+    setRhs(rhs: Expression) {
+      this.rhs = rhs;
+    }
+
+    constructor(token: Token) {
+      this.token = token;
+    }
+  }
+
+  class ExpressionStatement implements Statement {
+    token: Token;
+    expression: Expression | undefined;
+
+    tokenLiteral(): string {
+      return this.token.literal;
+    }
+
+    toString(): string {
+      return this.expression!.toString();
+    }
+
+    setExpression(expression: Expression) {
+      this.expression = expression;
+    }
+
+    constructor(token: Token) {
+      this.token = token;
+    }
+  }
+
+  class Program implements Node {
+    statements: Statement[];
+
+    constructor() {
+      this.statements = [];
+    }
+
+    tokenLiteral(): string {
+      if (this.statements.length === 0) {
+        return "";
+      }
+      return this.statements[0].tokenLiteral();
+    }
+
+    toString(): string {
+      return this.statements.map((stmt) => stmt.toString()).join("");
+    }
+
+    push(stmt: Statement): void {
+      this.statements.push(stmt);
+    }
+  }
+
+  // Define precedence
+  const LOWEST = 1;
+  const EQUALS = 2;
+  const LESSGREATER = 3;
+  const SUM = 4; // +, -
+  const PRODUCT = 5; // *, /
+  const PREFIX = 6; // ! - +
+
+  class Parser {
+    lexer: Lexer;
+
+    curToken: Token | undefined;
+    peekToken: Token | undefined;
+    prefixParseFns: Map<TokenType, () => Expression>;
+    inflixParseFns: Map<TokenType, (lhs: Expression) => Expression>;
+
+    __nextToken() {
+      this.curToken = this.peekToken;
+      this.peekToken = this.lexer.nextToken();
+    }
+
+    constructor(input: string) {
+      this.lexer = new Lexer(input);
+      this.__nextToken();
+      this.__nextToken();
+      this.prefixParseFns = new Map();
+      this.inflixParseFns = new Map();
+      this.prefixParseFns.set(ID, this.__parseIdentifier);
+    }
+
+    __parseIdentifier(): Expression {
+      return new Identifier(this.curToken!, this.curToken!.literal);
+    }
+
+    __expectPeek(tokenType: TokenType) {
+      if (this.peekToken?.type !== tokenType) {
+        return false;
+      }
+      this.__nextToken();
+      return true;
+    }
+
+    __curTokenIs(tokenType: TokenType) {
+      return this.curToken?.type === tokenType;
+    }
+
+    __parseLetStatement(): LetStatement {
+      const stmt = new LetStatement(this.curToken!);
+
+      if (!this.__expectPeek(ID)) {
+        throw new Error(`expect ID, but got ${this.curToken?.type}`);
+      }
+      stmt.setLhs(new Identifier(this.curToken!, this.curToken!.literal));
+
+      if (!this.__expectPeek(ASSIGN)) {
+        throw new Error(`expect =, but got ${this.curToken?.type}`);
+      }
+
+      while (!this.__curTokenIs(SEMICOLON)) {
+        this.__nextToken();
+      }
+      return stmt;
+    }
+
+    __parseExpression(precedence: number): Expression {
+      const prefixFn = this.prefixParseFns.get(this.curToken!.type);
+      if (prefixFn == null) {
+        throw new Error(`expect prefix parse function for ${this.curToken}`);
+      }
+      const boundPrefixFn = prefixFn.bind(this);
+      const expr = boundPrefixFn();
+      return expr;
+    }
+
+    __parseExpressionStatement(): ExpressionStatement {
+      const stmt = new ExpressionStatement(this.curToken!);
+      stmt.setExpression(this.__parseExpression(LOWEST));
+      if (!this.__expectPeek(SEMICOLON)) {
+        throw new Error(`expect semicolon, but got ${this.curToken}`);
+      }
+      return stmt;
+    }
+
+    __parseStatement(): Statement {
+      switch (this.curToken!.type) {
+        case KW_LET: {
+          return this.__parseLetStatement();
+        }
+        default:
+          return this.__parseExpressionStatement();
+      }
+    }
+
+    parse(): Program {
+      const program = new Program();
+
+      while (this.curToken?.type !== EOF) {
+        const stmt = this.__parseStatement();
+        program.push(stmt);
+        this.__nextToken();
+      }
+      return program;
+    }
+  }
+
+  const parser = new Parser("x;");
+  const program = parser.parse();
+  console.log(JSON.stringify(program));
 }
