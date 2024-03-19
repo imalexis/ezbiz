@@ -7,6 +7,13 @@ var ID = "id";
 var INT = "int";
 var ASSIGN = "=";
 var PLUS = "+";
+var MINUS = "-";
+var ASTERISK = "*";
+var SLASH = "/";
+var LESS_THAN = "<";
+var LESS_THAN_EQUAL = "<=";
+var GREATER_THAN = ">";
+var GREATER_THAN_EQUAL = ">=";
 var COMMA = ",";
 var SEMICOLON = ";";
 var LPAREN = "(";
@@ -80,6 +87,38 @@ var Lexer = /** @class */ (function () {
         switch (this.ch) {
             case "+": {
                 tok = { type: PLUS, literal: "+" };
+                break;
+            }
+            case "-": {
+                tok = { type: MINUS, literal: "-" };
+                break;
+            }
+            case "*": {
+                tok = { type: ASTERISK, literal: "*" };
+                break;
+            }
+            case "/": {
+                tok = { type: SLASH, literal: "/" };
+                break;
+            }
+            case "<": {
+                if (this.input[this.readPosition] === "=") {
+                    tok = { type: LESS_THAN_EQUAL, literal: "<=" };
+                    this.__readChar();
+                }
+                else {
+                    tok = { type: LESS_THAN, literal: "<" };
+                }
+                break;
+            }
+            case ">": {
+                if (this.input[this.readPosition] === "=") {
+                    tok = { type: GREATER_THAN_EQUAL, literal: ">=" };
+                    this.__readChar();
+                }
+                else {
+                    tok = { type: GREATER_THAN, literal: ">" };
+                }
                 break;
             }
             case "=": {
@@ -191,6 +230,60 @@ var parser;
         };
         return Identifier;
     }());
+    var IntegerLiteral = /** @class */ (function () {
+        function IntegerLiteral(token, value) {
+            this.token = token;
+            this.value = value;
+        }
+        IntegerLiteral.prototype.tokenLiteral = function () {
+            return this.token.literal;
+        };
+        IntegerLiteral.prototype.toString = function () {
+            return this.token.literal;
+        };
+        return IntegerLiteral;
+    }());
+    var PrefixExpression = /** @class */ (function () {
+        function PrefixExpression(token) {
+            this.token = token;
+        }
+        PrefixExpression.prototype.tokenLiteral = function () {
+            return this.token.literal;
+        };
+        PrefixExpression.prototype.toString = function () {
+            var _a;
+            return "".concat(this.operator).concat((_a = this.right) === null || _a === void 0 ? void 0 : _a.toString());
+        };
+        PrefixExpression.prototype.setOperator = function (operator) {
+            this.operator = operator;
+        };
+        PrefixExpression.prototype.setRight = function (expression) {
+            this.right = expression;
+        };
+        return PrefixExpression;
+    }());
+    var InflixExpression = /** @class */ (function () {
+        function InflixExpression(token) {
+            this.token = token;
+        }
+        InflixExpression.prototype.tokenLiteral = function () {
+            return this.token.literal;
+        };
+        InflixExpression.prototype.toString = function () {
+            var _a, _b;
+            return "(".concat((_a = this.left) === null || _a === void 0 ? void 0 : _a.toString(), " ").concat(this.operator, " ").concat((_b = this.right) === null || _b === void 0 ? void 0 : _b.toString(), ")");
+        };
+        InflixExpression.prototype.setOperator = function (operator) {
+            this.operator = operator;
+        };
+        InflixExpression.prototype.setLeft = function (left) {
+            this.left = left;
+        };
+        InflixExpression.prototype.setRight = function (right) {
+            this.right = right;
+        };
+        return InflixExpression;
+    }());
     var LetStatement = /** @class */ (function () {
         function LetStatement(token) {
             this.token = token;
@@ -256,7 +349,26 @@ var parser;
             this.__nextToken();
             this.prefixParseFns = new Map();
             this.inflixParseFns = new Map();
+            this.precedences = new Map();
+            this.precedences.set(PLUS, SUM);
+            this.precedences.set(MINUS, SUM);
+            this.precedences.set(ASTERISK, PRODUCT);
+            this.precedences.set(SLASH, PRODUCT);
+            this.precedences.set(LESS_THAN, LESSGREATER);
+            this.precedences.set(LESS_THAN_EQUAL, LESSGREATER);
+            this.precedences.set(GREATER_THAN, LESSGREATER);
+            this.precedences.set(GREATER_THAN_EQUAL, LESSGREATER);
             this.prefixParseFns.set(ID, this.__parseIdentifier);
+            this.prefixParseFns.set(INT, this.__parseIntegerLiteral);
+            this.prefixParseFns.set(MINUS, this.__parsePrefixExpression);
+            this.inflixParseFns.set(PLUS, this.__parseInflixExpression);
+            this.inflixParseFns.set(MINUS, this.__parseInflixExpression);
+            this.inflixParseFns.set(ASTERISK, this.__parseInflixExpression);
+            this.inflixParseFns.set(SLASH, this.__parseInflixExpression);
+            this.inflixParseFns.set(LESS_THAN, this.__parseInflixExpression);
+            this.inflixParseFns.set(LESS_THAN_EQUAL, this.__parseInflixExpression);
+            this.inflixParseFns.set(GREATER_THAN, this.__parseInflixExpression);
+            this.inflixParseFns.set(GREATER_THAN_EQUAL, this.__parseInflixExpression);
         }
         Parser.prototype.__nextToken = function () {
             this.curToken = this.peekToken;
@@ -264,6 +376,34 @@ var parser;
         };
         Parser.prototype.__parseIdentifier = function () {
             return new Identifier(this.curToken, this.curToken.literal);
+        };
+        Parser.prototype.__parseIntegerLiteral = function () {
+            var value = parseInt(this.curToken.literal);
+            return new IntegerLiteral(this.curToken, value);
+        };
+        Parser.prototype.__parsePrefixExpression = function () {
+            var expr = new PrefixExpression(this.curToken);
+            expr.setOperator(this.curToken.literal);
+            this.__nextToken();
+            expr.setRight(this.__parseExpression(PREFIX));
+            return expr;
+        };
+        Parser.prototype.__parseInflixExpression = function (left) {
+            var expr = new InflixExpression(this.curToken);
+            expr.setOperator(this.curToken.literal);
+            expr.setLeft(left);
+            var precedence = this.__curPrecedence();
+            this.__nextToken();
+            expr.setRight(this.__parseExpression(precedence));
+            return expr;
+        };
+        Parser.prototype.__peekPrecedence = function () {
+            var _a;
+            return (_a = this.precedences.get(this.peekToken.type)) !== null && _a !== void 0 ? _a : LOWEST;
+        };
+        Parser.prototype.__curPrecedence = function () {
+            var _a;
+            return (_a = this.precedences.get(this.curToken.type)) !== null && _a !== void 0 ? _a : LOWEST;
         };
         Parser.prototype.__expectPeek = function (tokenType) {
             var _a;
@@ -276,6 +416,10 @@ var parser;
         Parser.prototype.__curTokenIs = function (tokenType) {
             var _a;
             return ((_a = this.curToken) === null || _a === void 0 ? void 0 : _a.type) === tokenType;
+        };
+        Parser.prototype.__peekTokenIs = function (tokenType) {
+            var _a;
+            return ((_a = this.peekToken) === null || _a === void 0 ? void 0 : _a.type) === tokenType;
         };
         Parser.prototype.__parseLetStatement = function () {
             var _a, _b;
@@ -298,8 +442,18 @@ var parser;
                 throw new Error("expect prefix parse function for ".concat(this.curToken));
             }
             var boundPrefixFn = prefixFn.bind(this);
-            var expr = boundPrefixFn();
-            return expr;
+            var left = boundPrefixFn();
+            while (!this.__peekTokenIs(SEMICOLON) &&
+                precedence < this.__peekPrecedence()) {
+                var inflixFn = this.inflixParseFns.get(this.peekToken.type);
+                if (inflixFn == null) {
+                    return left;
+                }
+                var boundInflixFn = inflixFn.bind(this);
+                this.__nextToken();
+                left = boundInflixFn(left);
+            }
+            return left;
         };
         Parser.prototype.__parseExpressionStatement = function () {
             var stmt = new ExpressionStatement(this.curToken);
@@ -330,7 +484,7 @@ var parser;
         };
         return Parser;
     }());
-    var parser = new Parser("x;");
+    var parser = new Parser("1 - 3 <= 4;");
     var program = parser.parse();
-    console.log(JSON.stringify(program));
+    console.log(JSON.stringify(program.toString()));
 })(parser || (exports.parser = parser = {}));

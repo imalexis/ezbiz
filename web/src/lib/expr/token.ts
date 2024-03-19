@@ -1,3 +1,5 @@
+import { requestSubscription } from "relay-runtime";
+
 type TokenType =
   | "illegal"
   | "eof"
@@ -5,6 +7,13 @@ type TokenType =
   | "int"
   | "="
   | "+"
+  | "-"
+  | "*"
+  | "/"
+  | "<"
+  | "<="
+  | ">"
+  | ">="
   | ","
   | ";"
   | "("
@@ -21,6 +30,14 @@ const INT: TokenType = "int";
 
 const ASSIGN: TokenType = "=";
 const PLUS: TokenType = "+";
+const MINUS: TokenType = "-";
+const ASTERISK: TokenType = "*";
+const SLASH: TokenType = "/";
+
+const LESS_THAN: TokenType = "<";
+const LESS_THAN_EQUAL = "<=";
+const GREATER_THAN: TokenType = ">";
+const GREATER_THAN_EQUAL: TokenType = ">=";
 
 const COMMA: TokenType = ",";
 const SEMICOLON: TokenType = ";";
@@ -119,6 +136,36 @@ class Lexer {
     switch (this.ch) {
       case "+": {
         tok = { type: PLUS, literal: "+" };
+        break;
+      }
+      case "-": {
+        tok = { type: MINUS, literal: "-" };
+        break;
+      }
+      case "*": {
+        tok = { type: ASTERISK, literal: "*" };
+        break;
+      }
+      case "/": {
+        tok = { type: SLASH, literal: "/" };
+        break;
+      }
+      case "<": {
+        if (this.input[this.readPosition] === "=") {
+          tok = { type: LESS_THAN_EQUAL, literal: "<=" };
+          this.__readChar();
+        } else {
+          tok = { type: LESS_THAN, literal: "<" };
+        }
+        break;
+      }
+      case ">": {
+        if (this.input[this.readPosition] === "=") {
+          tok = { type: GREATER_THAN_EQUAL, literal: ">=" };
+          this.__readChar();
+        } else {
+          tok = { type: GREATER_THAN, literal: ">" };
+        }
         break;
       }
       case "=": {
@@ -252,6 +299,83 @@ export namespace parser {
     }
   }
 
+  class IntegerLiteral implements Expression {
+    token: Token;
+    value: number;
+
+    tokenLiteral(): string {
+      return this.token.literal;
+    }
+
+    toString(): string {
+      return this.token.literal;
+    }
+
+    constructor(token: Token, value: number) {
+      this.token = token;
+      this.value = value;
+    }
+  }
+
+  class PrefixExpression implements Expression {
+    token: Token;
+    operator: string | undefined;
+    right: Expression | undefined;
+
+    tokenLiteral(): string {
+      return this.token.literal;
+    }
+
+    toString(): string {
+      return `${this.operator}${this.right?.toString()}`;
+    }
+
+    setOperator(operator: string) {
+      this.operator = operator;
+    }
+
+    setRight(expression: Expression) {
+      this.right = expression;
+    }
+
+    constructor(token: Token) {
+      this.token = token;
+    }
+  }
+
+  class InflixExpression implements Expression {
+    token: Token;
+    operator: string | undefined;
+    left: Expression | undefined;
+    right: Expression | undefined;
+
+    tokenLiteral(): string {
+      return this.token.literal;
+    }
+
+    toString(): string {
+      return `(${this.left?.toString()} ${
+        this.operator
+      } ${this.right?.toString()})`;
+    }
+
+    setOperator(operator: string) {
+      this.operator = operator;
+    }
+
+    setLeft(left: Expression) {
+      this.left = left;
+    }
+
+    setRight(right: Expression) {
+      this.right = right;
+    }
+
+    constructor(token: Token) {
+      this.token = token;
+    }
+  }
+
   interface Statement extends Node {}
 
   class LetStatement implements Statement {
@@ -339,6 +463,7 @@ export namespace parser {
     peekToken: Token | undefined;
     prefixParseFns: Map<TokenType, () => Expression>;
     inflixParseFns: Map<TokenType, (lhs: Expression) => Expression>;
+    precedences: Map<TokenType, 1 | 2 | 3 | 4 | 5 | 6>;
 
     __nextToken() {
       this.curToken = this.peekToken;
@@ -347,15 +472,70 @@ export namespace parser {
 
     constructor(input: string) {
       this.lexer = new Lexer(input);
+
       this.__nextToken();
       this.__nextToken();
+
       this.prefixParseFns = new Map();
       this.inflixParseFns = new Map();
+      this.precedences = new Map();
+
+      this.precedences.set(PLUS, SUM);
+      this.precedences.set(MINUS, SUM);
+      this.precedences.set(ASTERISK, PRODUCT);
+      this.precedences.set(SLASH, PRODUCT);
+      this.precedences.set(LESS_THAN, LESSGREATER);
+      this.precedences.set(LESS_THAN_EQUAL, LESSGREATER);
+      this.precedences.set(GREATER_THAN, LESSGREATER);
+      this.precedences.set(GREATER_THAN_EQUAL, LESSGREATER);
+
       this.prefixParseFns.set(ID, this.__parseIdentifier);
+      this.prefixParseFns.set(INT, this.__parseIntegerLiteral);
+      this.prefixParseFns.set(MINUS, this.__parsePrefixExpression);
+
+      this.inflixParseFns.set(PLUS, this.__parseInflixExpression);
+      this.inflixParseFns.set(MINUS, this.__parseInflixExpression);
+      this.inflixParseFns.set(ASTERISK, this.__parseInflixExpression);
+      this.inflixParseFns.set(SLASH, this.__parseInflixExpression);
+      this.inflixParseFns.set(LESS_THAN, this.__parseInflixExpression);
+      this.inflixParseFns.set(LESS_THAN_EQUAL, this.__parseInflixExpression);
+      this.inflixParseFns.set(GREATER_THAN, this.__parseInflixExpression);
+      this.inflixParseFns.set(GREATER_THAN_EQUAL, this.__parseInflixExpression);
     }
 
     __parseIdentifier(): Expression {
       return new Identifier(this.curToken!, this.curToken!.literal);
+    }
+
+    __parseIntegerLiteral(): Expression {
+      const value = parseInt(this.curToken!.literal);
+      return new IntegerLiteral(this.curToken!, value);
+    }
+
+    __parsePrefixExpression(): Expression {
+      const expr = new PrefixExpression(this.curToken!);
+      expr.setOperator(this.curToken!.literal);
+      this.__nextToken();
+      expr.setRight(this.__parseExpression(PREFIX));
+      return expr;
+    }
+
+    __parseInflixExpression(left: Expression): Expression {
+      const expr = new InflixExpression(this.curToken!);
+      expr.setOperator(this.curToken!.literal);
+      expr.setLeft(left);
+      const precedence = this.__curPrecedence();
+      this.__nextToken();
+      expr.setRight(this.__parseExpression(precedence));
+      return expr;
+    }
+
+    __peekPrecedence(): 1 | 2 | 3 | 4 | 5 | 6 {
+      return this.precedences.get(this.peekToken!.type) ?? LOWEST;
+    }
+
+    __curPrecedence(): 1 | 2 | 3 | 4 | 5 | 6 {
+      return this.precedences.get(this.curToken!.type) ?? LOWEST;
     }
 
     __expectPeek(tokenType: TokenType) {
@@ -368,6 +548,10 @@ export namespace parser {
 
     __curTokenIs(tokenType: TokenType) {
       return this.curToken?.type === tokenType;
+    }
+
+    __peekTokenIs(tokenType: TokenType) {
+      return this.peekToken?.type === tokenType;
     }
 
     __parseLetStatement(): LetStatement {
@@ -394,8 +578,22 @@ export namespace parser {
         throw new Error(`expect prefix parse function for ${this.curToken}`);
       }
       const boundPrefixFn = prefixFn.bind(this);
-      const expr = boundPrefixFn();
-      return expr;
+      let left = boundPrefixFn();
+
+      while (
+        !this.__peekTokenIs(SEMICOLON) &&
+        precedence < this.__peekPrecedence()
+      ) {
+        const inflixFn = this.inflixParseFns.get(this.peekToken!.type);
+        if (inflixFn == null) {
+          return left;
+        }
+        const boundInflixFn = inflixFn.bind(this);
+        this.__nextToken();
+        left = boundInflixFn(left);
+      }
+
+      return left;
     }
 
     __parseExpressionStatement(): ExpressionStatement {
@@ -429,7 +627,7 @@ export namespace parser {
     }
   }
 
-  const parser = new Parser("x;");
+  const parser = new Parser("1 - 3 <= 4;");
   const program = parser.parse();
-  console.log(JSON.stringify(program));
+  console.log(JSON.stringify(program.toString()));
 }
