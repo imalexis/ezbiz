@@ -388,7 +388,7 @@ export namespace parser {
     }
 
     toString(): string {
-      return this.token.literal;
+      return `let ${this.lhs?.toString()} = ${this.rhs?.toString()}`;
     }
 
     setLhs(lhs: Identifier) {
@@ -566,8 +566,12 @@ export namespace parser {
         throw new Error(`expect =, but got ${this.curToken?.type}`);
       }
 
-      while (!this.__curTokenIs(SEMICOLON)) {
-        this.__nextToken();
+      this.__nextToken();
+
+      stmt.setRhs(this.__parseExpression(LOWEST));
+
+      if (!this.__expectPeek(SEMICOLON)) {
+        throw new Error(`expect ;, but got ${this.curToken?.type}`);
       }
       return stmt;
     }
@@ -575,6 +579,7 @@ export namespace parser {
     __parseExpression(precedence: number): Expression {
       const prefixFn = this.prefixParseFns.get(this.curToken!.type);
       if (prefixFn == null) {
+        console.log(this);
         throw new Error(`expect prefix parse function for ${this.curToken}`);
       }
       const boundPrefixFn = prefixFn.bind(this);
@@ -627,7 +632,71 @@ export namespace parser {
     }
   }
 
-  const parser = new Parser("1 - 3 <= 4;");
+  class Evaluator {
+    constructor() {}
+
+    evalExpression(expr: Expression): number {
+      if (expr instanceof IntegerLiteral) {
+        return expr.value;
+      }
+
+      if (expr instanceof PrefixExpression) {
+        switch (expr.operator) {
+          case "-": {
+            return -this.evalExpression(expr.right!);
+          }
+        }
+      }
+
+      if (expr instanceof InflixExpression) {
+        const leftValue = this.evalExpression(expr.left!);
+        const rightValue = this.evalExpression(expr.right!);
+        switch (expr.operator) {
+          case "+":
+            return leftValue + rightValue;
+          case "-":
+            return leftValue - rightValue;
+          case "*":
+            return leftValue * rightValue;
+          case "/":
+            return leftValue / rightValue;
+          case ">":
+            return leftValue > rightValue ? 1 : 0;
+          default:
+            throw new Error(`not supportted yet, operator = ${expr.operator}`);
+        }
+      }
+
+      throw new Error("not supported, no such branch");
+    }
+
+    eval(program: Program): Array<number> {
+      return program.statements
+        .map((stmt) => {
+          if (stmt instanceof ExpressionStatement) {
+            const expr = stmt.expression;
+            return this.evalExpression(expr!);
+          }
+          return null;
+        })
+        .filter((v) => v != null) as Array<number>;
+    }
+  }
+
+  const parser = new Parser(" 3 > 1 + 2 * 3 + 3 / 1; -5; 1 + 3 * -5;");
   const program = parser.parse();
-  console.log(JSON.stringify(program.toString()));
+  const evaluator = new Evaluator();
+  const values = evaluator.eval(program);
+  console.log("values = ", values);
+  // 1. get money by label, 3000
+  // 2. replace money with 3000
+  // 3. create source "3000 > 200"
+  // 4. create evaluator: new Evaluator()
+  // 5. const result = eval(source);
+  // if result == true {
+  //   return <Queston .../>
+  // } else return null;
+  //   const source = `
+  //     money > 200;
+  //   `;
 }

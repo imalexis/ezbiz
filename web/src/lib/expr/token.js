@@ -292,7 +292,8 @@ var parser;
             return this.token.literal;
         };
         LetStatement.prototype.toString = function () {
-            return this.token.literal;
+            var _a, _b;
+            return "let ".concat((_a = this.lhs) === null || _a === void 0 ? void 0 : _a.toString(), " = ").concat((_b = this.rhs) === null || _b === void 0 ? void 0 : _b.toString());
         };
         LetStatement.prototype.setLhs = function (lhs) {
             this.lhs = lhs;
@@ -422,7 +423,7 @@ var parser;
             return ((_a = this.peekToken) === null || _a === void 0 ? void 0 : _a.type) === tokenType;
         };
         Parser.prototype.__parseLetStatement = function () {
-            var _a, _b;
+            var _a, _b, _c;
             var stmt = new LetStatement(this.curToken);
             if (!this.__expectPeek(ID)) {
                 throw new Error("expect ID, but got ".concat((_a = this.curToken) === null || _a === void 0 ? void 0 : _a.type));
@@ -431,14 +432,17 @@ var parser;
             if (!this.__expectPeek(ASSIGN)) {
                 throw new Error("expect =, but got ".concat((_b = this.curToken) === null || _b === void 0 ? void 0 : _b.type));
             }
-            while (!this.__curTokenIs(SEMICOLON)) {
-                this.__nextToken();
+            this.__nextToken();
+            stmt.setRhs(this.__parseExpression(LOWEST));
+            if (!this.__expectPeek(SEMICOLON)) {
+                throw new Error("expect ;, but got ".concat((_c = this.curToken) === null || _c === void 0 ? void 0 : _c.type));
             }
             return stmt;
         };
         Parser.prototype.__parseExpression = function (precedence) {
             var prefixFn = this.prefixParseFns.get(this.curToken.type);
             if (prefixFn == null) {
+                console.log(this);
                 throw new Error("expect prefix parse function for ".concat(this.curToken));
             }
             var boundPrefixFn = prefixFn.bind(this);
@@ -484,7 +488,74 @@ var parser;
         };
         return Parser;
     }());
-    var parser = new Parser("1 - 3 <= 4;");
+    var Evaluator = /** @class */ (function () {
+        function Evaluator() {
+        }
+        Evaluator.prototype.evalExpression = function (expr) {
+            if (expr instanceof IntegerLiteral) {
+                return expr.value;
+            }
+            if (expr instanceof PrefixExpression) {
+                switch (expr.operator) {
+                    case "-": {
+                        return -this.evalExpression(expr.right);
+                    }
+                }
+            }
+            if (expr instanceof InflixExpression) {
+                var leftValue = this.evalExpression(expr.left);
+                var rightValue = this.evalExpression(expr.right);
+                switch (expr.operator) {
+                    case "+":
+                        return leftValue + rightValue;
+                    case "-":
+                        return leftValue - rightValue;
+                    case "*":
+                        return leftValue * rightValue;
+                    case "/":
+                        return leftValue / rightValue;
+                    case ">":
+                        return leftValue > rightValue ? 1 : 0;
+                    default:
+                        throw new Error("not supportted yet, operator = ".concat(expr.operator));
+                }
+            }
+            throw new Error("not supported, no such branch");
+        };
+        Evaluator.prototype.eval = function (program) {
+            var _this = this;
+            return program.statements
+                .map(function (stmt) {
+                if (stmt instanceof ExpressionStatement) {
+                    var expr = stmt.expression;
+                    return _this.evalExpression(expr);
+                }
+                return null;
+            })
+                .filter(function (v) { return v != null; });
+        };
+        return Evaluator;
+    }());
+    // - Substitation
+    // - Environment
+    //   - set(name, value)
+    //   - get(name)
+    //  set(a, 7)
+    //  set(b, get(a) + 1)
+    var parser = new Parser(" 3 > 1 + 2 * 3 + 3 / 1; -5; 1 + 3 * -5;");
     var program = parser.parse();
-    console.log(JSON.stringify(program.toString()));
+    var evaluator = new Evaluator();
+    var values = evaluator.eval(program);
+    console.log("values = ", values);
+    // 1. get money by label, 3000
+    // 2. replace money with 3000
+    // 3. create source "3000 > 200"
+    // 4. create evaluator: new Evaluator()
+    // 5. const result = eval(source);
+    // if result == true {
+    //   return <Queston .../>
+    // } else return null;
+    //   const source = `
+    //     money > 200;
+    //   `;
 })(parser || (exports.parser = parser = {}));
