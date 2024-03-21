@@ -3,11 +3,11 @@ import graphql from "babel-plugin-relay/macro";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import { useContext, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
-import { DateQuestionUpdateMutation } from "./__generated__/DateQuestionUpdateMutation.graphql";
 import { useParams } from "react-router-dom";
-import { DateQuestionResponseQuery } from "./__generated__/DateQuestionResponseQuery.graphql";
 import FormInstanceContext from "../../FormInstanceContext";
 import { ResponseModeDateQuestionFragment$key } from "./__generated__/ResponseModeDateQuestionFragment.graphql";
+import { ResponseModeDateQuestionUpdateMutation } from "./__generated__/ResponseModeDateQuestionUpdateMutation.graphql";
+import { ResponseModeDateQuestionResponseQuery } from "./__generated__/ResponseModeDateQuestionResponseQuery.graphql";
 
 type Props = {
   fragmentKey: ResponseModeDateQuestionFragment$key;
@@ -19,8 +19,9 @@ export default function ResponseModeDateQuestion({ fragmentKey }: Props) {
   const handleChange: DatePickerProps["onChange"] = (date, dateString) => {
     setDate(date);
   };
-  const [updateQuestion] = useMutation<DateQuestionUpdateMutation>(mutation);
-  const data = useLazyLoadQuery<DateQuestionResponseQuery>(query, {
+  const [updateQuestion] =
+    useMutation<ResponseModeDateQuestionUpdateMutation>(mutation);
+  const data = useLazyLoadQuery<ResponseModeDateQuestionResponseQuery>(query, {
     questionID: question.id,
     formInstanceID: instanceID ?? "",
   });

@@ -4,9 +4,9 @@ import { useContext, useState } from "react";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import { useParams } from "react-router-dom";
 import FormInstanceContext from "../../FormInstanceContext";
-import { MultiChoiceQuestionUpdateMutation } from "./__generated__/MultiChoiceQuestionUpdateMutation.graphql";
-import { MultiChoiceQuestionResponseQuery } from "./__generated__/MultiChoiceQuestionResponseQuery.graphql";
 import { ResponseModeMultiChoiceQuestionFragment$key } from "./__generated__/ResponseModeMultiChoiceQuestionFragment.graphql";
+import { ResponseModeMultiChoiceQuestionResponseQuery } from "./__generated__/ResponseModeMultiChoiceQuestionResponseQuery.graphql";
+import { ResponseModeMultiChoiceQuestionUpdateMutation } from "./__generated__/ResponseModeMultiChoiceQuestionUpdateMutation.graphql";
 
 type Props = {
   fragmentKey: ResponseModeMultiChoiceQuestionFragment$key;
@@ -15,16 +15,19 @@ export function ResponseModeMultiChoiceQuestion({ fragmentKey }: Props) {
   const { status } = useContext(FormInstanceContext);
   const question = useFragment(fragment, fragmentKey);
   const { instanceID } = useParams();
-  const data = useLazyLoadQuery<MultiChoiceQuestionResponseQuery>(query, {
-    questionID: question.id,
-    formInstanceID: instanceID ?? "",
-  });
+  const data = useLazyLoadQuery<ResponseModeMultiChoiceQuestionResponseQuery>(
+    query,
+    {
+      questionID: question.id,
+      formInstanceID: instanceID ?? "",
+    }
+  );
   const responseID = (data.questionResponses.edges ?? [])[0]?.node?.id ?? "";
   const initialResponseValue =
     (data.questionResponses.edges ?? [])[0]?.node?.value ?? "";
   const [value, setValue] = useState(initialResponseValue);
   const [commitUpdate] =
-    useMutation<MultiChoiceQuestionUpdateMutation>(updateMutation);
+    useMutation<ResponseModeMultiChoiceQuestionUpdateMutation>(updateMutation);
   const handleChange = (e: RadioChangeEvent) => {
     setValue(e.target.value);
     commitUpdate({

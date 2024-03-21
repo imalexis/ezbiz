@@ -2,12 +2,12 @@ import { Card } from "antd";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
 import { useContext, useState } from "react";
-import { FileQuestionUploadFileMutation } from "./__generated__/FileQuestionUploadFileMutation.graphql";
-import { FileQuestionUpdateMutation } from "./__generated__/FileQuestionUpdateMutation.graphql";
 import { useParams } from "react-router-dom";
-import { FileQuestionResponseQuery } from "./__generated__/FileQuestionResponseQuery.graphql";
 import FormInstanceContext from "../../FormInstanceContext";
 import { ResponseModeFileQuestionFragment$key } from "./__generated__/ResponseModeFileQuestionFragment.graphql";
+import { ResponseModeFileQuestionUploadFileMutation } from "./__generated__/ResponseModeFileQuestionUploadFileMutation.graphql";
+import { ResponseModeFileQuestionUpdateMutation } from "./__generated__/ResponseModeFileQuestionUpdateMutation.graphql";
+import { ResponseModeFileQuestionResponseQuery } from "./__generated__/ResponseModeFileQuestionResponseQuery.graphql";
 
 type Props = { fragmentKey: ResponseModeFileQuestionFragment$key };
 
@@ -16,7 +16,7 @@ export function ResponseModeFileQuestion({ fragmentKey }: Props) {
   const { instanceID } = useParams();
   const question = useFragment(fragment, fragmentKey);
   const [uploadFile, uploadFileInFlight] =
-    useMutation<FileQuestionUploadFileMutation>(uploadFileMutation);
+    useMutation<ResponseModeFileQuestionUploadFileMutation>(uploadFileMutation);
   const [file, setFile] = useState<File | null>(null);
   const [uploadFileStatus, setUploadFileStatus] = useState<
     "success" | "failed" | null
@@ -26,10 +26,11 @@ export function ResponseModeFileQuestion({ fragmentKey }: Props) {
       setFile(e.target.files[0]);
     }
   };
-  const [updateQuestionResponse] = useMutation<FileQuestionUpdateMutation>(
-    updateQuestionResponseMutation
-  );
-  const data = useLazyLoadQuery<FileQuestionResponseQuery>(query, {
+  const [updateQuestionResponse] =
+    useMutation<ResponseModeFileQuestionUpdateMutation>(
+      updateQuestionResponseMutation
+    );
+  const data = useLazyLoadQuery<ResponseModeFileQuestionResponseQuery>(query, {
     questionID: question.id,
     formInstanceID: instanceID ?? "",
   });

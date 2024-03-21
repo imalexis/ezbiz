@@ -8,11 +8,17 @@ import Title from "antd/es/typography/Title";
 type Props = {
   fragmentKey: QuestionGroupFragment$key;
   setLocalQuestionExtraData: (idx: number, extraData: string) => void;
+  localSharedValues?: Map<string, string>;
+  setLocalSharedValues?: React.Dispatch<
+    React.SetStateAction<Map<string, string>>
+  >;
 };
 
 export function QuestionGroup({
   fragmentKey,
   setLocalQuestionExtraData,
+  localSharedValues,
+  setLocalSharedValues,
 }: Props) {
   const group = useFragment(fragment, fragmentKey);
   return (
@@ -26,6 +32,8 @@ export function QuestionGroup({
           fragmentKey={question}
           setLocalQuestionExtraData={setLocalQuestionExtraData}
           questionIndex={index}
+          localSharedValues={localSharedValues}
+          setLocalSharedValues={setLocalSharedValues}
         />
       ))}
     </Flex>

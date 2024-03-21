@@ -9,6 +9,10 @@ type Props = {
   mode: "design" | "response";
   setLocalQuestionExtraData: (idx: number, extraData: string) => void;
   questionIndex: number;
+  localSharedValues?: Map<string, string>;
+  setLocalSharedValues?: React.Dispatch<
+    React.SetStateAction<Map<string, string>>
+  >;
 };
 
 export default function GeneralQuestion({
@@ -17,6 +21,8 @@ export default function GeneralQuestion({
   mode,
   setLocalQuestionExtraData,
   questionIndex,
+  localSharedValues,
+  setLocalSharedValues,
 }: Props) {
   if (mode === "design") {
     return (
@@ -28,5 +34,11 @@ export default function GeneralQuestion({
     );
   }
 
-  return <Question fragmentKey={fragmentKey!} />;
+  return (
+    <Question
+      fragmentKey={fragmentKey!}
+      localSharedValues={localSharedValues}
+      setLocalSharedValues={setLocalSharedValues}
+    />
+  );
 }

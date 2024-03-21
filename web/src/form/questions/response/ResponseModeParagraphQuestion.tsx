@@ -4,9 +4,9 @@ import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { ParagraphQuestionResponseQuery } from "./__generated__/ParagraphQuestionResponseQuery.graphql";
-import { ParagraphQuestionUpdateMutation } from "./__generated__/ParagraphQuestionUpdateMutation.graphql";
 import { ResponseModeParagraphQuestionFragment$key } from "./__generated__/ResponseModeParagraphQuestionFragment.graphql";
+import { ResponseModeParagraphQuestionResponseQuery } from "./__generated__/ResponseModeParagraphQuestionResponseQuery.graphql";
+import { ResponseModeParagraphQuestionUpdateMutation } from "./__generated__/ResponseModeParagraphQuestionUpdateMutation.graphql";
 
 type Props = {
   fragmentKey: ResponseModeParagraphQuestionFragment$key;
@@ -14,14 +14,18 @@ type Props = {
 export function RespondModeParagraphQuestion({ fragmentKey }: Props) {
   const { instanceID } = useParams();
   const question = useFragment(fragment, fragmentKey);
-  const data = useLazyLoadQuery<ParagraphQuestionResponseQuery>(query, {
-    questionID: question.id,
-    formInstanceID: instanceID ?? "",
-  });
-  const responseID = (data.questionResponses.edges ?? [])[0]?.node?.id ?? "";
-  const [updateParagraph] = useMutation<ParagraphQuestionUpdateMutation>(
-    updateParagraphMutation
+  const data = useLazyLoadQuery<ResponseModeParagraphQuestionResponseQuery>(
+    query,
+    {
+      questionID: question.id,
+      formInstanceID: instanceID ?? "",
+    }
   );
+  const responseID = (data.questionResponses.edges ?? [])[0]?.node?.id ?? "";
+  const [updateParagraph] =
+    useMutation<ResponseModeParagraphQuestionUpdateMutation>(
+      updateParagraphMutation
+    );
   const [value, setValue] = useState(
     (data.questionResponses.edges ?? [])[0]?.node?.value ?? ""
   );

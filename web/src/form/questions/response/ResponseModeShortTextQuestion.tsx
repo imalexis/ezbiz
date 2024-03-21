@@ -4,9 +4,9 @@ import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import FormInstanceContext from "../../FormInstanceContext";
-import { ShortTextQuestionResponseQuery } from "./__generated__/ShortTextQuestionResponseQuery.graphql";
-import { ShortTextQuestionUpdateMutation } from "./__generated__/ShortTextQuestionUpdateMutation.graphql";
 import { ResponseModeShortTextQuestionFragment$key } from "./__generated__/ResponseModeShortTextQuestionFragment.graphql";
+import { ResponseModeShortTextQuestionResponseQuery } from "./__generated__/ResponseModeShortTextQuestionResponseQuery.graphql";
+import { ResponseModeShortTextQuestionUpdateMutation } from "./__generated__/ResponseModeShortTextQuestionUpdateMutation.graphql";
 
 type Props = {
   fragmentKey: ResponseModeShortTextQuestionFragment$key;
@@ -15,16 +15,32 @@ type Props = {
 export function RespondModeShortTextQuestion({ fragmentKey }: Props) {
   const question = useFragment(fragment, fragmentKey);
   const { instanceID } = useParams();
-  const data = useLazyLoadQuery<ShortTextQuestionResponseQuery>(query, {
-    questionID: question.id,
-    formInstanceID: instanceID ?? "",
-  });
+  const data = useLazyLoadQuery<ResponseModeShortTextQuestionResponseQuery>(
+    query,
+    {
+      questionID: question.id,
+      formInstanceID: instanceID ?? "",
+    }
+  );
   const responseID = (data.questionResponses.edges ?? [])[0]?.node?.id ?? "";
   const initialResponseValue =
     (data.questionResponses.edges ?? [])[0]?.node?.value ?? "";
   const [questionInput, setQuestionInput] = useState(initialResponseValue);
-  const [commit] = useMutation<ShortTextQuestionUpdateMutation>(mutation);
+  const [commit] =
+    useMutation<ResponseModeShortTextQuestionUpdateMutation>(mutation);
   const { status } = useContext(FormInstanceContext);
+  //   const responseContext =
+  //     useLazyLoadQuery<ResponseModeShortTextQuestionFormResponseContextQuery>(
+  //       formResponseQuery,
+  //       {
+  //         id: instanceID ?? "",
+  //       }
+  //     );
+  //   const responseContextFragment =
+  //     useFragment<ResponseModeShortTextQuestionFormResponseContextFragment$key>(
+  //       formResponseFragment,
+  //       responseContext.node
+  //     );
   return (
     <Card
       title={question.title}
@@ -97,6 +113,25 @@ const mutation = graphql`
   ) {
     updateQuestionResponse(input: $input, id: $id) {
       id
+    }
+  }
+`;
+
+const formResponseQuery = graphql`
+  query ResponseModeShortTextQuestionFormResponseContextQuery($id: ID!) {
+    node(id: $id) {
+      __typename
+      ...ResponseModeShortTextQuestionFormResponseContextFragment
+    }
+  }
+`;
+
+const formResponseFragment = graphql`
+  fragment ResponseModeShortTextQuestionFormResponseContextFragment on FormInstance {
+    id
+    questionResponse {
+      label
+      value
     }
   }
 `;

@@ -42,6 +42,9 @@ export function FormInstanceEntryPoint() {
       },
     });
   };
+  const [localSharedValues, setLocalSharedValues] = useState<
+    Map<string, string>
+  >(new Map());
   return (
     <Flex vertical>
       {contextHolder}
@@ -61,6 +64,8 @@ export function FormInstanceEntryPoint() {
                 key={index}
                 fragmentKey={g}
                 setLocalQuestionExtraData={(idx, extra) => {}}
+                localSharedValues={localSharedValues}
+                setLocalSharedValues={setLocalSharedValues}
               />
             ))}
           </Flex>

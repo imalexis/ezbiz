@@ -2,13 +2,17 @@ import { Card, Col, Flex, InputNumber, Slider } from "antd";
 import graphql from "babel-plugin-relay/macro";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import { useState } from "react";
-import { LinearScaleQuestionUpdateMutation } from "./__generated__/LinearScaleQuestionUpdateMutation.graphql";
-import { LinearScaleQuestionResponseQuery } from "./__generated__/LinearScaleQuestionResponseQuery.graphql";
 import { useParams } from "react-router-dom";
 import { ResponseModeLinearScaleQuestionFragment$key } from "./__generated__/ResponseModeLinearScaleQuestionFragment.graphql";
+import { ResponseModeLinearScaleQuestionUpdateMutation } from "./__generated__/ResponseModeLinearScaleQuestionUpdateMutation.graphql";
+import { ResponseModeLinearScaleQuestionResponseQuery } from "./__generated__/ResponseModeLinearScaleQuestionResponseQuery.graphql";
 
 type Props = {
   fragmentKey: ResponseModeLinearScaleQuestionFragment$key;
+  localSharedValues?: Map<string, string>;
+  setLocalSharedValues?: React.Dispatch<
+    React.SetStateAction<Map<string, string>>
+  >;
 };
 
 type Range = {
@@ -18,21 +22,25 @@ type Range = {
 
 export default function ResponseModeLinearScaleQuestion({
   fragmentKey,
+  localSharedValues,
+  setLocalSharedValues,
 }: Props) {
   const { instanceID } = useParams();
   const question = useFragment(fragment, fragmentKey);
   const extraData = JSON.parse(question.extraData) as Range;
   const [updateQuestionResponse] =
-    useMutation<LinearScaleQuestionUpdateMutation>(updateMutation);
-  const data = useLazyLoadQuery<LinearScaleQuestionResponseQuery>(query, {
-    questionID: question.id,
-    formInstanceID: instanceID ?? "",
-  });
+    useMutation<ResponseModeLinearScaleQuestionUpdateMutation>(updateMutation);
+  const data = useLazyLoadQuery<ResponseModeLinearScaleQuestionResponseQuery>(
+    query,
+    {
+      questionID: question.id,
+      formInstanceID: instanceID ?? "",
+    }
+  );
 
   const responseID = (data.questionResponses.edges ?? [])[0]?.node?.id ?? "";
   const initialValue =
     (data.questionResponses.edges ?? [])[0]?.node?.value ?? "";
-  console.log("v = ", initialValue);
   const [inputValue, setInputValue] = useState<number>(
     parseInt(initialValue) ?? 0
   );
@@ -44,6 +52,13 @@ export default function ResponseModeLinearScaleQuestion({
         id: responseID,
       },
     });
+    const newLocalSharedValues: Map<string, string> = new Map(
+      localSharedValues
+    );
+    newLocalSharedValues.set(question.label, inputValue.toString());
+    if (setLocalSharedValues != null) {
+      setLocalSharedValues(newLocalSharedValues);
+    }
   };
   return (
     <Card

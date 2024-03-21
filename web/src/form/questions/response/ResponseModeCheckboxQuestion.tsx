@@ -4,10 +4,10 @@ import { useContext, useState } from "react";
 import { useFragment, useLazyLoadQuery, useMutation } from "react-relay";
 import { useParams } from "react-router-dom";
 import FormInstanceContext from "../../FormInstanceContext";
-import { CheckboxQuestionResponseQuery } from "./__generated__/CheckboxQuestionResponseQuery.graphql";
-import { CheckboxQuestionUpdateMutation } from "./__generated__/CheckboxQuestionUpdateMutation.graphql";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import { ResponseModeCheckboxQuestionFragment$key } from "./__generated__/ResponseModeCheckboxQuestionFragment.graphql";
+import { ResponseModeCheckboxQuestionResponseQuery } from "./__generated__/ResponseModeCheckboxQuestionResponseQuery.graphql";
+import { ResponseModeCheckboxQuestionUpdateMutation } from "./__generated__/ResponseModeCheckboxQuestionUpdateMutation.graphql";
 
 type Props = {
   fragmentKey: ResponseModeCheckboxQuestionFragment$key;
@@ -17,10 +17,13 @@ export function ResponseModeCheckboxQuestion({ fragmentKey }: Props) {
   const { status } = useContext(FormInstanceContext);
   const question = useFragment(fragment, fragmentKey);
   const { instanceID } = useParams();
-  const data = useLazyLoadQuery<CheckboxQuestionResponseQuery>(query, {
-    questionID: question.id,
-    formInstanceID: instanceID ?? "",
-  });
+  const data = useLazyLoadQuery<ResponseModeCheckboxQuestionResponseQuery>(
+    query,
+    {
+      questionID: question.id,
+      formInstanceID: instanceID ?? "",
+    }
+  );
   const responseID = (data.questionResponses.edges ?? [])[0]?.node?.id ?? "";
   const initialResponseValue =
     (data.questionResponses.edges ?? [])[0]?.node?.value ?? "";
@@ -29,9 +32,10 @@ export function ResponseModeCheckboxQuestion({ fragmentKey }: Props) {
       ? (JSON.parse(initialResponseValue) as CheckboxValueType[])
       : []
   );
-  const [commitUpdate] = useMutation<CheckboxQuestionUpdateMutation>(
-    updateQuestionResponseMutation
-  );
+  const [commitUpdate] =
+    useMutation<ResponseModeCheckboxQuestionUpdateMutation>(
+      updateQuestionResponseMutation
+    );
   const handleChange = (list: CheckboxValueType[]) => {
     setCheckedList(list);
     commitUpdate({
