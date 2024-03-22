@@ -5,6 +5,7 @@ export type GeneralQuestionMetadata = {
   title: string;
   label: string;
   type: QuestionType;
+  rule: string;
   createdAt: string | null;
   extraData?: string | null;
 };

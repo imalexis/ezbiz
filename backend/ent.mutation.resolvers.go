@@ -12,9 +12,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/99designs/gqlgen/graphql"
-
 	"ezbiz.com/ent"
+	"github.com/99designs/gqlgen/graphql"
 )
 
 // CreateFormSpec is the resolver for the createFormSpec field.

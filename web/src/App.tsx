@@ -6,13 +6,9 @@ import { Button, Card, Checkbox, Flex, Form, Input, Typography } from "antd";
 const { Title } = Typography;
 
 function App() {
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
-  };
+  const onFinish = (values: any) => {};
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
+  const onFinishFailed = (errorInfo: any) => {};
 
   type FieldType = {
     username?: string;
@@ -113,38 +109,11 @@ function SignIn() {
     <GoogleLogin
       size="large"
       onSuccess={(credentialResponse) => {
-        console.log("log in successfully", credentialResponse);
         navigate("/admin/forms");
       }}
-      onError={() => {
-        console.log("log in failed");
-      }}
+      onError={() => {}}
     />
   );
 }
-
-// function SignIn() {
-//   const handleGoogleLogin = useGoogleLogin({
-//     onSuccess: (response) => {
-//       console.log(response);
-//     },
-//     onError: (error) => {
-//       console.log(error);
-//     },
-//   });
-
-//   const handleClick = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
-//     handleGoogleLogin();
-//   };
-//   // GoogleLogin component is a Google button that provides sign-in function.
-//   return (
-//     <>
-//       <FcGoogle
-//         onClick={handleClick}
-//         style={{ fontSize: "3rem", border: "1px solid #fff", padding: "1rem" }}
-//       />
-//     </>
-//   );
-// }
 
 export default App;

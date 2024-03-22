@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5f66461a3ae5d09f8d163ff3fda035cb>>
+ * @generated SignedSource<<b666d142ae335c924a0f4db9bbe75cdb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,11 +16,13 @@ export type UpdateQuestionInput = {
   clearQuestionResponse?: boolean | null | undefined;
   createdAt?: any | null | undefined;
   createdBy?: number | null | undefined;
+  dependencies?: string | null | undefined;
   extraData?: string | null | undefined;
   fromQuestionGroupID?: string | null | undefined;
   label?: string | null | undefined;
   removeQuestionResponseIDs?: ReadonlyArray<string> | null | undefined;
   required?: boolean | null | undefined;
+  rule?: string | null | undefined;
   title?: string | null | undefined;
   type?: QuestionType | null | undefined;
   updatedAt?: any | null | undefined;

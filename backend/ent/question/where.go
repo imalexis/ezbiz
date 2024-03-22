@@ -70,6 +70,16 @@ func ExtraData(v string) predicate.Question {
 	return predicate.Question(sql.FieldEQ(FieldExtraData, v))
 }
 
+// Rule applies equality check predicate on the "rule" field. It's identical to RuleEQ.
+func Rule(v string) predicate.Question {
+	return predicate.Question(sql.FieldEQ(FieldRule, v))
+}
+
+// Dependencies applies equality check predicate on the "dependencies" field. It's identical to DependenciesEQ.
+func Dependencies(v string) predicate.Question {
+	return predicate.Question(sql.FieldEQ(FieldDependencies, v))
+}
+
 // CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.Question {
 	return predicate.Question(sql.FieldEQ(FieldCreatedAt, v))
@@ -308,6 +318,136 @@ func ExtraDataEqualFold(v string) predicate.Question {
 // ExtraDataContainsFold applies the ContainsFold predicate on the "extra_data" field.
 func ExtraDataContainsFold(v string) predicate.Question {
 	return predicate.Question(sql.FieldContainsFold(FieldExtraData, v))
+}
+
+// RuleEQ applies the EQ predicate on the "rule" field.
+func RuleEQ(v string) predicate.Question {
+	return predicate.Question(sql.FieldEQ(FieldRule, v))
+}
+
+// RuleNEQ applies the NEQ predicate on the "rule" field.
+func RuleNEQ(v string) predicate.Question {
+	return predicate.Question(sql.FieldNEQ(FieldRule, v))
+}
+
+// RuleIn applies the In predicate on the "rule" field.
+func RuleIn(vs ...string) predicate.Question {
+	return predicate.Question(sql.FieldIn(FieldRule, vs...))
+}
+
+// RuleNotIn applies the NotIn predicate on the "rule" field.
+func RuleNotIn(vs ...string) predicate.Question {
+	return predicate.Question(sql.FieldNotIn(FieldRule, vs...))
+}
+
+// RuleGT applies the GT predicate on the "rule" field.
+func RuleGT(v string) predicate.Question {
+	return predicate.Question(sql.FieldGT(FieldRule, v))
+}
+
+// RuleGTE applies the GTE predicate on the "rule" field.
+func RuleGTE(v string) predicate.Question {
+	return predicate.Question(sql.FieldGTE(FieldRule, v))
+}
+
+// RuleLT applies the LT predicate on the "rule" field.
+func RuleLT(v string) predicate.Question {
+	return predicate.Question(sql.FieldLT(FieldRule, v))
+}
+
+// RuleLTE applies the LTE predicate on the "rule" field.
+func RuleLTE(v string) predicate.Question {
+	return predicate.Question(sql.FieldLTE(FieldRule, v))
+}
+
+// RuleContains applies the Contains predicate on the "rule" field.
+func RuleContains(v string) predicate.Question {
+	return predicate.Question(sql.FieldContains(FieldRule, v))
+}
+
+// RuleHasPrefix applies the HasPrefix predicate on the "rule" field.
+func RuleHasPrefix(v string) predicate.Question {
+	return predicate.Question(sql.FieldHasPrefix(FieldRule, v))
+}
+
+// RuleHasSuffix applies the HasSuffix predicate on the "rule" field.
+func RuleHasSuffix(v string) predicate.Question {
+	return predicate.Question(sql.FieldHasSuffix(FieldRule, v))
+}
+
+// RuleEqualFold applies the EqualFold predicate on the "rule" field.
+func RuleEqualFold(v string) predicate.Question {
+	return predicate.Question(sql.FieldEqualFold(FieldRule, v))
+}
+
+// RuleContainsFold applies the ContainsFold predicate on the "rule" field.
+func RuleContainsFold(v string) predicate.Question {
+	return predicate.Question(sql.FieldContainsFold(FieldRule, v))
+}
+
+// DependenciesEQ applies the EQ predicate on the "dependencies" field.
+func DependenciesEQ(v string) predicate.Question {
+	return predicate.Question(sql.FieldEQ(FieldDependencies, v))
+}
+
+// DependenciesNEQ applies the NEQ predicate on the "dependencies" field.
+func DependenciesNEQ(v string) predicate.Question {
+	return predicate.Question(sql.FieldNEQ(FieldDependencies, v))
+}
+
+// DependenciesIn applies the In predicate on the "dependencies" field.
+func DependenciesIn(vs ...string) predicate.Question {
+	return predicate.Question(sql.FieldIn(FieldDependencies, vs...))
+}
+
+// DependenciesNotIn applies the NotIn predicate on the "dependencies" field.
+func DependenciesNotIn(vs ...string) predicate.Question {
+	return predicate.Question(sql.FieldNotIn(FieldDependencies, vs...))
+}
+
+// DependenciesGT applies the GT predicate on the "dependencies" field.
+func DependenciesGT(v string) predicate.Question {
+	return predicate.Question(sql.FieldGT(FieldDependencies, v))
+}
+
+// DependenciesGTE applies the GTE predicate on the "dependencies" field.
+func DependenciesGTE(v string) predicate.Question {
+	return predicate.Question(sql.FieldGTE(FieldDependencies, v))
+}
+
+// DependenciesLT applies the LT predicate on the "dependencies" field.
+func DependenciesLT(v string) predicate.Question {
+	return predicate.Question(sql.FieldLT(FieldDependencies, v))
+}
+
+// DependenciesLTE applies the LTE predicate on the "dependencies" field.
+func DependenciesLTE(v string) predicate.Question {
+	return predicate.Question(sql.FieldLTE(FieldDependencies, v))
+}
+
+// DependenciesContains applies the Contains predicate on the "dependencies" field.
+func DependenciesContains(v string) predicate.Question {
+	return predicate.Question(sql.FieldContains(FieldDependencies, v))
+}
+
+// DependenciesHasPrefix applies the HasPrefix predicate on the "dependencies" field.
+func DependenciesHasPrefix(v string) predicate.Question {
+	return predicate.Question(sql.FieldHasPrefix(FieldDependencies, v))
+}
+
+// DependenciesHasSuffix applies the HasSuffix predicate on the "dependencies" field.
+func DependenciesHasSuffix(v string) predicate.Question {
+	return predicate.Question(sql.FieldHasSuffix(FieldDependencies, v))
+}
+
+// DependenciesEqualFold applies the EqualFold predicate on the "dependencies" field.
+func DependenciesEqualFold(v string) predicate.Question {
+	return predicate.Question(sql.FieldEqualFold(FieldDependencies, v))
+}
+
+// DependenciesContainsFold applies the ContainsFold predicate on the "dependencies" field.
+func DependenciesContainsFold(v string) predicate.Question {
+	return predicate.Question(sql.FieldContainsFold(FieldDependencies, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.

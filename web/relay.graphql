@@ -78,6 +78,8 @@ input CreateQuestionInput {
   type: QuestionType!
   required: Boolean!
   extraData: String
+  rule: String
+  dependencies: String
   createdAt: Time
   updatedAt: Time
   createdBy: Int!
@@ -774,6 +776,8 @@ type Question implements Node {
   type: QuestionType!
   required: Boolean!
   extraData: String!
+  rule: String!
+  dependencies: String!
   createdAt: Time!
   updatedAt: Time!
   createdBy: Int!
@@ -1097,6 +1101,34 @@ input QuestionWhereInput {
   extraDataHasSuffix: String
   extraDataEqualFold: String
   extraDataContainsFold: String
+  """rule field predicates"""
+  rule: String
+  ruleNEQ: String
+  ruleIn: [String!]
+  ruleNotIn: [String!]
+  ruleGT: String
+  ruleGTE: String
+  ruleLT: String
+  ruleLTE: String
+  ruleContains: String
+  ruleHasPrefix: String
+  ruleHasSuffix: String
+  ruleEqualFold: String
+  ruleContainsFold: String
+  """dependencies field predicates"""
+  dependencies: String
+  dependenciesNEQ: String
+  dependenciesIn: [String!]
+  dependenciesNotIn: [String!]
+  dependenciesGT: String
+  dependenciesGTE: String
+  dependenciesLT: String
+  dependenciesLTE: String
+  dependenciesContains: String
+  dependenciesHasPrefix: String
+  dependenciesHasSuffix: String
+  dependenciesEqualFold: String
+  dependenciesContainsFold: String
   """created_at field predicates"""
   createdAt: Time
   createdAtNEQ: Time
@@ -1229,6 +1261,8 @@ input UpdateQuestionInput {
   type: QuestionType
   required: Boolean
   extraData: String
+  rule: String
+  dependencies: String
   createdAt: Time
   updatedAt: Time
   createdBy: Int

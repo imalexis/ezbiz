@@ -84,4 +84,3 @@ const program = parser.parse();
 const evaluator = new Evaluator();
 evaluator.env.set("money", money);
 const output = evaluator.eval(program);
-console.log("visible = ", output.get("visible"));

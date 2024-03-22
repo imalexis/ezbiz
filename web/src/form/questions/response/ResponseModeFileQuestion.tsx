@@ -64,7 +64,6 @@ export function ResponseModeFileQuestion({ fragmentKey }: Props) {
                     }
                     const formData = new FormData(form);
                     formData.append("file", file);
-                    console.log("formdata = ", formData);
                     uploadFile({
                       variables: {
                         file: formData,

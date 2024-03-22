@@ -628,6 +628,16 @@ func (q *QuestionQuery) collectField(ctx context.Context, opCtx *graphql.Operati
 				selectedFields = append(selectedFields, question.FieldExtraData)
 				fieldSeen[question.FieldExtraData] = struct{}{}
 			}
+		case "rule":
+			if _, ok := fieldSeen[question.FieldRule]; !ok {
+				selectedFields = append(selectedFields, question.FieldRule)
+				fieldSeen[question.FieldRule] = struct{}{}
+			}
+		case "dependencies":
+			if _, ok := fieldSeen[question.FieldDependencies]; !ok {
+				selectedFields = append(selectedFields, question.FieldDependencies)
+				fieldSeen[question.FieldDependencies] = struct{}{}
+			}
 		case "createdAt":
 			if _, ok := fieldSeen[question.FieldCreatedAt]; !ok {
 				selectedFields = append(selectedFields, question.FieldCreatedAt)

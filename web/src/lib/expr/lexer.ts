@@ -224,14 +224,6 @@ for (const testCase of testCases) {
       expectResult.type !== actualResult.type ||
       expectResult.literal !== actualResult.literal
     ) {
-      console.log(
-        "source: ",
-        testCase.source,
-        "actualResult: ",
-        actualResult,
-        "expectResult: ",
-        expectResult
-      );
     }
   }
 }

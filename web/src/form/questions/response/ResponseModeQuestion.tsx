@@ -1,17 +1,15 @@
 import graphql from "babel-plugin-relay/macro";
 import { useFragment } from "react-relay";
 import { Flex } from "antd";
-import { ResponseModeMultiChoiceQuestion } from "./ResponseModeMultiChoiceQuestion";
+import { DynamicResponseModeMultiChoiceQuestion } from "./ResponseModeMultiChoiceQuestion";
 import { RespondModeParagraphQuestion } from "./ResponseModeParagraphQuestion";
 import { ResponseModeFileQuestion } from "./ResponseModeFileQuestion";
 import { ResponseModeDropdownQuestion } from "./ResponseModeDropdownQuestion";
-import { RespondModeShortTextQuestion } from "./ResponseModeShortTextQuestion";
+import { DynamicRespondModeShortTextQuestion } from "./ResponseModeShortTextQuestion";
 import { ResponseModeCheckboxQuestion } from "./ResponseModeCheckboxQuestion";
 import ResponseModeDateQuestion from "./ResponseModeDateQuestion";
 import ResponseModeLinearScaleQuestion from "./ResponseModeLinearScaleQuestion";
 import { ResponseModeQuestionFragment$key } from "./__generated__/ResponseModeQuestionFragment.graphql";
-import { Parser } from "../../../lib/expr/parser";
-import { Evaluator } from "../../../lib/expr/evaluator";
 
 type Props = {
   fragmentKey: ResponseModeQuestionFragment$key;
@@ -28,27 +26,26 @@ export function Question({
   setLocalSharedValues,
 }: Props) {
   const question = useFragment(fragment, fragmentKey);
-  const parser = new Parser("let visible = salary > 2000;");
-  const program = parser.parse();
-  const evaluator = new Evaluator();
-  evaluator.env.set(
-    "salary",
-    parseInt(localSharedValues?.get("salary") ?? "0")
-  );
-  const output = evaluator.eval(program);
-  const isVisible = output.get("visible");
   return (
     <Flex>
       {question.type === "multi_choice" && (
-        <ResponseModeMultiChoiceQuestion fragmentKey={question} />
+        <DynamicResponseModeMultiChoiceQuestion
+          fragmentKey={question}
+          localSharedValues={localSharedValues}
+          setLocalSharedValues={setLocalSharedValues}
+        />
       )}
 
       {question.type === "checkboxes" && (
         <ResponseModeCheckboxQuestion fragmentKey={question} />
       )}
 
-      {question.type === "short_text" && isVisible !== 0 && (
-        <RespondModeShortTextQuestion fragmentKey={question} />
+      {question.type === "short_text" && (
+        <DynamicRespondModeShortTextQuestion
+          fragmentKey={question}
+          localSharedValues={localSharedValues}
+          setLocalSharedValues={setLocalSharedValues}
+        />
       )}
 
       {question.type === "paragraph" && (

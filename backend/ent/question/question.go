@@ -27,6 +27,10 @@ const (
 	FieldRequired = "required"
 	// FieldExtraData holds the string denoting the extra_data field in the database.
 	FieldExtraData = "extra_data"
+	// FieldRule holds the string denoting the rule field in the database.
+	FieldRule = "rule"
+	// FieldDependencies holds the string denoting the dependencies field in the database.
+	FieldDependencies = "dependencies"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
@@ -63,6 +67,8 @@ var Columns = []string{
 	FieldType,
 	FieldRequired,
 	FieldExtraData,
+	FieldRule,
+	FieldDependencies,
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldCreatedBy,
@@ -94,6 +100,10 @@ var (
 	DefaultTitle string
 	// DefaultExtraData holds the default value on creation for the "extra_data" field.
 	DefaultExtraData string
+	// DefaultRule holds the default value on creation for the "rule" field.
+	DefaultRule string
+	// DefaultDependencies holds the default value on creation for the "dependencies" field.
+	DefaultDependencies string
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
@@ -161,6 +171,16 @@ func ByRequired(opts ...sql.OrderTermOption) OrderOption {
 // ByExtraData orders the results by the extra_data field.
 func ByExtraData(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldExtraData, opts...).ToFunc()
+}
+
+// ByRule orders the results by the rule field.
+func ByRule(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRule, opts...).ToFunc()
+}
+
+// ByDependencies orders the results by the dependencies field.
+func ByDependencies(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDependencies, opts...).ToFunc()
 }
 
 // ByCreatedAt orders the results by the created_at field.

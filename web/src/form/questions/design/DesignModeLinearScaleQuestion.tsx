@@ -18,7 +18,6 @@ export default function DesignModeLinearScaleQuestion({
   setLocalQuestionExtraData,
   questionIndex,
 }: Props) {
-  console.log("questionMetadata", questionMetadata);
   const initialExtraData = questionMetadata.extraData;
   const range =
     initialExtraData !== ""

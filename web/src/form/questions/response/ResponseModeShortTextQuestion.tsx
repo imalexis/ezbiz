@@ -7,10 +7,37 @@ import FormInstanceContext from "../../FormInstanceContext";
 import { ResponseModeShortTextQuestionFragment$key } from "./__generated__/ResponseModeShortTextQuestionFragment.graphql";
 import { ResponseModeShortTextQuestionResponseQuery } from "./__generated__/ResponseModeShortTextQuestionResponseQuery.graphql";
 import { ResponseModeShortTextQuestionUpdateMutation } from "./__generated__/ResponseModeShortTextQuestionUpdateMutation.graphql";
+import { Parser } from "../../../lib/expr/parser";
+import { Evaluator } from "../../../lib/expr/evaluator";
 
 type Props = {
   fragmentKey: ResponseModeShortTextQuestionFragment$key;
+  localSharedValues?: Map<string, string>;
+  setLocalSharedValues?: React.Dispatch<
+    React.SetStateAction<Map<string, string>>
+  >;
 };
+
+export function DynamicRespondModeShortTextQuestion({
+  fragmentKey,
+  localSharedValues,
+  setLocalSharedValues,
+}: Props) {
+  const question = useFragment(fragment, fragmentKey);
+  const parser = new Parser(question.rule);
+  const program = parser.parse();
+  const evaluator = new Evaluator();
+  const deps = JSON.parse(question.dependencies) as Array<string>;
+  deps.forEach((dep) => {
+    evaluator.env.set(dep, parseInt(localSharedValues?.get(dep) ?? "0"));
+  });
+  const output = evaluator.eval(program);
+  const isVisible = (output.get("visible") ?? 0) > 0;
+  if (isVisible) {
+    return <RespondModeShortTextQuestion fragmentKey={fragmentKey} />;
+  }
+  return null;
+}
 
 export function RespondModeShortTextQuestion({ fragmentKey }: Props) {
   const question = useFragment(fragment, fragmentKey);
@@ -29,18 +56,6 @@ export function RespondModeShortTextQuestion({ fragmentKey }: Props) {
   const [commit] =
     useMutation<ResponseModeShortTextQuestionUpdateMutation>(mutation);
   const { status } = useContext(FormInstanceContext);
-  //   const responseContext =
-  //     useLazyLoadQuery<ResponseModeShortTextQuestionFormResponseContextQuery>(
-  //       formResponseQuery,
-  //       {
-  //         id: instanceID ?? "",
-  //       }
-  //     );
-  //   const responseContextFragment =
-  //     useFragment<ResponseModeShortTextQuestionFormResponseContextFragment$key>(
-  //       formResponseFragment,
-  //       responseContext.node
-  //     );
   return (
     <Card
       title={question.title}
@@ -78,6 +93,8 @@ const fragment = graphql`
     type
     required
     extraData
+    rule
+    dependencies
   }
 `;
 
@@ -113,25 +130,6 @@ const mutation = graphql`
   ) {
     updateQuestionResponse(input: $input, id: $id) {
       id
-    }
-  }
-`;
-
-const formResponseQuery = graphql`
-  query ResponseModeShortTextQuestionFormResponseContextQuery($id: ID!) {
-    node(id: $id) {
-      __typename
-      ...ResponseModeShortTextQuestionFormResponseContextFragment
-    }
-  }
-`;
-
-const formResponseFragment = graphql`
-  fragment ResponseModeShortTextQuestionFormResponseContextFragment on FormInstance {
-    id
-    questionResponse {
-      label
-      value
     }
   }
 `;

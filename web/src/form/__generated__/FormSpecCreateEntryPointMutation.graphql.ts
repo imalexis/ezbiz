@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4ac32a1bed235a0129b21e614e870ab8>>
+ * @generated SignedSource<<266291472848e17258b1723a97bbc5ed>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,11 +13,13 @@ export type QuestionType = "checkboxes" | "date" | "drop_down" | "file" | "linea
 export type CreateQuestionInput = {
   createdAt?: any | null | undefined;
   createdBy: number;
+  dependencies?: string | null | undefined;
   extraData?: string | null | undefined;
   fromQuestionGroupID?: string | null | undefined;
   label: string;
   questionResponseIDs?: ReadonlyArray<string> | null | undefined;
   required: boolean;
+  rule?: string | null | undefined;
   title?: string | null | undefined;
   type: QuestionType;
   updatedAt?: any | null | undefined;

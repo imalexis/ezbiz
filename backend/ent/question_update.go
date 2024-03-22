@@ -100,6 +100,34 @@ func (qu *QuestionUpdate) SetNillableExtraData(s *string) *QuestionUpdate {
 	return qu
 }
 
+// SetRule sets the "rule" field.
+func (qu *QuestionUpdate) SetRule(s string) *QuestionUpdate {
+	qu.mutation.SetRule(s)
+	return qu
+}
+
+// SetNillableRule sets the "rule" field if the given value is not nil.
+func (qu *QuestionUpdate) SetNillableRule(s *string) *QuestionUpdate {
+	if s != nil {
+		qu.SetRule(*s)
+	}
+	return qu
+}
+
+// SetDependencies sets the "dependencies" field.
+func (qu *QuestionUpdate) SetDependencies(s string) *QuestionUpdate {
+	qu.mutation.SetDependencies(s)
+	return qu
+}
+
+// SetNillableDependencies sets the "dependencies" field if the given value is not nil.
+func (qu *QuestionUpdate) SetNillableDependencies(s *string) *QuestionUpdate {
+	if s != nil {
+		qu.SetDependencies(*s)
+	}
+	return qu
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (qu *QuestionUpdate) SetCreatedAt(t time.Time) *QuestionUpdate {
 	qu.mutation.SetCreatedAt(t)
@@ -279,6 +307,12 @@ func (qu *QuestionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := qu.mutation.ExtraData(); ok {
 		_spec.SetField(question.FieldExtraData, field.TypeString, value)
 	}
+	if value, ok := qu.mutation.Rule(); ok {
+		_spec.SetField(question.FieldRule, field.TypeString, value)
+	}
+	if value, ok := qu.mutation.Dependencies(); ok {
+		_spec.SetField(question.FieldDependencies, field.TypeString, value)
+	}
 	if value, ok := qu.mutation.CreatedAt(); ok {
 		_spec.SetField(question.FieldCreatedAt, field.TypeTime, value)
 	}
@@ -451,6 +485,34 @@ func (quo *QuestionUpdateOne) SetExtraData(s string) *QuestionUpdateOne {
 func (quo *QuestionUpdateOne) SetNillableExtraData(s *string) *QuestionUpdateOne {
 	if s != nil {
 		quo.SetExtraData(*s)
+	}
+	return quo
+}
+
+// SetRule sets the "rule" field.
+func (quo *QuestionUpdateOne) SetRule(s string) *QuestionUpdateOne {
+	quo.mutation.SetRule(s)
+	return quo
+}
+
+// SetNillableRule sets the "rule" field if the given value is not nil.
+func (quo *QuestionUpdateOne) SetNillableRule(s *string) *QuestionUpdateOne {
+	if s != nil {
+		quo.SetRule(*s)
+	}
+	return quo
+}
+
+// SetDependencies sets the "dependencies" field.
+func (quo *QuestionUpdateOne) SetDependencies(s string) *QuestionUpdateOne {
+	quo.mutation.SetDependencies(s)
+	return quo
+}
+
+// SetNillableDependencies sets the "dependencies" field if the given value is not nil.
+func (quo *QuestionUpdateOne) SetNillableDependencies(s *string) *QuestionUpdateOne {
+	if s != nil {
+		quo.SetDependencies(*s)
 	}
 	return quo
 }
@@ -663,6 +725,12 @@ func (quo *QuestionUpdateOne) sqlSave(ctx context.Context) (_node *Question, err
 	}
 	if value, ok := quo.mutation.ExtraData(); ok {
 		_spec.SetField(question.FieldExtraData, field.TypeString, value)
+	}
+	if value, ok := quo.mutation.Rule(); ok {
+		_spec.SetField(question.FieldRule, field.TypeString, value)
+	}
+	if value, ok := quo.mutation.Dependencies(); ok {
+		_spec.SetField(question.FieldDependencies, field.TypeString, value)
 	}
 	if value, ok := quo.mutation.CreatedAt(); ok {
 		_spec.SetField(question.FieldCreatedAt, field.TypeTime, value)

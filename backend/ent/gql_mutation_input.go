@@ -444,6 +444,8 @@ type CreateQuestionInput struct {
 	Type                question.Type
 	Required            bool
 	ExtraData           *string
+	Rule                *string
+	Dependencies        *string
 	CreatedAt           *time.Time
 	UpdatedAt           *time.Time
 	CreatedBy           int
@@ -461,6 +463,12 @@ func (i *CreateQuestionInput) Mutate(m *QuestionMutation) {
 	m.SetRequired(i.Required)
 	if v := i.ExtraData; v != nil {
 		m.SetExtraData(*v)
+	}
+	if v := i.Rule; v != nil {
+		m.SetRule(*v)
+	}
+	if v := i.Dependencies; v != nil {
+		m.SetDependencies(*v)
 	}
 	if v := i.CreatedAt; v != nil {
 		m.SetCreatedAt(*v)
@@ -490,6 +498,8 @@ type UpdateQuestionInput struct {
 	Type                      *question.Type
 	Required                  *bool
 	ExtraData                 *string
+	Rule                      *string
+	Dependencies              *string
 	CreatedAt                 *time.Time
 	UpdatedAt                 *time.Time
 	CreatedBy                 *int
@@ -516,6 +526,12 @@ func (i *UpdateQuestionInput) Mutate(m *QuestionMutation) {
 	}
 	if v := i.ExtraData; v != nil {
 		m.SetExtraData(*v)
+	}
+	if v := i.Rule; v != nil {
+		m.SetRule(*v)
+	}
+	if v := i.Dependencies; v != nil {
+		m.SetDependencies(*v)
 	}
 	if v := i.CreatedAt; v != nil {
 		m.SetCreatedAt(*v)

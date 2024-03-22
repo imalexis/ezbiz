@@ -68,6 +68,34 @@ func (qc *QuestionCreate) SetNillableExtraData(s *string) *QuestionCreate {
 	return qc
 }
 
+// SetRule sets the "rule" field.
+func (qc *QuestionCreate) SetRule(s string) *QuestionCreate {
+	qc.mutation.SetRule(s)
+	return qc
+}
+
+// SetNillableRule sets the "rule" field if the given value is not nil.
+func (qc *QuestionCreate) SetNillableRule(s *string) *QuestionCreate {
+	if s != nil {
+		qc.SetRule(*s)
+	}
+	return qc
+}
+
+// SetDependencies sets the "dependencies" field.
+func (qc *QuestionCreate) SetDependencies(s string) *QuestionCreate {
+	qc.mutation.SetDependencies(s)
+	return qc
+}
+
+// SetNillableDependencies sets the "dependencies" field if the given value is not nil.
+func (qc *QuestionCreate) SetNillableDependencies(s *string) *QuestionCreate {
+	if s != nil {
+		qc.SetDependencies(*s)
+	}
+	return qc
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (qc *QuestionCreate) SetCreatedAt(t time.Time) *QuestionCreate {
 	qc.mutation.SetCreatedAt(t)
@@ -179,6 +207,14 @@ func (qc *QuestionCreate) defaults() {
 		v := question.DefaultExtraData
 		qc.mutation.SetExtraData(v)
 	}
+	if _, ok := qc.mutation.Rule(); !ok {
+		v := question.DefaultRule
+		qc.mutation.SetRule(v)
+	}
+	if _, ok := qc.mutation.Dependencies(); !ok {
+		v := question.DefaultDependencies
+		qc.mutation.SetDependencies(v)
+	}
 	if _, ok := qc.mutation.CreatedAt(); !ok {
 		v := question.DefaultCreatedAt()
 		qc.mutation.SetCreatedAt(v)
@@ -210,6 +246,12 @@ func (qc *QuestionCreate) check() error {
 	}
 	if _, ok := qc.mutation.ExtraData(); !ok {
 		return &ValidationError{Name: "extra_data", err: errors.New(`ent: missing required field "Question.extra_data"`)}
+	}
+	if _, ok := qc.mutation.Rule(); !ok {
+		return &ValidationError{Name: "rule", err: errors.New(`ent: missing required field "Question.rule"`)}
+	}
+	if _, ok := qc.mutation.Dependencies(); !ok {
+		return &ValidationError{Name: "dependencies", err: errors.New(`ent: missing required field "Question.dependencies"`)}
 	}
 	if _, ok := qc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Question.created_at"`)}
@@ -265,6 +307,14 @@ func (qc *QuestionCreate) createSpec() (*Question, *sqlgraph.CreateSpec) {
 	if value, ok := qc.mutation.ExtraData(); ok {
 		_spec.SetField(question.FieldExtraData, field.TypeString, value)
 		_node.ExtraData = value
+	}
+	if value, ok := qc.mutation.Rule(); ok {
+		_spec.SetField(question.FieldRule, field.TypeString, value)
+		_node.Rule = value
+	}
+	if value, ok := qc.mutation.Dependencies(); ok {
+		_spec.SetField(question.FieldDependencies, field.TypeString, value)
+		_node.Dependencies = value
 	}
 	if value, ok := qc.mutation.CreatedAt(); ok {
 		_spec.SetField(question.FieldCreatedAt, field.TypeTime, value)

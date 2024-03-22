@@ -112,6 +112,8 @@ var (
 		{Name: "type", Type: field.TypeEnum, Enums: []string{"short_text", "paragraph", "multi_choice", "checkboxes", "drop_down", "file", "linear_scale", "date", "time"}},
 		{Name: "required", Type: field.TypeBool},
 		{Name: "extra_data", Type: field.TypeString, Default: ""},
+		{Name: "rule", Type: field.TypeString, Default: ""},
+		{Name: "dependencies", Type: field.TypeString, Default: "[]"},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "created_by", Type: field.TypeInt},
@@ -125,7 +127,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "questions_question_groups_question",
-				Columns:    []*schema.Column{QuestionsColumns[9]},
+				Columns:    []*schema.Column{QuestionsColumns[11]},
 				RefColumns: []*schema.Column{QuestionGroupsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

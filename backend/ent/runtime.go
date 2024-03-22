@@ -89,12 +89,20 @@ func init() {
 	questionDescExtraData := questionFields[4].Descriptor()
 	// question.DefaultExtraData holds the default value on creation for the extra_data field.
 	question.DefaultExtraData = questionDescExtraData.Default.(string)
+	// questionDescRule is the schema descriptor for rule field.
+	questionDescRule := questionFields[5].Descriptor()
+	// question.DefaultRule holds the default value on creation for the rule field.
+	question.DefaultRule = questionDescRule.Default.(string)
+	// questionDescDependencies is the schema descriptor for dependencies field.
+	questionDescDependencies := questionFields[6].Descriptor()
+	// question.DefaultDependencies holds the default value on creation for the dependencies field.
+	question.DefaultDependencies = questionDescDependencies.Default.(string)
 	// questionDescCreatedAt is the schema descriptor for created_at field.
-	questionDescCreatedAt := questionFields[5].Descriptor()
+	questionDescCreatedAt := questionFields[7].Descriptor()
 	// question.DefaultCreatedAt holds the default value on creation for the created_at field.
 	question.DefaultCreatedAt = questionDescCreatedAt.Default.(func() time.Time)
 	// questionDescUpdatedAt is the schema descriptor for updated_at field.
-	questionDescUpdatedAt := questionFields[6].Descriptor()
+	questionDescUpdatedAt := questionFields[8].Descriptor()
 	// question.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	question.DefaultUpdatedAt = questionDescUpdatedAt.Default.(func() time.Time)
 	questiongroupFields := schema.QuestionGroup{}.Fields()

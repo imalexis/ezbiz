@@ -28,6 +28,10 @@ type Question struct {
 	Required bool `json:"required,omitempty"`
 	// ExtraData holds the value of the "extra_data" field.
 	ExtraData string `json:"extra_data,omitempty"`
+	// Rule holds the value of the "rule" field.
+	Rule string `json:"rule,omitempty"`
+	// Dependencies holds the value of the "dependencies" field.
+	Dependencies string `json:"dependencies,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// UpdatedAt holds the value of the "updated_at" field.
@@ -87,7 +91,7 @@ func (*Question) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case question.FieldID, question.FieldCreatedBy:
 			values[i] = new(sql.NullInt64)
-		case question.FieldLabel, question.FieldTitle, question.FieldType, question.FieldExtraData:
+		case question.FieldLabel, question.FieldTitle, question.FieldType, question.FieldExtraData, question.FieldRule, question.FieldDependencies:
 			values[i] = new(sql.NullString)
 		case question.FieldCreatedAt, question.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -143,6 +147,18 @@ func (q *Question) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field extra_data", values[i])
 			} else if value.Valid {
 				q.ExtraData = value.String
+			}
+		case question.FieldRule:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field rule", values[i])
+			} else if value.Valid {
+				q.Rule = value.String
+			}
+		case question.FieldDependencies:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field dependencies", values[i])
+			} else if value.Valid {
+				q.Dependencies = value.String
 			}
 		case question.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -229,6 +245,12 @@ func (q *Question) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("extra_data=")
 	builder.WriteString(q.ExtraData)
+	builder.WriteString(", ")
+	builder.WriteString("rule=")
+	builder.WriteString(q.Rule)
+	builder.WriteString(", ")
+	builder.WriteString("dependencies=")
+	builder.WriteString(q.Dependencies)
 	builder.WriteString(", ")
 	builder.WriteString("created_at=")
 	builder.WriteString(q.CreatedAt.Format(time.ANSIC))

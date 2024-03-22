@@ -3108,6 +3108,8 @@ type QuestionMutation struct {
 	_type                      *question.Type
 	required                   *bool
 	extra_data                 *string
+	rule                       *string
+	dependencies               *string
 	created_at                 *time.Time
 	updated_at                 *time.Time
 	created_by                 *int
@@ -3401,6 +3403,78 @@ func (m *QuestionMutation) ResetExtraData() {
 	m.extra_data = nil
 }
 
+// SetRule sets the "rule" field.
+func (m *QuestionMutation) SetRule(s string) {
+	m.rule = &s
+}
+
+// Rule returns the value of the "rule" field in the mutation.
+func (m *QuestionMutation) Rule() (r string, exists bool) {
+	v := m.rule
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRule returns the old "rule" field's value of the Question entity.
+// If the Question object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *QuestionMutation) OldRule(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRule is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRule requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRule: %w", err)
+	}
+	return oldValue.Rule, nil
+}
+
+// ResetRule resets all changes to the "rule" field.
+func (m *QuestionMutation) ResetRule() {
+	m.rule = nil
+}
+
+// SetDependencies sets the "dependencies" field.
+func (m *QuestionMutation) SetDependencies(s string) {
+	m.dependencies = &s
+}
+
+// Dependencies returns the value of the "dependencies" field in the mutation.
+func (m *QuestionMutation) Dependencies() (r string, exists bool) {
+	v := m.dependencies
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDependencies returns the old "dependencies" field's value of the Question entity.
+// If the Question object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *QuestionMutation) OldDependencies(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDependencies is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDependencies requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDependencies: %w", err)
+	}
+	return oldValue.Dependencies, nil
+}
+
+// ResetDependencies resets all changes to the "dependencies" field.
+func (m *QuestionMutation) ResetDependencies() {
+	m.dependencies = nil
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (m *QuestionMutation) SetCreatedAt(t time.Time) {
 	m.created_at = &t
@@ -3656,7 +3730,7 @@ func (m *QuestionMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *QuestionMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 10)
 	if m.label != nil {
 		fields = append(fields, question.FieldLabel)
 	}
@@ -3671,6 +3745,12 @@ func (m *QuestionMutation) Fields() []string {
 	}
 	if m.extra_data != nil {
 		fields = append(fields, question.FieldExtraData)
+	}
+	if m.rule != nil {
+		fields = append(fields, question.FieldRule)
+	}
+	if m.dependencies != nil {
+		fields = append(fields, question.FieldDependencies)
 	}
 	if m.created_at != nil {
 		fields = append(fields, question.FieldCreatedAt)
@@ -3699,6 +3779,10 @@ func (m *QuestionMutation) Field(name string) (ent.Value, bool) {
 		return m.Required()
 	case question.FieldExtraData:
 		return m.ExtraData()
+	case question.FieldRule:
+		return m.Rule()
+	case question.FieldDependencies:
+		return m.Dependencies()
 	case question.FieldCreatedAt:
 		return m.CreatedAt()
 	case question.FieldUpdatedAt:
@@ -3724,6 +3808,10 @@ func (m *QuestionMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldRequired(ctx)
 	case question.FieldExtraData:
 		return m.OldExtraData(ctx)
+	case question.FieldRule:
+		return m.OldRule(ctx)
+	case question.FieldDependencies:
+		return m.OldDependencies(ctx)
 	case question.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
 	case question.FieldUpdatedAt:
@@ -3773,6 +3861,20 @@ func (m *QuestionMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetExtraData(v)
+		return nil
+	case question.FieldRule:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRule(v)
+		return nil
+	case question.FieldDependencies:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDependencies(v)
 		return nil
 	case question.FieldCreatedAt:
 		v, ok := value.(time.Time)
@@ -3873,6 +3975,12 @@ func (m *QuestionMutation) ResetField(name string) error {
 		return nil
 	case question.FieldExtraData:
 		m.ResetExtraData()
+		return nil
+	case question.FieldRule:
+		m.ResetRule()
+		return nil
+	case question.FieldDependencies:
+		m.ResetDependencies()
 		return nil
 	case question.FieldCreatedAt:
 		m.ResetCreatedAt()

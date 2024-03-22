@@ -1,5 +1,5 @@
 import { Button, Flex, notification } from "antd";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useLazyLoadQuery, useMutation } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
 import Title from "antd/es/typography/Title";
@@ -9,6 +9,7 @@ import { FormInstanceEntryPointQuery } from "./__generated__/FormInstanceEntryPo
 import FormInstanceContext from "./FormInstanceContext";
 import { useState } from "react";
 import { NotificationPlacement } from "antd/es/notification/interface";
+import { FormInstanceEntryPointAllResponseValueQuery } from "./__generated__/FormInstanceEntryPointAllResponseValueQuery.graphql";
 
 export function FormInstanceEntryPoint() {
   const { formID, instanceID } = useParams();
@@ -42,9 +43,27 @@ export function FormInstanceEntryPoint() {
       },
     });
   };
+  const allResponseValue =
+    useLazyLoadQuery<FormInstanceEntryPointAllResponseValueQuery>(
+      allResponseValueQuery,
+      {
+        where: {
+          hasFormInstanceWith: [{ id: instanceID ?? "" }],
+        },
+      }
+    );
+  const allResponses = (allResponseValue.questionResponses.edges ?? [])
+    .map((edge) => edge?.node)
+    .filter((item) => item != null) as {
+    readonly label: string;
+    readonly value: string;
+  }[];
+  const initialLocalSharedValues = new Map(
+    allResponses.map((obj) => [obj.label, obj.value])
+  );
   const [localSharedValues, setLocalSharedValues] = useState<
     Map<string, string>
-  >(new Map());
+  >(initialLocalSharedValues);
   return (
     <Flex vertical>
       {contextHolder}
@@ -85,16 +104,16 @@ export function FormInstanceEntryPoint() {
             style={
               status === "submiited"
                 ? {
-                    backgroundColor: "#4CAF50", // 更换为另一种绿色以表示成功
-                    color: "#FFFFFF", // 文字颜色可能需要调整以适应新的背景颜色
+                    backgroundColor: "#4CAF50",
+                    color: "#FFFFFF",
                     textAlign: "center",
                     padding: "0",
                     fontSize: "128%",
                     width: "100%",
-                    border: "none", // 移除边框，使其看起来更清晰
-                    borderRadius: "5px", // 圆角可能会增加外观的吸引力
-                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)", // 添加阴影以提升立体感
-                    transition: "background-color 0.3s ease", // 添加过渡效果，使颜色变化更平滑
+                    border: "none",
+                    borderRadius: "5px",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                    transition: "background-color 0.3s ease",
                   }
                 : {
                     backgroundColor: "#88CF6C",
@@ -151,6 +170,21 @@ const mutation = graphql`
   ) {
     updateFormInstance(input: $input, id: $id) {
       id
+    }
+  }
+`;
+
+const allResponseValueQuery = graphql`
+  query FormInstanceEntryPointAllResponseValueQuery(
+    $where: QuestionResponseWhereInput!
+  ) {
+    questionResponses(where: $where) {
+      edges {
+        node {
+          label
+          value
+        }
+      }
     }
   }
 `;

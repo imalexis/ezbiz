@@ -58,6 +58,7 @@ export function FormSpecCreateEntryPoint() {
       type: q.type,
       createdAt: q.createdAt,
       extraData: q.extraData,
+      rule: q.rule,
     };
   });
   const [localQuestions, setLocalQuestions] =
@@ -98,6 +99,7 @@ export function FormSpecCreateEntryPoint() {
         createdAt: null,
         extraData: "",
         id: "",
+        rule: "",
       },
     ]);
     setNewQuestions([...newQuestions, label]);
@@ -266,6 +268,7 @@ const query = graphql`
             type
             createdAt
             extraData
+            rule
             ...ResponseModeQuestionFragment
           }
         }

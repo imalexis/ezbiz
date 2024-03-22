@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<262838a4a25a1e553957778c95b67217>>
+ * @generated SignedSource<<234201ec92707cd9aba72de3762d503b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -194,6 +194,19 @@ export type QuestionWhereInput = {
   createdByLTE?: number | null | undefined;
   createdByNEQ?: number | null | undefined;
   createdByNotIn?: ReadonlyArray<number> | null | undefined;
+  dependencies?: string | null | undefined;
+  dependenciesContains?: string | null | undefined;
+  dependenciesContainsFold?: string | null | undefined;
+  dependenciesEqualFold?: string | null | undefined;
+  dependenciesGT?: string | null | undefined;
+  dependenciesGTE?: string | null | undefined;
+  dependenciesHasPrefix?: string | null | undefined;
+  dependenciesHasSuffix?: string | null | undefined;
+  dependenciesIn?: ReadonlyArray<string> | null | undefined;
+  dependenciesLT?: string | null | undefined;
+  dependenciesLTE?: string | null | undefined;
+  dependenciesNEQ?: string | null | undefined;
+  dependenciesNotIn?: ReadonlyArray<string> | null | undefined;
   extraData?: string | null | undefined;
   extraDataContains?: string | null | undefined;
   extraDataContainsFold?: string | null | undefined;
@@ -236,6 +249,19 @@ export type QuestionWhereInput = {
   or?: ReadonlyArray<QuestionWhereInput> | null | undefined;
   required?: boolean | null | undefined;
   requiredNEQ?: boolean | null | undefined;
+  rule?: string | null | undefined;
+  ruleContains?: string | null | undefined;
+  ruleContainsFold?: string | null | undefined;
+  ruleEqualFold?: string | null | undefined;
+  ruleGT?: string | null | undefined;
+  ruleGTE?: string | null | undefined;
+  ruleHasPrefix?: string | null | undefined;
+  ruleHasSuffix?: string | null | undefined;
+  ruleIn?: ReadonlyArray<string> | null | undefined;
+  ruleLT?: string | null | undefined;
+  ruleLTE?: string | null | undefined;
+  ruleNEQ?: string | null | undefined;
+  ruleNotIn?: ReadonlyArray<string> | null | undefined;
   title?: string | null | undefined;
   titleContains?: string | null | undefined;
   titleContainsFold?: string | null | undefined;

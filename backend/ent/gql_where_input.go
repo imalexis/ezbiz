@@ -1590,6 +1590,36 @@ type QuestionWhereInput struct {
 	ExtraDataEqualFold    *string  `json:"extraDataEqualFold,omitempty"`
 	ExtraDataContainsFold *string  `json:"extraDataContainsFold,omitempty"`
 
+	// "rule" field predicates.
+	Rule             *string  `json:"rule,omitempty"`
+	RuleNEQ          *string  `json:"ruleNEQ,omitempty"`
+	RuleIn           []string `json:"ruleIn,omitempty"`
+	RuleNotIn        []string `json:"ruleNotIn,omitempty"`
+	RuleGT           *string  `json:"ruleGT,omitempty"`
+	RuleGTE          *string  `json:"ruleGTE,omitempty"`
+	RuleLT           *string  `json:"ruleLT,omitempty"`
+	RuleLTE          *string  `json:"ruleLTE,omitempty"`
+	RuleContains     *string  `json:"ruleContains,omitempty"`
+	RuleHasPrefix    *string  `json:"ruleHasPrefix,omitempty"`
+	RuleHasSuffix    *string  `json:"ruleHasSuffix,omitempty"`
+	RuleEqualFold    *string  `json:"ruleEqualFold,omitempty"`
+	RuleContainsFold *string  `json:"ruleContainsFold,omitempty"`
+
+	// "dependencies" field predicates.
+	Dependencies             *string  `json:"dependencies,omitempty"`
+	DependenciesNEQ          *string  `json:"dependenciesNEQ,omitempty"`
+	DependenciesIn           []string `json:"dependenciesIn,omitempty"`
+	DependenciesNotIn        []string `json:"dependenciesNotIn,omitempty"`
+	DependenciesGT           *string  `json:"dependenciesGT,omitempty"`
+	DependenciesGTE          *string  `json:"dependenciesGTE,omitempty"`
+	DependenciesLT           *string  `json:"dependenciesLT,omitempty"`
+	DependenciesLTE          *string  `json:"dependenciesLTE,omitempty"`
+	DependenciesContains     *string  `json:"dependenciesContains,omitempty"`
+	DependenciesHasPrefix    *string  `json:"dependenciesHasPrefix,omitempty"`
+	DependenciesHasSuffix    *string  `json:"dependenciesHasSuffix,omitempty"`
+	DependenciesEqualFold    *string  `json:"dependenciesEqualFold,omitempty"`
+	DependenciesContainsFold *string  `json:"dependenciesContainsFold,omitempty"`
+
 	// "created_at" field predicates.
 	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
 	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
@@ -1858,6 +1888,84 @@ func (i *QuestionWhereInput) P() (predicate.Question, error) {
 	}
 	if i.ExtraDataContainsFold != nil {
 		predicates = append(predicates, question.ExtraDataContainsFold(*i.ExtraDataContainsFold))
+	}
+	if i.Rule != nil {
+		predicates = append(predicates, question.RuleEQ(*i.Rule))
+	}
+	if i.RuleNEQ != nil {
+		predicates = append(predicates, question.RuleNEQ(*i.RuleNEQ))
+	}
+	if len(i.RuleIn) > 0 {
+		predicates = append(predicates, question.RuleIn(i.RuleIn...))
+	}
+	if len(i.RuleNotIn) > 0 {
+		predicates = append(predicates, question.RuleNotIn(i.RuleNotIn...))
+	}
+	if i.RuleGT != nil {
+		predicates = append(predicates, question.RuleGT(*i.RuleGT))
+	}
+	if i.RuleGTE != nil {
+		predicates = append(predicates, question.RuleGTE(*i.RuleGTE))
+	}
+	if i.RuleLT != nil {
+		predicates = append(predicates, question.RuleLT(*i.RuleLT))
+	}
+	if i.RuleLTE != nil {
+		predicates = append(predicates, question.RuleLTE(*i.RuleLTE))
+	}
+	if i.RuleContains != nil {
+		predicates = append(predicates, question.RuleContains(*i.RuleContains))
+	}
+	if i.RuleHasPrefix != nil {
+		predicates = append(predicates, question.RuleHasPrefix(*i.RuleHasPrefix))
+	}
+	if i.RuleHasSuffix != nil {
+		predicates = append(predicates, question.RuleHasSuffix(*i.RuleHasSuffix))
+	}
+	if i.RuleEqualFold != nil {
+		predicates = append(predicates, question.RuleEqualFold(*i.RuleEqualFold))
+	}
+	if i.RuleContainsFold != nil {
+		predicates = append(predicates, question.RuleContainsFold(*i.RuleContainsFold))
+	}
+	if i.Dependencies != nil {
+		predicates = append(predicates, question.DependenciesEQ(*i.Dependencies))
+	}
+	if i.DependenciesNEQ != nil {
+		predicates = append(predicates, question.DependenciesNEQ(*i.DependenciesNEQ))
+	}
+	if len(i.DependenciesIn) > 0 {
+		predicates = append(predicates, question.DependenciesIn(i.DependenciesIn...))
+	}
+	if len(i.DependenciesNotIn) > 0 {
+		predicates = append(predicates, question.DependenciesNotIn(i.DependenciesNotIn...))
+	}
+	if i.DependenciesGT != nil {
+		predicates = append(predicates, question.DependenciesGT(*i.DependenciesGT))
+	}
+	if i.DependenciesGTE != nil {
+		predicates = append(predicates, question.DependenciesGTE(*i.DependenciesGTE))
+	}
+	if i.DependenciesLT != nil {
+		predicates = append(predicates, question.DependenciesLT(*i.DependenciesLT))
+	}
+	if i.DependenciesLTE != nil {
+		predicates = append(predicates, question.DependenciesLTE(*i.DependenciesLTE))
+	}
+	if i.DependenciesContains != nil {
+		predicates = append(predicates, question.DependenciesContains(*i.DependenciesContains))
+	}
+	if i.DependenciesHasPrefix != nil {
+		predicates = append(predicates, question.DependenciesHasPrefix(*i.DependenciesHasPrefix))
+	}
+	if i.DependenciesHasSuffix != nil {
+		predicates = append(predicates, question.DependenciesHasSuffix(*i.DependenciesHasSuffix))
+	}
+	if i.DependenciesEqualFold != nil {
+		predicates = append(predicates, question.DependenciesEqualFold(*i.DependenciesEqualFold))
+	}
+	if i.DependenciesContainsFold != nil {
+		predicates = append(predicates, question.DependenciesContainsFold(*i.DependenciesContainsFold))
 	}
 	if i.CreatedAt != nil {
 		predicates = append(predicates, question.CreatedAtEQ(*i.CreatedAt))

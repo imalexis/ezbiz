@@ -34,6 +34,8 @@ func (Question) Fields() []ent.Field {
 			),
 		field.Bool("required"),
 		field.String("extra_data").Default(""),
+		field.String("rule").Default(""),
+		field.String("dependencies").Default("[]"),
 		field.Time("created_at").Default(time.Now).Annotations(entgql.OrderField("CREATED_AT")),
 		field.Time("updated_at").Default(time.Now).Annotations(entgql.OrderField("UPDATED_AT")),
 		field.Int("created_by"),

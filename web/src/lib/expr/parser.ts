@@ -334,7 +334,6 @@ export class Parser {
   __parseExpression(precedence: number): Expression {
     const prefixFn = this.prefixParseFns.get(this.curToken!.type);
     if (prefixFn == null) {
-      console.log(this);
       throw new Error(`expect prefix parse function for ${this.curToken}`);
     }
     const boundPrefixFn = prefixFn.bind(this);

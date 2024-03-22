@@ -187,12 +187,14 @@ type ComplexityRoot struct {
 	Question struct {
 		CreatedAt         func(childComplexity int) int
 		CreatedBy         func(childComplexity int) int
+		Dependencies      func(childComplexity int) int
 		ExtraData         func(childComplexity int) int
 		FromQuestionGroup func(childComplexity int) int
 		ID                func(childComplexity int) int
 		Label             func(childComplexity int) int
 		QuestionResponse  func(childComplexity int) int
 		Required          func(childComplexity int) int
+		Rule              func(childComplexity int) int
 		Title             func(childComplexity int) int
 		Type              func(childComplexity int) int
 		UpdatedAt         func(childComplexity int) int
@@ -1031,6 +1033,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Question.CreatedBy(childComplexity), true
 
+	case "Question.dependencies":
+		if e.complexity.Question.Dependencies == nil {
+			break
+		}
+
+		return e.complexity.Question.Dependencies(childComplexity), true
+
 	case "Question.extraData":
 		if e.complexity.Question.ExtraData == nil {
 			break
@@ -1072,6 +1081,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Question.Required(childComplexity), true
+
+	case "Question.rule":
+		if e.complexity.Question.Rule == nil {
+			break
+		}
+
+		return e.complexity.Question.Rule(childComplexity), true
 
 	case "Question.title":
 		if e.complexity.Question.Title == nil {
@@ -5596,6 +5612,10 @@ func (ec *executionContext) fieldContext_Mutation_createQuestion(ctx context.Con
 				return ec.fieldContext_Question_required(ctx, field)
 			case "extraData":
 				return ec.fieldContext_Question_extraData(ctx, field)
+			case "rule":
+				return ec.fieldContext_Question_rule(ctx, field)
+			case "dependencies":
+				return ec.fieldContext_Question_dependencies(ctx, field)
 			case "createdAt":
 				return ec.fieldContext_Question_createdAt(ctx, field)
 			case "updatedAt":
@@ -5675,6 +5695,10 @@ func (ec *executionContext) fieldContext_Mutation_updateQuestion(ctx context.Con
 				return ec.fieldContext_Question_required(ctx, field)
 			case "extraData":
 				return ec.fieldContext_Question_extraData(ctx, field)
+			case "rule":
+				return ec.fieldContext_Question_rule(ctx, field)
+			case "dependencies":
+				return ec.fieldContext_Question_dependencies(ctx, field)
 			case "createdAt":
 				return ec.fieldContext_Question_createdAt(ctx, field)
 			case "updatedAt":
@@ -7145,6 +7169,94 @@ func (ec *executionContext) fieldContext_Question_extraData(ctx context.Context,
 	return fc, nil
 }
 
+func (ec *executionContext) _Question_rule(ctx context.Context, field graphql.CollectedField, obj *ent.Question) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Question_rule(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Rule, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Question_rule(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Question",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Question_dependencies(ctx context.Context, field graphql.CollectedField, obj *ent.Question) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Question_dependencies(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Dependencies, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Question_dependencies(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Question",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Question_createdAt(ctx context.Context, field graphql.CollectedField, obj *ent.Question) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Question_createdAt(ctx, field)
 	if err != nil {
@@ -7584,6 +7696,10 @@ func (ec *executionContext) fieldContext_QuestionEdge_node(ctx context.Context, 
 				return ec.fieldContext_Question_required(ctx, field)
 			case "extraData":
 				return ec.fieldContext_Question_extraData(ctx, field)
+			case "rule":
+				return ec.fieldContext_Question_rule(ctx, field)
+			case "dependencies":
+				return ec.fieldContext_Question_dependencies(ctx, field)
 			case "createdAt":
 				return ec.fieldContext_Question_createdAt(ctx, field)
 			case "updatedAt":
@@ -7913,6 +8029,10 @@ func (ec *executionContext) fieldContext_QuestionGroup_question(ctx context.Cont
 				return ec.fieldContext_Question_required(ctx, field)
 			case "extraData":
 				return ec.fieldContext_Question_extraData(ctx, field)
+			case "rule":
+				return ec.fieldContext_Question_rule(ctx, field)
+			case "dependencies":
+				return ec.fieldContext_Question_dependencies(ctx, field)
 			case "createdAt":
 				return ec.fieldContext_Question_createdAt(ctx, field)
 			case "updatedAt":
@@ -8509,6 +8629,10 @@ func (ec *executionContext) fieldContext_QuestionResponse_question(ctx context.C
 				return ec.fieldContext_Question_required(ctx, field)
 			case "extraData":
 				return ec.fieldContext_Question_extraData(ctx, field)
+			case "rule":
+				return ec.fieldContext_Question_rule(ctx, field)
+			case "dependencies":
+				return ec.fieldContext_Question_dependencies(ctx, field)
 			case "createdAt":
 				return ec.fieldContext_Question_createdAt(ctx, field)
 			case "updatedAt":
@@ -11705,7 +11829,7 @@ func (ec *executionContext) unmarshalInputCreateQuestionInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"label", "title", "type", "required", "extraData", "createdAt", "updatedAt", "createdBy", "fromQuestionGroupID", "questionResponseIDs"}
+	fieldsInOrder := [...]string{"label", "title", "type", "required", "extraData", "rule", "dependencies", "createdAt", "updatedAt", "createdBy", "fromQuestionGroupID", "questionResponseIDs"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -11757,6 +11881,24 @@ func (ec *executionContext) unmarshalInputCreateQuestionInput(ctx context.Contex
 				return it, err
 			}
 			it.ExtraData = data
+		case "rule":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("rule"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Rule = data
+		case "dependencies":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependencies"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Dependencies = data
 		case "createdAt":
 			var err error
 
@@ -15554,7 +15696,7 @@ func (ec *executionContext) unmarshalInputQuestionWhereInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "label", "labelNEQ", "labelIn", "labelNotIn", "labelGT", "labelGTE", "labelLT", "labelLTE", "labelContains", "labelHasPrefix", "labelHasSuffix", "labelEqualFold", "labelContainsFold", "title", "titleNEQ", "titleIn", "titleNotIn", "titleGT", "titleGTE", "titleLT", "titleLTE", "titleContains", "titleHasPrefix", "titleHasSuffix", "titleEqualFold", "titleContainsFold", "type", "typeNEQ", "typeIn", "typeNotIn", "required", "requiredNEQ", "extraData", "extraDataNEQ", "extraDataIn", "extraDataNotIn", "extraDataGT", "extraDataGTE", "extraDataLT", "extraDataLTE", "extraDataContains", "extraDataHasPrefix", "extraDataHasSuffix", "extraDataEqualFold", "extraDataContainsFold", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "createdBy", "createdByNEQ", "createdByIn", "createdByNotIn", "createdByGT", "createdByGTE", "createdByLT", "createdByLTE", "hasFromQuestionGroup", "hasFromQuestionGroupWith", "hasQuestionResponse", "hasQuestionResponseWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "label", "labelNEQ", "labelIn", "labelNotIn", "labelGT", "labelGTE", "labelLT", "labelLTE", "labelContains", "labelHasPrefix", "labelHasSuffix", "labelEqualFold", "labelContainsFold", "title", "titleNEQ", "titleIn", "titleNotIn", "titleGT", "titleGTE", "titleLT", "titleLTE", "titleContains", "titleHasPrefix", "titleHasSuffix", "titleEqualFold", "titleContainsFold", "type", "typeNEQ", "typeIn", "typeNotIn", "required", "requiredNEQ", "extraData", "extraDataNEQ", "extraDataIn", "extraDataNotIn", "extraDataGT", "extraDataGTE", "extraDataLT", "extraDataLTE", "extraDataContains", "extraDataHasPrefix", "extraDataHasSuffix", "extraDataEqualFold", "extraDataContainsFold", "rule", "ruleNEQ", "ruleIn", "ruleNotIn", "ruleGT", "ruleGTE", "ruleLT", "ruleLTE", "ruleContains", "ruleHasPrefix", "ruleHasSuffix", "ruleEqualFold", "ruleContainsFold", "dependencies", "dependenciesNEQ", "dependenciesIn", "dependenciesNotIn", "dependenciesGT", "dependenciesGTE", "dependenciesLT", "dependenciesLTE", "dependenciesContains", "dependenciesHasPrefix", "dependenciesHasSuffix", "dependenciesEqualFold", "dependenciesContainsFold", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "createdBy", "createdByNEQ", "createdByIn", "createdByNotIn", "createdByGT", "createdByGTE", "createdByLT", "createdByLTE", "hasFromQuestionGroup", "hasFromQuestionGroupWith", "hasQuestionResponse", "hasQuestionResponseWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -16065,6 +16207,240 @@ func (ec *executionContext) unmarshalInputQuestionWhereInput(ctx context.Context
 				return it, err
 			}
 			it.ExtraDataContainsFold = data
+		case "rule":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("rule"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Rule = data
+		case "ruleNEQ":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleNEQ = data
+		case "ruleIn":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleIn = data
+		case "ruleNotIn":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleNotIn = data
+		case "ruleGT":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleGT = data
+		case "ruleGTE":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleGTE = data
+		case "ruleLT":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleLT = data
+		case "ruleLTE":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleLTE = data
+		case "ruleContains":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleContains = data
+		case "ruleHasPrefix":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleHasPrefix = data
+		case "ruleHasSuffix":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleHasSuffix = data
+		case "ruleEqualFold":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleEqualFold = data
+		case "ruleContainsFold":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ruleContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RuleContainsFold = data
+		case "dependencies":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependencies"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Dependencies = data
+		case "dependenciesNEQ":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesNEQ"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesNEQ = data
+		case "dependenciesIn":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesIn = data
+		case "dependenciesNotIn":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesNotIn"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesNotIn = data
+		case "dependenciesGT":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesGT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesGT = data
+		case "dependenciesGTE":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesGTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesGTE = data
+		case "dependenciesLT":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesLT"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesLT = data
+		case "dependenciesLTE":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesLTE"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesLTE = data
+		case "dependenciesContains":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesContains"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesContains = data
+		case "dependenciesHasPrefix":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesHasPrefix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesHasPrefix = data
+		case "dependenciesHasSuffix":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesHasSuffix"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesHasSuffix = data
+		case "dependenciesEqualFold":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesEqualFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesEqualFold = data
+		case "dependenciesContainsFold":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependenciesContainsFold"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DependenciesContainsFold = data
 		case "createdAt":
 			var err error
 
@@ -16916,7 +17292,7 @@ func (ec *executionContext) unmarshalInputUpdateQuestionInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"label", "title", "type", "required", "extraData", "createdAt", "updatedAt", "createdBy", "fromQuestionGroupID", "clearFromQuestionGroup", "addQuestionResponseIDs", "removeQuestionResponseIDs", "clearQuestionResponse"}
+	fieldsInOrder := [...]string{"label", "title", "type", "required", "extraData", "rule", "dependencies", "createdAt", "updatedAt", "createdBy", "fromQuestionGroupID", "clearFromQuestionGroup", "addQuestionResponseIDs", "removeQuestionResponseIDs", "clearQuestionResponse"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -16968,6 +17344,24 @@ func (ec *executionContext) unmarshalInputUpdateQuestionInput(ctx context.Contex
 				return it, err
 			}
 			it.ExtraData = data
+		case "rule":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("rule"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Rule = data
+		case "dependencies":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("dependencies"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Dependencies = data
 		case "createdAt":
 			var err error
 
@@ -19489,6 +19883,16 @@ func (ec *executionContext) _Question(ctx context.Context, sel ast.SelectionSet,
 			}
 		case "extraData":
 			out.Values[i] = ec._Question_extraData(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "rule":
+			out.Values[i] = ec._Question_rule(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "dependencies":
+			out.Values[i] = ec._Question_dependencies(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}
