@@ -37,7 +37,7 @@ export function Question({
       )}
 
       {question.type === "checkboxes" && (
-        <ResponseModeCheckboxQuestion fragmentKey={question} />
+        <DynamicResponseModeMultiChoiceQuestion fragmentKey={question} />
       )}
 
       {question.type === "short_text" && (

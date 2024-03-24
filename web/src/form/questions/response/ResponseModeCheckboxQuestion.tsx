@@ -8,10 +8,37 @@ import { CheckboxValueType } from "antd/es/checkbox/Group";
 import { ResponseModeCheckboxQuestionFragment$key } from "./__generated__/ResponseModeCheckboxQuestionFragment.graphql";
 import { ResponseModeCheckboxQuestionResponseQuery } from "./__generated__/ResponseModeCheckboxQuestionResponseQuery.graphql";
 import { ResponseModeCheckboxQuestionUpdateMutation } from "./__generated__/ResponseModeCheckboxQuestionUpdateMutation.graphql";
+import { Evaluator } from "../../../lib/expr/evaluator";
+import { Parser } from "../../../lib/expr/parser";
 
 type Props = {
   fragmentKey: ResponseModeCheckboxQuestionFragment$key;
+  localSharedValues?: Map<string, string>;
+  setLocalSharedValues?: React.Dispatch<
+    React.SetStateAction<Map<string, string>>
+  >;
 };
+
+export function DynamicResponseModeMultiChoiceQuestion({
+  fragmentKey,
+  localSharedValues,
+  setLocalSharedValues,
+}: Props) {
+  const question = useFragment(fragment, fragmentKey);
+  const parser = new Parser(question.rule);
+  const program = parser.parse();
+  const evaluator = new Evaluator();
+  const deps = JSON.parse(question.dependencies) as Array<string>;
+  deps.forEach((dep) => {
+    evaluator.env.set(dep, parseInt(localSharedValues?.get(dep) ?? "0"));
+  });
+  const output = evaluator.eval(program);
+  const isVisible = (output.get("visible") ?? 0) > 0;
+  if (isVisible) {
+    return <ResponseModeCheckboxQuestion fragmentKey={fragmentKey} />;
+  }
+  return null;
+}
 
 export function ResponseModeCheckboxQuestion({ fragmentKey }: Props) {
   const { status } = useContext(FormInstanceContext);
@@ -76,6 +103,8 @@ const fragment = graphql`
     type
     required
     extraData
+    rule
+    dependencies
     __typename
   }
 `;
