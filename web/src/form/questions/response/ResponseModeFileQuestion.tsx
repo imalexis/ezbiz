@@ -35,7 +35,13 @@ export function DynamicResponseModeFileQuestion({
   const output = evaluator.eval(program);
   const isVisible = (output.get("visible") ?? 0) > 0;
   if (isVisible) {
-    return <ResponseModeFileQuestion fragmentKey={fragmentKey} />;
+    return (
+      <ResponseModeFileQuestion
+        fragmentKey={fragmentKey}
+        localSharedValues={localSharedValues}
+        setLocalSharedValues={setLocalSharedValues}
+      />
+    );
   }
   return null;
 }

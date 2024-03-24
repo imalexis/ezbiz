@@ -13,7 +13,9 @@ import { ResponseModeCheckboxQuestion } from "./ResponseModeCheckboxQuestion";
 import ResponseModeDateQuestion, {
   DynamicResponseModeDateQuestion,
 } from "./ResponseModeDateQuestion";
-import ResponseModeLinearScaleQuestion from "./ResponseModeLinearScaleQuestion";
+import ResponseModeLinearScaleQuestion, {
+  DynamicResponseModeLinearScaleQuestion,
+} from "./ResponseModeLinearScaleQuestion";
 import { ResponseModeQuestionFragment$key } from "./__generated__/ResponseModeQuestionFragment.graphql";
 
 type Props = {
@@ -80,7 +82,7 @@ export function Question({
         />
       )}
       {question.type === "linear_scale" && (
-        <ResponseModeLinearScaleQuestion
+        <DynamicResponseModeLinearScaleQuestion
           fragmentKey={question}
           localSharedValues={localSharedValues}
           setLocalSharedValues={setLocalSharedValues}

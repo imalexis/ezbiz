@@ -35,7 +35,13 @@ export function DynamicResponseModeMultiChoiceQuestion({
   const output = evaluator.eval(program);
   const isVisible = (output.get("visible") ?? 0) > 0;
   if (isVisible) {
-    return <ResponseModeCheckboxQuestion fragmentKey={fragmentKey} />;
+    return (
+      <ResponseModeCheckboxQuestion
+        fragmentKey={fragmentKey}
+        localSharedValues={localSharedValues}
+        setLocalSharedValues={setLocalSharedValues}
+      />
+    );
   }
   return null;
 }

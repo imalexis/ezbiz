@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { ResponseModeLinearScaleQuestionFragment$key } from "./__generated__/ResponseModeLinearScaleQuestionFragment.graphql";
 import { ResponseModeLinearScaleQuestionUpdateMutation } from "./__generated__/ResponseModeLinearScaleQuestionUpdateMutation.graphql";
 import { ResponseModeLinearScaleQuestionResponseQuery } from "./__generated__/ResponseModeLinearScaleQuestionResponseQuery.graphql";
+import { Parser } from "../../../lib/expr/parser";
+import { Evaluator } from "../../../lib/expr/evaluator";
 
 type Props = {
   fragmentKey: ResponseModeLinearScaleQuestionFragment$key;
@@ -20,6 +22,43 @@ type Range = {
   maxValue: number;
 };
 
+export function DynamicResponseModeLinearScaleQuestion({
+  fragmentKey,
+  localSharedValues,
+  setLocalSharedValues,
+}: Props) {
+  const question = useFragment(fragment, fragmentKey);
+  console.log("rule = ", question.rule);
+  if (question.rule === "") {
+    return (
+      <ResponseModeLinearScaleQuestion
+        fragmentKey={fragmentKey}
+        localSharedValues={localSharedValues}
+        setLocalSharedValues={setLocalSharedValues}
+      />
+    );
+  }
+  const parser = new Parser(question.rule);
+  const program = parser.parse();
+  const evaluator = new Evaluator();
+  const deps = JSON.parse(question.dependencies) as Array<string>;
+  deps.forEach((dep) => {
+    evaluator.env.set(dep, parseInt(localSharedValues?.get(dep) ?? "0"));
+  });
+  const output = evaluator.eval(program);
+  const isVisible = (output.get("visible") ?? 0) > 0;
+  if (isVisible) {
+    return (
+      <ResponseModeLinearScaleQuestion
+        fragmentKey={fragmentKey}
+        localSharedValues={localSharedValues}
+        setLocalSharedValues={setLocalSharedValues}
+      />
+    );
+  }
+  return null;
+}
+
 export default function ResponseModeLinearScaleQuestion({
   fragmentKey,
   localSharedValues,
@@ -27,7 +66,14 @@ export default function ResponseModeLinearScaleQuestion({
 }: Props) {
   const { instanceID } = useParams();
   const question = useFragment(fragment, fragmentKey);
-  const extraData = JSON.parse(question.extraData) as Range;
+  const extraData = JSON.parse(
+    question.extraData === ""
+      ? JSON.stringify({
+          minValue: 0,
+          maxValue: 100,
+        })
+      : question.extraData
+  ) as Range;
   const [updateQuestionResponse] =
     useMutation<ResponseModeLinearScaleQuestionUpdateMutation>(updateMutation);
   const data = useLazyLoadQuery<ResponseModeLinearScaleQuestionResponseQuery>(
@@ -101,6 +147,8 @@ const fragment = graphql`
     type
     required
     extraData
+    rule
+    dependencies
     __typename
   }
 `;

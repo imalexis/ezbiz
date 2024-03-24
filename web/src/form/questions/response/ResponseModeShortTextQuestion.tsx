@@ -34,7 +34,13 @@ export function DynamicRespondModeShortTextQuestion({
   const output = evaluator.eval(program);
   const isVisible = (output.get("visible") ?? 0) > 0;
   if (isVisible) {
-    return <RespondModeShortTextQuestion fragmentKey={fragmentKey} />;
+    return (
+      <RespondModeShortTextQuestion
+        fragmentKey={fragmentKey}
+        localSharedValues={localSharedValues}
+        setLocalSharedValues={setLocalSharedValues}
+      />
+    );
   }
   return null;
 }

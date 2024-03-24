@@ -16,7 +16,7 @@ export function ResponseModeDropdownQuestion({ fragmentKey }: Props) {
   };
 
   const items: MenuProps["items"] = Array.from(
-    JSON.parse(question.extraData)
+    JSON.parse(question.extraData === "" ? "[]" : question.extraData)
   ).map((item, index) => ({
     label: item as string,
     key: index.toString(),

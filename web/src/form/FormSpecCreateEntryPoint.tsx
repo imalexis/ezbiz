@@ -81,9 +81,10 @@ export function FormSpecCreateEntryPoint() {
     { label: "checkboxes", key: "checkboxes" },
     { label: "file", key: "file" },
     { label: "date", key: "date" },
-    { label: "time", key: "time" },
+    // { label: "time", key: "time" },
     { label: "paragraph", key: "paragraph" },
     { label: "linear_scale", key: "linear_scale" },
+    // { label: "drop_down", key: "drop_down" },
   ];
   const [formTitle, setFormTitle] = useState(data.node?.name);
   const [formDescription, setFormDescription] = useState(

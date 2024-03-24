@@ -35,7 +35,13 @@ export function DynamicResponseModeDateQuestion({
   const output = evaluator.eval(program);
   const isVisible = (output.get("visible") ?? 0) > 0;
   if (isVisible) {
-    return <ResponseModeDateQuestion fragmentKey={fragmentKey} />;
+    return (
+      <ResponseModeDateQuestion
+        fragmentKey={fragmentKey}
+        localSharedValues={localSharedValues}
+        setLocalSharedValues={setLocalSharedValues}
+      />
+    );
   }
   return null;
 }
