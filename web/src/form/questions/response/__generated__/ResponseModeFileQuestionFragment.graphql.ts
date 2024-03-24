@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ec76804fd674fdfbe77c7a544313959a>>
+ * @generated SignedSource<<18c50b8d85bd71aedb5a0b9d3ee450dd>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,10 +13,12 @@ export type QuestionType = "checkboxes" | "date" | "drop_down" | "file" | "linea
 import { FragmentRefs } from "relay-runtime";
 export type ResponseModeFileQuestionFragment$data = {
   readonly __typename: "Question";
+  readonly dependencies: string;
   readonly extraData: string;
   readonly id: string;
   readonly label: string;
   readonly required: boolean;
+  readonly rule: string;
   readonly title: string;
   readonly type: QuestionType;
   readonly " $fragmentType": "ResponseModeFileQuestionFragment";
@@ -78,6 +80,20 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "rule",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "dependencies",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "__typename",
       "storageKey": null
     }
@@ -86,6 +102,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "6020a07b9948f3204179e2aba3e7f372";
+(node as any).hash = "364f6a114bee42eb033a8099feb70f36";
 
 export default node;

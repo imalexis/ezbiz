@@ -3,11 +3,16 @@ import { useFragment } from "react-relay";
 import { Flex } from "antd";
 import { DynamicResponseModeMultiChoiceQuestion } from "./ResponseModeMultiChoiceQuestion";
 import { RespondModeParagraphQuestion } from "./ResponseModeParagraphQuestion";
-import { ResponseModeFileQuestion } from "./ResponseModeFileQuestion";
+import {
+  DynamicResponseModeFileQuestion,
+  ResponseModeFileQuestion,
+} from "./ResponseModeFileQuestion";
 import { ResponseModeDropdownQuestion } from "./ResponseModeDropdownQuestion";
 import { DynamicRespondModeShortTextQuestion } from "./ResponseModeShortTextQuestion";
 import { ResponseModeCheckboxQuestion } from "./ResponseModeCheckboxQuestion";
-import ResponseModeDateQuestion from "./ResponseModeDateQuestion";
+import ResponseModeDateQuestion, {
+  DynamicResponseModeDateQuestion,
+} from "./ResponseModeDateQuestion";
 import ResponseModeLinearScaleQuestion from "./ResponseModeLinearScaleQuestion";
 import { ResponseModeQuestionFragment$key } from "./__generated__/ResponseModeQuestionFragment.graphql";
 
@@ -37,7 +42,11 @@ export function Question({
       )}
 
       {question.type === "checkboxes" && (
-        <DynamicResponseModeMultiChoiceQuestion fragmentKey={question} />
+        <DynamicResponseModeMultiChoiceQuestion
+          fragmentKey={question}
+          localSharedValues={localSharedValues}
+          setLocalSharedValues={setLocalSharedValues}
+        />
       )}
 
       {question.type === "short_text" && (
@@ -53,14 +62,22 @@ export function Question({
       )}
 
       {question.type === "file" && (
-        <ResponseModeFileQuestion fragmentKey={question} />
+        <DynamicResponseModeFileQuestion
+          fragmentKey={question}
+          localSharedValues={localSharedValues}
+          setLocalSharedValues={setLocalSharedValues}
+        />
       )}
 
       {question.type === "drop_down" && (
         <ResponseModeDropdownQuestion fragmentKey={question} />
       )}
       {question.type === "date" && (
-        <ResponseModeDateQuestion fragmentKey={question} />
+        <DynamicResponseModeDateQuestion
+          fragmentKey={question}
+          localSharedValues={localSharedValues}
+          setLocalSharedValues={setLocalSharedValues}
+        />
       )}
       {question.type === "linear_scale" && (
         <ResponseModeLinearScaleQuestion

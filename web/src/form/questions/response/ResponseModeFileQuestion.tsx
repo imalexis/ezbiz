@@ -8,8 +8,37 @@ import { ResponseModeFileQuestionFragment$key } from "./__generated__/ResponseMo
 import { ResponseModeFileQuestionUploadFileMutation } from "./__generated__/ResponseModeFileQuestionUploadFileMutation.graphql";
 import { ResponseModeFileQuestionUpdateMutation } from "./__generated__/ResponseModeFileQuestionUpdateMutation.graphql";
 import { ResponseModeFileQuestionResponseQuery } from "./__generated__/ResponseModeFileQuestionResponseQuery.graphql";
+import { Parser } from "../../../lib/expr/parser";
+import { Evaluator } from "../../../lib/expr/evaluator";
 
-type Props = { fragmentKey: ResponseModeFileQuestionFragment$key };
+type Props = {
+  fragmentKey: ResponseModeFileQuestionFragment$key;
+  localSharedValues?: Map<string, string>;
+  setLocalSharedValues?: React.Dispatch<
+    React.SetStateAction<Map<string, string>>
+  >;
+};
+
+export function DynamicResponseModeFileQuestion({
+  fragmentKey,
+  localSharedValues,
+  setLocalSharedValues,
+}: Props) {
+  const question = useFragment(fragment, fragmentKey);
+  const parser = new Parser(question.rule);
+  const program = parser.parse();
+  const evaluator = new Evaluator();
+  const deps = JSON.parse(question.dependencies) as Array<string>;
+  deps.forEach((dep) => {
+    evaluator.env.set(dep, parseInt(localSharedValues?.get(dep) ?? "0"));
+  });
+  const output = evaluator.eval(program);
+  const isVisible = (output.get("visible") ?? 0) > 0;
+  if (isVisible) {
+    return <ResponseModeFileQuestion fragmentKey={fragmentKey} />;
+  }
+  return null;
+}
 
 export function ResponseModeFileQuestion({ fragmentKey }: Props) {
   const { status } = useContext(FormInstanceContext);
@@ -116,6 +145,8 @@ const fragment = graphql`
     type
     required
     extraData
+    rule
+    dependencies
     __typename
   }
 `;

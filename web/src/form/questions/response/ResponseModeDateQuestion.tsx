@@ -8,10 +8,38 @@ import FormInstanceContext from "../../FormInstanceContext";
 import { ResponseModeDateQuestionFragment$key } from "./__generated__/ResponseModeDateQuestionFragment.graphql";
 import { ResponseModeDateQuestionUpdateMutation } from "./__generated__/ResponseModeDateQuestionUpdateMutation.graphql";
 import { ResponseModeDateQuestionResponseQuery } from "./__generated__/ResponseModeDateQuestionResponseQuery.graphql";
+import { Parser } from "../../../lib/expr/parser";
+import { Evaluator } from "../../../lib/expr/evaluator";
 
 type Props = {
   fragmentKey: ResponseModeDateQuestionFragment$key;
+  localSharedValues?: Map<string, string>;
+  setLocalSharedValues?: React.Dispatch<
+    React.SetStateAction<Map<string, string>>
+  >;
 };
+
+export function DynamicResponseModeDateQuestion({
+  fragmentKey,
+  localSharedValues,
+  setLocalSharedValues,
+}: Props) {
+  const question = useFragment(fragment, fragmentKey);
+  const parser = new Parser(question.rule);
+  const program = parser.parse();
+  const evaluator = new Evaluator();
+  const deps = JSON.parse(question.dependencies) as Array<string>;
+  deps.forEach((dep) => {
+    evaluator.env.set(dep, parseInt(localSharedValues?.get(dep) ?? "0"));
+  });
+  const output = evaluator.eval(program);
+  const isVisible = (output.get("visible") ?? 0) > 0;
+  if (isVisible) {
+    return <ResponseModeDateQuestion fragmentKey={fragmentKey} />;
+  }
+  return null;
+}
+
 export default function ResponseModeDateQuestion({ fragmentKey }: Props) {
   const question = useFragment(fragment, fragmentKey);
   const { instanceID } = useParams();
@@ -63,6 +91,8 @@ const fragment = graphql`
     type
     required
     extraData
+    rule
+    dependencies
   }
 `;
 
