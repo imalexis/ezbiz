@@ -2,7 +2,10 @@ import graphql from "babel-plugin-relay/macro";
 import { useFragment } from "react-relay";
 import { Flex } from "antd";
 import { DynamicResponseModeMultiChoiceQuestion } from "./ResponseModeMultiChoiceQuestion";
-import { RespondModeParagraphQuestion } from "./ResponseModeParagraphQuestion";
+import {
+  DynamicRespondModeParagraphQuestion,
+  RespondModeParagraphQuestion,
+} from "./ResponseModeParagraphQuestion";
 import {
   DynamicResponseModeFileQuestion,
   ResponseModeFileQuestion,
@@ -60,7 +63,11 @@ export function Question({
       )}
 
       {question.type === "paragraph" && (
-        <RespondModeParagraphQuestion fragmentKey={question} />
+        <DynamicRespondModeParagraphQuestion
+          fragmentKey={question}
+          localSharedValues={localSharedValues}
+          setLocalSharedValues={setLocalSharedValues}
+        />
       )}
 
       {question.type === "file" && (

@@ -7,10 +7,52 @@ import { useParams } from "react-router-dom";
 import { ResponseModeParagraphQuestionFragment$key } from "./__generated__/ResponseModeParagraphQuestionFragment.graphql";
 import { ResponseModeParagraphQuestionResponseQuery } from "./__generated__/ResponseModeParagraphQuestionResponseQuery.graphql";
 import { ResponseModeParagraphQuestionUpdateMutation } from "./__generated__/ResponseModeParagraphQuestionUpdateMutation.graphql";
+import { Parser } from "../../../lib/expr/parser";
+import { Evaluator } from "../../../lib/expr/evaluator";
 
 type Props = {
   fragmentKey: ResponseModeParagraphQuestionFragment$key;
+  localSharedValues?: Map<string, string>;
+  setLocalSharedValues?: React.Dispatch<
+    React.SetStateAction<Map<string, string>>
+  >;
 };
+export function DynamicRespondModeParagraphQuestion({
+  fragmentKey,
+  localSharedValues,
+  setLocalSharedValues,
+}: Props) {
+  const question = useFragment(fragment, fragmentKey);
+  if (question.rule === "") {
+    return (
+      <RespondModeParagraphQuestion
+        fragmentKey={fragmentKey}
+        localSharedValues={localSharedValues}
+        setLocalSharedValues={setLocalSharedValues}
+      />
+    );
+  }
+  const parser = new Parser(question.rule);
+  const program = parser.parse();
+  const evaluator = new Evaluator();
+  const deps = JSON.parse(question.dependencies) as Array<string>;
+  deps.forEach((dep) => {
+    evaluator.env.set(dep, parseInt(localSharedValues?.get(dep) ?? "0"));
+  });
+  const output = evaluator.eval(program);
+  const isVisible = (output.get("visible") ?? 0) > 0;
+  if (isVisible) {
+    return (
+      <RespondModeParagraphQuestion
+        fragmentKey={fragmentKey}
+        localSharedValues={localSharedValues}
+        setLocalSharedValues={setLocalSharedValues}
+      />
+    );
+  }
+  return null;
+}
+
 export function RespondModeParagraphQuestion({ fragmentKey }: Props) {
   const { instanceID } = useParams();
   const question = useFragment(fragment, fragmentKey);
@@ -61,6 +103,8 @@ const fragment = graphql`
     type
     required
     extraData
+    rule
+    dependencies
     __typename
   }
 `;
