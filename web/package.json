@@ -33,7 +33,8 @@
     "build": "relay-compiler --validate && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "relay": "relay-compiler --watch"
+    "relay": "relay-compiler --watch",
+    "jest": "jest"
   },
   "eslintConfig": {
     "extends": [
@@ -54,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.24.1",
     "@types/react-relay": "^16.0.2",
     "@types/relay-runtime": "^14.1.17",
     "babel-plugin-relay": "^16.0.0",
