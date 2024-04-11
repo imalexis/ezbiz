@@ -12,7 +12,10 @@ import {
 } from "./ResponseModeFileQuestion";
 import { ResponseModeDropdownQuestion } from "./ResponseModeDropdownQuestion";
 import { DynamicRespondModeShortTextQuestion } from "./ResponseModeShortTextQuestion";
-import { ResponseModeCheckboxQuestion } from "./ResponseModeCheckboxQuestion";
+import {
+  DynamicResponseModeCheckboxQuestion,
+  ResponseModeCheckboxQuestion,
+} from "./ResponseModeCheckboxQuestion";
 import ResponseModeDateQuestion, {
   DynamicResponseModeDateQuestion,
 } from "./ResponseModeDateQuestion";
@@ -47,7 +50,7 @@ export function Question({
       )}
 
       {question.type === "checkboxes" && (
-        <DynamicResponseModeMultiChoiceQuestion
+        <DynamicResponseModeCheckboxQuestion
           fragmentKey={question}
           localSharedValues={localSharedValues}
           setLocalSharedValues={setLocalSharedValues}

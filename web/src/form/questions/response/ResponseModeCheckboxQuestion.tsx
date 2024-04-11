@@ -19,7 +19,7 @@ type Props = {
   >;
 };
 
-export function DynamicResponseModeMultiChoiceQuestion({
+export function DynamicResponseModeCheckboxQuestion({
   fragmentKey,
   localSharedValues,
   setLocalSharedValues,
