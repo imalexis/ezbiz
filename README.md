@@ -1,53 +1,34 @@
-# Ezbiz
 
-Ezbiz is an application provides below modules:
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [Featrures](#featrures)
+- [Getting Started](#getting-started)
+- [Key Componet Structure](#key-componet-structure)
+- [Usage Demo](#usage-demo)
+- [What's Next](#whats-next)
 
-1. Forms
-2. Workflow
 
-## Forms
+## Overview
 
-Forms module provides below features:
+EZBIZ is a dynamic form builder which is designed to streamline the creation of questionnaires, surveys, and other forms. With this application, users can effortlessly generate custom forms with various question types and logic-based visibility settings. Whether it's a simple feedback form or a complex survey with conditional branching, EZBIZ provides the functionality needed to create engaging user experiences.
 
-1. Create a Form
-2. Create a QuestionGroup
-3. Create a Question inside a QuestionGroup
-4. Create a QuestionResponse
-5. Create a QuestionResponseValidator
+## Tech Stack
 
-### Form
+### Backend
+- Go: The backend of the project is developed using the Go programming language, known for its performance and concurrency support.
 
-- Form: A form has several question group, each question group has several questions.
-- Form Response Action: The action to trigger when user submited the form response.
-- Form Table: All questions in the form can maps to a corresponding Table
+  - Go + GraphQL + Ent: Ezbiz utilizes GraphQL for efficient data querying and manipulation, coupled with Ent, a powerful and idiomatic ORM for Go.
+  
+### Frontend
 
-### Question
+- React + Relay + React Router + AntD + Jest: The frontend of EZBIZ is crafted with React, a popular JavaScript library for building user interfaces. It incorporates Relay for efficient data fetching and management, React Router for client-side routing, Ant Design for UI components, and Jest for testing.
 
-- Question Precondition: Question is enabled when the precondition is satified
-- Question
-- Question Response Validator
+    - **Relay** : Relay offers automatic code generation, providing strongly typed APIs for data fetching and mutation.
+        
+    - **React Router** : React Router is essential for enabling navigation within a single-page application, allowing users to move between different views seamlessly.
 
-#### About General Question
-All instances related to Question utilize the `<GeneralQuestion />` component.
-
-In design mode: `<GeneralQuestion mode="design" generalFragmentKey={...} />`.
-In response mode: `<GeneralQuestion mode="response" fragmentKey={...} />`.
-Within the GeneralQuestion component, the behavior is determined based on the provided parameters.
-Underlying components, such as ShortTextQuestion, have corresponding versions like DesignModeShortTextQuestion.
-
-### Action
-
-Action is an workflow, which take the Form Response as the input,
-For normal users, the actions are predefined:
-
-- Send Email
-- Send Whatsapp
-- Send SMS
-
-For developers: the actions is extensiable:
------------------------------------------------------------------------------------------------------------
-
-The Dynamic Form Builder is a versatile tool designed to streamline the creation of questionnaires, surveys, and other forms. With this application, users can effortlessly generate custom forms with various question types and logic-based visibility settings. Whether it's a simple feedback form or a complex survey with conditional branching, the Dynamic Form Builder provides the functionality needed to create engaging user experiences.
 
 ## Featrures
 
@@ -78,21 +59,29 @@ To get started with the Dynamic Form Builder, follow these steps:
 Installation: Clone the repository and install any necessary dependencies.
 
 ```
-git clone https://github.com/your/repository.git
-cd dynamic-form-builder
-npm install
+git clone https://github.com/imalexis/ezbiz.git
+cd web
+npm i
 ```
 
 Usage: Run the application and start creating your dynamic forms.
 
 ```
-npm start
+cd backend
+go run ./cmd/graphqld
+cd web
+npm run start
 ```
 
 ## Key Componet Structure
 
-The following diagram highlights critical components central to understanding the project's architecture and functionality. It focuses on key elements such as `FormSpecCreateEntryPoint`, `GeneralQuestion`, and their subdivisions into design and respond modes, along with specific question types like `DesignModeMultiChoiceQuestion` and D`ynamicResponseModeMultiChoiceQuestion`. 
+The following diagram highlights critical components central to understanding the project's architecture and functionality. It focuses on key elements such as `FormSpecCreateEntryPoint`, `GeneralQuestion`, and their subdivisions into design and respond modes, along with specific question types like `DesignModeMultiChoiceQuestion` and `DynamicResponseModeMultiChoiceQuestion`. 
 
 ![Component Structure Diagram](./docs/image/component_structure.png)
 
 ## Usage Demo
+  // todo
+
+## What's Next
+
+  The project aims to support dynamic business requirements based on the script language. For instance, it can facilitate actions such as dynamically generate emails tailored to individual users based on predefined conditions.
