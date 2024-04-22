@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<362a761f071b8124a4bfa1648ee7e2fa>>
+ * @generated SignedSource<<23d0691e7bac2b69eee96714217e1b76>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,6 +21,7 @@ export type UpdateFormSpecInput = {
   createdBy?: number | null | undefined;
   description?: string | null | undefined;
   enabled?: boolean | null | undefined;
+  isTemplate?: boolean | null | undefined;
   name?: string | null | undefined;
   ownerID?: string | null | undefined;
   removeFormInstanceIDs?: ReadonlyArray<string> | null | undefined;

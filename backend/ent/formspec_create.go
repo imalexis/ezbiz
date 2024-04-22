@@ -65,6 +65,20 @@ func (fsc *FormSpecCreate) SetNillableDescription(s *string) *FormSpecCreate {
 	return fsc
 }
 
+// SetIsTemplate sets the "is_template" field.
+func (fsc *FormSpecCreate) SetIsTemplate(b bool) *FormSpecCreate {
+	fsc.mutation.SetIsTemplate(b)
+	return fsc
+}
+
+// SetNillableIsTemplate sets the "is_template" field if the given value is not nil.
+func (fsc *FormSpecCreate) SetNillableIsTemplate(b *bool) *FormSpecCreate {
+	if b != nil {
+		fsc.SetIsTemplate(*b)
+	}
+	return fsc
+}
+
 // SetEnabled sets the "enabled" field.
 func (fsc *FormSpecCreate) SetEnabled(b bool) *FormSpecCreate {
 	fsc.mutation.SetEnabled(b)
@@ -205,6 +219,10 @@ func (fsc *FormSpecCreate) defaults() {
 		v := formspec.DefaultDescription
 		fsc.mutation.SetDescription(v)
 	}
+	if _, ok := fsc.mutation.IsTemplate(); !ok {
+		v := formspec.DefaultIsTemplate
+		fsc.mutation.SetIsTemplate(v)
+	}
 	if _, ok := fsc.mutation.Enabled(); !ok {
 		v := formspec.DefaultEnabled
 		fsc.mutation.SetEnabled(v)
@@ -226,6 +244,9 @@ func (fsc *FormSpecCreate) check() error {
 	}
 	if _, ok := fsc.mutation.Description(); !ok {
 		return &ValidationError{Name: "description", err: errors.New(`ent: missing required field "FormSpec.description"`)}
+	}
+	if _, ok := fsc.mutation.IsTemplate(); !ok {
+		return &ValidationError{Name: "is_template", err: errors.New(`ent: missing required field "FormSpec.is_template"`)}
 	}
 	if _, ok := fsc.mutation.Enabled(); !ok {
 		return &ValidationError{Name: "enabled", err: errors.New(`ent: missing required field "FormSpec.enabled"`)}
@@ -276,6 +297,10 @@ func (fsc *FormSpecCreate) createSpec() (*FormSpec, *sqlgraph.CreateSpec) {
 	if value, ok := fsc.mutation.Description(); ok {
 		_spec.SetField(formspec.FieldDescription, field.TypeString, value)
 		_node.Description = value
+	}
+	if value, ok := fsc.mutation.IsTemplate(); ok {
+		_spec.SetField(formspec.FieldIsTemplate, field.TypeBool, value)
+		_node.IsTemplate = value
 	}
 	if value, ok := fsc.mutation.Enabled(); ok {
 		_spec.SetField(formspec.FieldEnabled, field.TypeBool, value)

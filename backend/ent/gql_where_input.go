@@ -1110,6 +1110,10 @@ type FormSpecWhereInput struct {
 	DescriptionEqualFold    *string  `json:"descriptionEqualFold,omitempty"`
 	DescriptionContainsFold *string  `json:"descriptionContainsFold,omitempty"`
 
+	// "is_template" field predicates.
+	IsTemplate    *bool `json:"isTemplate,omitempty"`
+	IsTemplateNEQ *bool `json:"isTemplateNEQ,omitempty"`
+
 	// "enabled" field predicates.
 	Enabled    *bool `json:"enabled,omitempty"`
 	EnabledNEQ *bool `json:"enabledNEQ,omitempty"`
@@ -1374,6 +1378,12 @@ func (i *FormSpecWhereInput) P() (predicate.FormSpec, error) {
 	}
 	if i.DescriptionContainsFold != nil {
 		predicates = append(predicates, formspec.DescriptionContainsFold(*i.DescriptionContainsFold))
+	}
+	if i.IsTemplate != nil {
+		predicates = append(predicates, formspec.IsTemplateEQ(*i.IsTemplate))
+	}
+	if i.IsTemplateNEQ != nil {
+		predicates = append(predicates, formspec.IsTemplateNEQ(*i.IsTemplateNEQ))
 	}
 	if i.Enabled != nil {
 		predicates = append(predicates, formspec.EnabledEQ(*i.Enabled))

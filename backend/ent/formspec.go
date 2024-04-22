@@ -24,6 +24,8 @@ type FormSpec struct {
 	Cover string `json:"cover,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
+	// IsTemplate holds the value of the "is_template" field.
+	IsTemplate bool `json:"is_template,omitempty"`
 	// Enabled holds the value of the "enabled" field.
 	Enabled bool `json:"enabled,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
@@ -93,7 +95,7 @@ func (*FormSpec) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case formspec.FieldEnabled:
+		case formspec.FieldIsTemplate, formspec.FieldEnabled:
 			values[i] = new(sql.NullBool)
 		case formspec.FieldID, formspec.FieldCreatedBy:
 			values[i] = new(sql.NullInt64)
@@ -141,6 +143,12 @@ func (fs *FormSpec) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field description", values[i])
 			} else if value.Valid {
 				fs.Description = value.String
+			}
+		case formspec.FieldIsTemplate:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_template", values[i])
+			} else if value.Valid {
+				fs.IsTemplate = value.Bool
 			}
 		case formspec.FieldEnabled:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -232,6 +240,9 @@ func (fs *FormSpec) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("description=")
 	builder.WriteString(fs.Description)
+	builder.WriteString(", ")
+	builder.WriteString("is_template=")
+	builder.WriteString(fmt.Sprintf("%v", fs.IsTemplate))
 	builder.WriteString(", ")
 	builder.WriteString("enabled=")
 	builder.WriteString(fmt.Sprintf("%v", fs.Enabled))

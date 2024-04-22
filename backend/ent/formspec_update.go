@@ -79,6 +79,20 @@ func (fsu *FormSpecUpdate) SetNillableDescription(s *string) *FormSpecUpdate {
 	return fsu
 }
 
+// SetIsTemplate sets the "is_template" field.
+func (fsu *FormSpecUpdate) SetIsTemplate(b bool) *FormSpecUpdate {
+	fsu.mutation.SetIsTemplate(b)
+	return fsu
+}
+
+// SetNillableIsTemplate sets the "is_template" field if the given value is not nil.
+func (fsu *FormSpecUpdate) SetNillableIsTemplate(b *bool) *FormSpecUpdate {
+	if b != nil {
+		fsu.SetIsTemplate(*b)
+	}
+	return fsu
+}
+
 // SetEnabled sets the "enabled" field.
 func (fsu *FormSpecUpdate) SetEnabled(b bool) *FormSpecUpdate {
 	fsu.mutation.SetEnabled(b)
@@ -292,6 +306,9 @@ func (fsu *FormSpecUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := fsu.mutation.Description(); ok {
 		_spec.SetField(formspec.FieldDescription, field.TypeString, value)
 	}
+	if value, ok := fsu.mutation.IsTemplate(); ok {
+		_spec.SetField(formspec.FieldIsTemplate, field.TypeBool, value)
+	}
 	if value, ok := fsu.mutation.Enabled(); ok {
 		_spec.SetField(formspec.FieldEnabled, field.TypeBool, value)
 	}
@@ -490,6 +507,20 @@ func (fsuo *FormSpecUpdateOne) SetDescription(s string) *FormSpecUpdateOne {
 func (fsuo *FormSpecUpdateOne) SetNillableDescription(s *string) *FormSpecUpdateOne {
 	if s != nil {
 		fsuo.SetDescription(*s)
+	}
+	return fsuo
+}
+
+// SetIsTemplate sets the "is_template" field.
+func (fsuo *FormSpecUpdateOne) SetIsTemplate(b bool) *FormSpecUpdateOne {
+	fsuo.mutation.SetIsTemplate(b)
+	return fsuo
+}
+
+// SetNillableIsTemplate sets the "is_template" field if the given value is not nil.
+func (fsuo *FormSpecUpdateOne) SetNillableIsTemplate(b *bool) *FormSpecUpdateOne {
+	if b != nil {
+		fsuo.SetIsTemplate(*b)
 	}
 	return fsuo
 }
@@ -736,6 +767,9 @@ func (fsuo *FormSpecUpdateOne) sqlSave(ctx context.Context) (_node *FormSpec, er
 	}
 	if value, ok := fsuo.mutation.Description(); ok {
 		_spec.SetField(formspec.FieldDescription, field.TypeString, value)
+	}
+	if value, ok := fsuo.mutation.IsTemplate(); ok {
+		_spec.SetField(formspec.FieldIsTemplate, field.TypeBool, value)
 	}
 	if value, ok := fsuo.mutation.Enabled(); ok {
 		_spec.SetField(formspec.FieldEnabled, field.TypeBool, value)

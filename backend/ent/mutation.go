@@ -2163,6 +2163,7 @@ type FormSpecMutation struct {
 	name                   *string
 	cover                  *string
 	description            *string
+	is_template            *bool
 	enabled                *bool
 	created_at             *time.Time
 	updated_at             *time.Time
@@ -2399,6 +2400,42 @@ func (m *FormSpecMutation) OldDescription(ctx context.Context) (v string, err er
 // ResetDescription resets all changes to the "description" field.
 func (m *FormSpecMutation) ResetDescription() {
 	m.description = nil
+}
+
+// SetIsTemplate sets the "is_template" field.
+func (m *FormSpecMutation) SetIsTemplate(b bool) {
+	m.is_template = &b
+}
+
+// IsTemplate returns the value of the "is_template" field in the mutation.
+func (m *FormSpecMutation) IsTemplate() (r bool, exists bool) {
+	v := m.is_template
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsTemplate returns the old "is_template" field's value of the FormSpec entity.
+// If the FormSpec object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FormSpecMutation) OldIsTemplate(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsTemplate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsTemplate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsTemplate: %w", err)
+	}
+	return oldValue.IsTemplate, nil
+}
+
+// ResetIsTemplate resets all changes to the "is_template" field.
+func (m *FormSpecMutation) ResetIsTemplate() {
+	m.is_template = nil
 }
 
 // SetEnabled sets the "enabled" field.
@@ -2746,7 +2783,7 @@ func (m *FormSpecMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *FormSpecMutation) Fields() []string {
-	fields := make([]string, 0, 7)
+	fields := make([]string, 0, 8)
 	if m.name != nil {
 		fields = append(fields, formspec.FieldName)
 	}
@@ -2755,6 +2792,9 @@ func (m *FormSpecMutation) Fields() []string {
 	}
 	if m.description != nil {
 		fields = append(fields, formspec.FieldDescription)
+	}
+	if m.is_template != nil {
+		fields = append(fields, formspec.FieldIsTemplate)
 	}
 	if m.enabled != nil {
 		fields = append(fields, formspec.FieldEnabled)
@@ -2782,6 +2822,8 @@ func (m *FormSpecMutation) Field(name string) (ent.Value, bool) {
 		return m.Cover()
 	case formspec.FieldDescription:
 		return m.Description()
+	case formspec.FieldIsTemplate:
+		return m.IsTemplate()
 	case formspec.FieldEnabled:
 		return m.Enabled()
 	case formspec.FieldCreatedAt:
@@ -2805,6 +2847,8 @@ func (m *FormSpecMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldCover(ctx)
 	case formspec.FieldDescription:
 		return m.OldDescription(ctx)
+	case formspec.FieldIsTemplate:
+		return m.OldIsTemplate(ctx)
 	case formspec.FieldEnabled:
 		return m.OldEnabled(ctx)
 	case formspec.FieldCreatedAt:
@@ -2842,6 +2886,13 @@ func (m *FormSpecMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDescription(v)
+		return nil
+	case formspec.FieldIsTemplate:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsTemplate(v)
 		return nil
 	case formspec.FieldEnabled:
 		v, ok := value.(bool)
@@ -2952,6 +3003,9 @@ func (m *FormSpecMutation) ResetField(name string) error {
 		return nil
 	case formspec.FieldDescription:
 		m.ResetDescription()
+		return nil
+	case formspec.FieldIsTemplate:
+		m.ResetIsTemplate()
 		return nil
 	case formspec.FieldEnabled:
 		m.ResetEnabled()

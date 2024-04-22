@@ -23,6 +23,7 @@ func (FormSpec) Fields() []ent.Field {
 		field.String("name").Default("Default Form"),
 		field.String("cover").Optional(),
 		field.String("description").Default("This is a new form"),
+		field.Bool("is_template").Default(false),
 		field.Bool("enabled").Default(false),
 		field.Time("created_at").Default(time.Now).Annotations(entgql.OrderField("CREATED_AT")),
 		field.Time("updated_at").Default(time.Now).Annotations(entgql.OrderField("UPDATED_AT")),

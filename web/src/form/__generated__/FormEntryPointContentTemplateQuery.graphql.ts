@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<db47d70bb7a4478fd297fceb199688da>>
+ * @generated SignedSource<<dc22cf987d57f29de733e18b8e09ebba>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -31,6 +31,13 @@ var v0 = [
     "kind": "Literal",
     "name": "first",
     "value": 4
+  },
+  {
+    "kind": "Literal",
+    "name": "where",
+    "value": {
+      "isTemplate": true
+    }
   }
 ],
 v1 = {
@@ -83,7 +90,7 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "formSpecs(first:4)"
+        "storageKey": "formSpecs(first:4,where:{\"isTemplate\":true})"
       }
     ],
     "type": "Query",
@@ -214,21 +221,21 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "formSpecs(first:4)"
+        "storageKey": "formSpecs(first:4,where:{\"isTemplate\":true})"
       }
     ]
   },
   "params": {
-    "cacheID": "dabb258fecf99f290e1071b6903e0fc8",
+    "cacheID": "8babf981a1b983297e31dcfd11efa612",
     "id": null,
     "metadata": {},
     "name": "FormEntryPointContentTemplateQuery",
     "operationKind": "query",
-    "text": "query FormEntryPointContentTemplateQuery {\n  formSpecs(first: 4) {\n    edges {\n      node {\n        ...FormTemplateCardFragment\n        id\n      }\n    }\n  }\n}\n\nfragment FormTemplateCardFragment on FormSpec {\n  id\n  name\n  cover\n  description\n  enabled\n  createdAt\n  updatedAt\n  createdBy\n  questionGroups {\n    id\n    question {\n      id\n      label\n      type\n    }\n  }\n}\n"
+    "text": "query FormEntryPointContentTemplateQuery {\n  formSpecs(first: 4, where: {isTemplate: true}) {\n    edges {\n      node {\n        ...FormTemplateCardFragment\n        id\n      }\n    }\n  }\n}\n\nfragment FormTemplateCardFragment on FormSpec {\n  id\n  name\n  cover\n  description\n  enabled\n  createdAt\n  updatedAt\n  createdBy\n  questionGroups {\n    id\n    question {\n      id\n      label\n      type\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "039af7b39dc0f322d8950ce2101b014d";
+(node as any).hash = "074e5cf6e8785b52ac4851b7a2458c89";
 
 export default node;

@@ -9,30 +9,33 @@ import { FormEntryPointContentTemplateQuery } from "./__generated__/FormEntryPoi
 export function FormEntryPointContent() {
   const data = useLazyLoadQuery<FormEntryPointContentTemplateQuery>(query, {});
   return (
-    <>
-      <Flex
-        style={{
-          height: "320px",
-        }}
-        align="center"
-        justify="space-evenly"
-      >
-        <FormTemplateCreateCard />
-        {(data.formSpecs.edges ?? []).map((edge, index) => {
-          if (edge?.node == null) {
-            return <></>;
-          }
-          return <FormTemplateCard key={index} fragmentKey={edge?.node} />;
-        })}
+    <Flex align="center" justify="center">
+      <Flex vertical style={{ width: "70vw" }}>
+        <Flex
+          style={{
+            height: "320px",
+          }}
+          align="flex-start"
+          justify="space-evenly"
+          gap={20}
+        >
+          <FormTemplateCreateCard />
+          {(data.formSpecs.edges ?? []).map((edge, index) => {
+            if (edge?.node == null) {
+              return <></>;
+            }
+            return <FormTemplateCard key={index} fragmentKey={edge?.node} />;
+          })}
+        </Flex>
+        <FormSpecList />
       </Flex>
-      <FormSpecList />
-    </>
+    </Flex>
   );
 }
 
 const query = graphql`
   query FormEntryPointContentTemplateQuery {
-    formSpecs(first: 4) {
+    formSpecs(first: 4, where: { isTemplate: true }) {
       edges {
         node {
           ...FormTemplateCardFragment

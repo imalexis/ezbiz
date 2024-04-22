@@ -20,6 +20,8 @@ const (
 	FieldCover = "cover"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
+	// FieldIsTemplate holds the string denoting the is_template field in the database.
+	FieldIsTemplate = "is_template"
 	// FieldEnabled holds the string denoting the enabled field in the database.
 	FieldEnabled = "enabled"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
@@ -65,6 +67,7 @@ var Columns = []string{
 	FieldName,
 	FieldCover,
 	FieldDescription,
+	FieldIsTemplate,
 	FieldEnabled,
 	FieldCreatedAt,
 	FieldUpdatedAt,
@@ -97,6 +100,8 @@ var (
 	DefaultName string
 	// DefaultDescription holds the default value on creation for the "description" field.
 	DefaultDescription string
+	// DefaultIsTemplate holds the default value on creation for the "is_template" field.
+	DefaultIsTemplate bool
 	// DefaultEnabled holds the default value on creation for the "enabled" field.
 	DefaultEnabled bool
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
@@ -126,6 +131,11 @@ func ByCover(opts ...sql.OrderTermOption) OrderOption {
 // ByDescription orders the results by the description field.
 func ByDescription(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDescription, opts...).ToFunc()
+}
+
+// ByIsTemplate orders the results by the is_template field.
+func ByIsTemplate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsTemplate, opts...).ToFunc()
 }
 
 // ByEnabled orders the results by the enabled field.

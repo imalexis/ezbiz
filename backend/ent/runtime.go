@@ -67,16 +67,20 @@ func init() {
 	formspecDescDescription := formspecFields[2].Descriptor()
 	// formspec.DefaultDescription holds the default value on creation for the description field.
 	formspec.DefaultDescription = formspecDescDescription.Default.(string)
+	// formspecDescIsTemplate is the schema descriptor for is_template field.
+	formspecDescIsTemplate := formspecFields[3].Descriptor()
+	// formspec.DefaultIsTemplate holds the default value on creation for the is_template field.
+	formspec.DefaultIsTemplate = formspecDescIsTemplate.Default.(bool)
 	// formspecDescEnabled is the schema descriptor for enabled field.
-	formspecDescEnabled := formspecFields[3].Descriptor()
+	formspecDescEnabled := formspecFields[4].Descriptor()
 	// formspec.DefaultEnabled holds the default value on creation for the enabled field.
 	formspec.DefaultEnabled = formspecDescEnabled.Default.(bool)
 	// formspecDescCreatedAt is the schema descriptor for created_at field.
-	formspecDescCreatedAt := formspecFields[4].Descriptor()
+	formspecDescCreatedAt := formspecFields[5].Descriptor()
 	// formspec.DefaultCreatedAt holds the default value on creation for the created_at field.
 	formspec.DefaultCreatedAt = formspecDescCreatedAt.Default.(func() time.Time)
 	// formspecDescUpdatedAt is the schema descriptor for updated_at field.
-	formspecDescUpdatedAt := formspecFields[5].Descriptor()
+	formspecDescUpdatedAt := formspecFields[6].Descriptor()
 	// formspec.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	formspec.DefaultUpdatedAt = formspecDescUpdatedAt.Default.(func() time.Time)
 	questionFields := schema.Question{}.Fields()

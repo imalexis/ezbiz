@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e787c7da572a38bd3a2d47091d50ffef>>
+ * @generated SignedSource<<bcbcd26b51997e95277924c22945d833>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,6 +16,7 @@ export type CreateFormSpecInput = {
   description?: string | null | undefined;
   enabled?: boolean | null | undefined;
   formInstanceIDs?: ReadonlyArray<string> | null | undefined;
+  isTemplate?: boolean | null | undefined;
   name?: string | null | undefined;
   ownerID?: string | null | undefined;
   questionGroupIDs?: ReadonlyArray<string> | null | undefined;

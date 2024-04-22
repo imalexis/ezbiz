@@ -1,10 +1,11 @@
 import graphql from "babel-plugin-relay/macro";
-import "./FormTemplateCardStyle.css";
 import { useNavigate } from "react-router-dom";
 import { useFragment } from "react-relay";
-import { Card } from "antd";
-import { CardPreview, Text } from "@fluentui/react-components";
+import { Card, Flex, Image, Typography } from "antd";
 import { FormTemplateCardFragment$key } from "./__generated__/FormTemplateCardFragment.graphql";
+import Meta from "antd/es/card/Meta";
+
+const { Text } = Typography;
 
 type Props = {
   fragmentKey: FormTemplateCardFragment$key;
@@ -14,25 +15,26 @@ export function FormTemplateCard({ fragmentKey }: Props) {
   const navigate = useNavigate();
   const data = useFragment(fragment, fragmentKey);
   return (
-    <Card
-      style={{ width: 245 }}
-      onClick={() => {
-        navigate(`create/${data?.id}`);
-      }}
-      className="form_template_card_default"
-    >
-      <Text>{data.name}</Text>
-      <CardPreview
-        logo={
-          <img src={resolveAsset("docx.png")} alt="Microsoft Word document" />
+    <Flex vertical justify="center" flex={1}>
+      <Card
+        hoverable
+        cover={
+          <img
+            alt="template cover"
+            src={data.cover ?? ""}
+            height={110}
+            width={190}
+          />
         }
+        onClick={() => {
+          navigate(`create/${data?.id}`);
+        }}
+        style={{ height: 205 }}
       >
-        <img
-          src={resolveAsset("doc_template.png")}
-          alt="Preview of a Word document: About Us - Overview"
-        />
-      </CardPreview>
-    </Card>
+        {/* <Text>{data.name} </Text> */}
+        {data.name}
+      </Card>
+    </Flex>
   );
 }
 
@@ -56,9 +58,3 @@ const fragment = graphql`
     }
   }
 `;
-
-const resolveAsset = (asset: string) => {
-  const ASSET_URL =
-    "https://raw.githubusercontent.com/microsoft/fluentui/master/packages/react-components/react-card/stories/assets/";
-  return `${ASSET_URL}${asset}`;
-};

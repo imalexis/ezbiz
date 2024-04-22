@@ -70,6 +70,11 @@ func Description(v string) predicate.FormSpec {
 	return predicate.FormSpec(sql.FieldEQ(FieldDescription, v))
 }
 
+// IsTemplate applies equality check predicate on the "is_template" field. It's identical to IsTemplateEQ.
+func IsTemplate(v bool) predicate.FormSpec {
+	return predicate.FormSpec(sql.FieldEQ(FieldIsTemplate, v))
+}
+
 // Enabled applies equality check predicate on the "enabled" field. It's identical to EnabledEQ.
 func Enabled(v bool) predicate.FormSpec {
 	return predicate.FormSpec(sql.FieldEQ(FieldEnabled, v))
@@ -293,6 +298,16 @@ func DescriptionEqualFold(v string) predicate.FormSpec {
 // DescriptionContainsFold applies the ContainsFold predicate on the "description" field.
 func DescriptionContainsFold(v string) predicate.FormSpec {
 	return predicate.FormSpec(sql.FieldContainsFold(FieldDescription, v))
+}
+
+// IsTemplateEQ applies the EQ predicate on the "is_template" field.
+func IsTemplateEQ(v bool) predicate.FormSpec {
+	return predicate.FormSpec(sql.FieldEQ(FieldIsTemplate, v))
+}
+
+// IsTemplateNEQ applies the NEQ predicate on the "is_template" field.
+func IsTemplateNEQ(v bool) predicate.FormSpec {
+	return predicate.FormSpec(sql.FieldNEQ(FieldIsTemplate, v))
 }
 
 // EnabledEQ applies the EQ predicate on the "enabled" field.

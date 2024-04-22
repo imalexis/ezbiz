@@ -5,8 +5,13 @@ import { Outlet, useNavigate } from "react-router-dom";
 export default function FormEntrypoint() {
   const navigate = useNavigate();
   return (
-    <Flex vertical>
-      <Flex justify="space-evenly" gap={24} align="center">
+    <Flex vertical style={{ border: "3px solid black" }}>
+      <Flex
+        justify="space-evenly"
+        gap={24}
+        align="center"
+        style={{ margin: "10px" }}
+      >
         <Flex flex={1} align="center" justify="center">
           <Button
             icon={<MenuOutlined />}

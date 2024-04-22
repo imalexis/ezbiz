@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<234201ec92707cd9aba72de3762d503b>>
+ * @generated SignedSource<<d57bf3b1d6d619a1b1db7c5544a17490>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -98,6 +98,8 @@ export type FormSpecWhereInput = {
   idLTE?: string | null | undefined;
   idNEQ?: string | null | undefined;
   idNotIn?: ReadonlyArray<string> | null | undefined;
+  isTemplate?: boolean | null | undefined;
+  isTemplateNEQ?: boolean | null | undefined;
   name?: string | null | undefined;
   nameContains?: string | null | undefined;
   nameContainsFold?: string | null | undefined;

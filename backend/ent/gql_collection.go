@@ -477,6 +477,11 @@ func (fs *FormSpecQuery) collectField(ctx context.Context, opCtx *graphql.Operat
 				selectedFields = append(selectedFields, formspec.FieldDescription)
 				fieldSeen[formspec.FieldDescription] = struct{}{}
 			}
+		case "isTemplate":
+			if _, ok := fieldSeen[formspec.FieldIsTemplate]; !ok {
+				selectedFields = append(selectedFields, formspec.FieldIsTemplate)
+				fieldSeen[formspec.FieldIsTemplate] = struct{}{}
+			}
 		case "enabled":
 			if _, ok := fieldSeen[formspec.FieldEnabled]; !ok {
 				selectedFields = append(selectedFields, formspec.FieldEnabled)

@@ -132,6 +132,7 @@ type ComplexityRoot struct {
 		Enabled        func(childComplexity int) int
 		FormInstances  func(childComplexity int, after *entgql.Cursor[int], first *int, before *entgql.Cursor[int], last *int, where *ent.FormInstanceWhereInput) int
 		ID             func(childComplexity int) int
+		IsTemplate     func(childComplexity int) int
 		Name           func(childComplexity int) int
 		Owner          func(childComplexity int) int
 		QuestionGroups func(childComplexity int) int
@@ -663,6 +664,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.FormSpec.ID(childComplexity), true
+
+	case "FormSpec.isTemplate":
+		if e.complexity.FormSpec.IsTemplate == nil {
+			break
+		}
+
+		return e.complexity.FormSpec.IsTemplate(childComplexity), true
 
 	case "FormSpec.name":
 		if e.complexity.FormSpec.Name == nil {
@@ -3962,6 +3970,8 @@ func (ec *executionContext) fieldContext_FormInstance_formSpec(ctx context.Conte
 				return ec.fieldContext_FormSpec_cover(ctx, field)
 			case "description":
 				return ec.fieldContext_FormSpec_description(ctx, field)
+			case "isTemplate":
+				return ec.fieldContext_FormSpec_isTemplate(ctx, field)
 			case "enabled":
 				return ec.fieldContext_FormSpec_enabled(ctx, field)
 			case "createdAt":
@@ -4516,6 +4526,50 @@ func (ec *executionContext) fieldContext_FormSpec_description(ctx context.Contex
 	return fc, nil
 }
 
+func (ec *executionContext) _FormSpec_isTemplate(ctx context.Context, field graphql.CollectedField, obj *ent.FormSpec) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FormSpec_isTemplate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsTemplate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FormSpec_isTemplate(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FormSpec",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _FormSpec_enabled(ctx context.Context, field graphql.CollectedField, obj *ent.FormSpec) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_FormSpec_enabled(ctx, field)
 	if err != nil {
@@ -5062,6 +5116,8 @@ func (ec *executionContext) fieldContext_FormSpecEdge_node(ctx context.Context, 
 				return ec.fieldContext_FormSpec_cover(ctx, field)
 			case "description":
 				return ec.fieldContext_FormSpec_description(ctx, field)
+			case "isTemplate":
+				return ec.fieldContext_FormSpec_isTemplate(ctx, field)
 			case "enabled":
 				return ec.fieldContext_FormSpec_enabled(ctx, field)
 			case "createdAt":
@@ -5174,6 +5230,8 @@ func (ec *executionContext) fieldContext_Mutation_createFormSpec(ctx context.Con
 				return ec.fieldContext_FormSpec_cover(ctx, field)
 			case "description":
 				return ec.fieldContext_FormSpec_description(ctx, field)
+			case "isTemplate":
+				return ec.fieldContext_FormSpec_isTemplate(ctx, field)
 			case "enabled":
 				return ec.fieldContext_FormSpec_enabled(ctx, field)
 			case "createdAt":
@@ -5253,6 +5311,8 @@ func (ec *executionContext) fieldContext_Mutation_updateFormSpec(ctx context.Con
 				return ec.fieldContext_FormSpec_cover(ctx, field)
 			case "description":
 				return ec.fieldContext_FormSpec_description(ctx, field)
+			case "isTemplate":
+				return ec.fieldContext_FormSpec_isTemplate(ctx, field)
 			case "enabled":
 				return ec.fieldContext_FormSpec_enabled(ctx, field)
 			case "createdAt":
@@ -8094,6 +8154,8 @@ func (ec *executionContext) fieldContext_QuestionGroup_formSpec(ctx context.Cont
 				return ec.fieldContext_FormSpec_cover(ctx, field)
 			case "description":
 				return ec.fieldContext_FormSpec_description(ctx, field)
+			case "isTemplate":
+				return ec.fieldContext_FormSpec_isTemplate(ctx, field)
 			case "enabled":
 				return ec.fieldContext_FormSpec_enabled(ctx, field)
 			case "createdAt":
@@ -9301,6 +9363,8 @@ func (ec *executionContext) fieldContext_User_formSpecs(ctx context.Context, fie
 				return ec.fieldContext_FormSpec_cover(ctx, field)
 			case "description":
 				return ec.fieldContext_FormSpec_description(ctx, field)
+			case "isTemplate":
+				return ec.fieldContext_FormSpec_isTemplate(ctx, field)
 			case "enabled":
 				return ec.fieldContext_FormSpec_enabled(ctx, field)
 			case "createdAt":
@@ -11645,7 +11709,7 @@ func (ec *executionContext) unmarshalInputCreateFormSpecInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "cover", "description", "enabled", "createdAt", "updatedAt", "createdBy", "questionGroupIDs", "formInstanceIDs", "ownerID"}
+	fieldsInOrder := [...]string{"name", "cover", "description", "isTemplate", "enabled", "createdAt", "updatedAt", "createdBy", "questionGroupIDs", "formInstanceIDs", "ownerID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -11679,6 +11743,15 @@ func (ec *executionContext) unmarshalInputCreateFormSpecInput(ctx context.Contex
 				return it, err
 			}
 			it.Description = data
+		case "isTemplate":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isTemplate"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsTemplate = data
 		case "enabled":
 			var err error
 
@@ -13773,7 +13846,7 @@ func (ec *executionContext) unmarshalInputFormSpecWhereInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "cover", "coverNEQ", "coverIn", "coverNotIn", "coverGT", "coverGTE", "coverLT", "coverLTE", "coverContains", "coverHasPrefix", "coverHasSuffix", "coverIsNil", "coverNotNil", "coverEqualFold", "coverContainsFold", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionEqualFold", "descriptionContainsFold", "enabled", "enabledNEQ", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "createdBy", "createdByNEQ", "createdByIn", "createdByNotIn", "createdByGT", "createdByGTE", "createdByLT", "createdByLTE", "hasQuestionGroups", "hasQuestionGroupsWith", "hasFormInstances", "hasFormInstancesWith", "hasOwner", "hasOwnerWith"}
+	fieldsInOrder := [...]string{"not", "and", "or", "id", "idNEQ", "idIn", "idNotIn", "idGT", "idGTE", "idLT", "idLTE", "name", "nameNEQ", "nameIn", "nameNotIn", "nameGT", "nameGTE", "nameLT", "nameLTE", "nameContains", "nameHasPrefix", "nameHasSuffix", "nameEqualFold", "nameContainsFold", "cover", "coverNEQ", "coverIn", "coverNotIn", "coverGT", "coverGTE", "coverLT", "coverLTE", "coverContains", "coverHasPrefix", "coverHasSuffix", "coverIsNil", "coverNotNil", "coverEqualFold", "coverContainsFold", "description", "descriptionNEQ", "descriptionIn", "descriptionNotIn", "descriptionGT", "descriptionGTE", "descriptionLT", "descriptionLTE", "descriptionContains", "descriptionHasPrefix", "descriptionHasSuffix", "descriptionEqualFold", "descriptionContainsFold", "isTemplate", "isTemplateNEQ", "enabled", "enabledNEQ", "createdAt", "createdAtNEQ", "createdAtIn", "createdAtNotIn", "createdAtGT", "createdAtGTE", "createdAtLT", "createdAtLTE", "updatedAt", "updatedAtNEQ", "updatedAtIn", "updatedAtNotIn", "updatedAtGT", "updatedAtGTE", "updatedAtLT", "updatedAtLTE", "createdBy", "createdByNEQ", "createdByIn", "createdByNotIn", "createdByGT", "createdByGTE", "createdByLT", "createdByLTE", "hasQuestionGroups", "hasQuestionGroupsWith", "hasFormInstances", "hasFormInstancesWith", "hasOwner", "hasOwnerWith"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -14248,6 +14321,24 @@ func (ec *executionContext) unmarshalInputFormSpecWhereInput(ctx context.Context
 				return it, err
 			}
 			it.DescriptionContainsFold = data
+		case "isTemplate":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isTemplate"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsTemplate = data
+		case "isTemplateNEQ":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isTemplateNEQ"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsTemplateNEQ = data
 		case "enabled":
 			var err error
 
@@ -17027,7 +17118,7 @@ func (ec *executionContext) unmarshalInputUpdateFormSpecInput(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "cover", "clearCover", "description", "enabled", "createdAt", "updatedAt", "createdBy", "addQuestionGroupIDs", "removeQuestionGroupIDs", "clearQuestionGroups", "addFormInstanceIDs", "removeFormInstanceIDs", "clearFormInstances", "ownerID", "clearOwner"}
+	fieldsInOrder := [...]string{"name", "cover", "clearCover", "description", "isTemplate", "enabled", "createdAt", "updatedAt", "createdBy", "addQuestionGroupIDs", "removeQuestionGroupIDs", "clearQuestionGroups", "addFormInstanceIDs", "removeFormInstanceIDs", "clearFormInstances", "ownerID", "clearOwner"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -17070,6 +17161,15 @@ func (ec *executionContext) unmarshalInputUpdateFormSpecInput(ctx context.Contex
 				return it, err
 			}
 			it.Description = data
+		case "isTemplate":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isTemplate"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.IsTemplate = data
 		case "enabled":
 			var err error
 
@@ -19169,6 +19269,11 @@ func (ec *executionContext) _FormSpec(ctx context.Context, sel ast.SelectionSet,
 			out.Values[i] = ec._FormSpec_cover(ctx, field, obj)
 		case "description":
 			out.Values[i] = ec._FormSpec_description(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "isTemplate":
+			out.Values[i] = ec._FormSpec_isTemplate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&out.Invalids, 1)
 			}

@@ -306,6 +306,7 @@ type CreateFormSpecInput struct {
 	Name             *string
 	Cover            *string
 	Description      *string
+	IsTemplate       *bool
 	Enabled          *bool
 	CreatedAt        *time.Time
 	UpdatedAt        *time.Time
@@ -325,6 +326,9 @@ func (i *CreateFormSpecInput) Mutate(m *FormSpecMutation) {
 	}
 	if v := i.Description; v != nil {
 		m.SetDescription(*v)
+	}
+	if v := i.IsTemplate; v != nil {
+		m.SetIsTemplate(*v)
 	}
 	if v := i.Enabled; v != nil {
 		m.SetEnabled(*v)
@@ -359,6 +363,7 @@ type UpdateFormSpecInput struct {
 	ClearCover             bool
 	Cover                  *string
 	Description            *string
+	IsTemplate             *bool
 	Enabled                *bool
 	CreatedAt              *time.Time
 	UpdatedAt              *time.Time
@@ -386,6 +391,9 @@ func (i *UpdateFormSpecInput) Mutate(m *FormSpecMutation) {
 	}
 	if v := i.Description; v != nil {
 		m.SetDescription(*v)
+	}
+	if v := i.IsTemplate; v != nil {
+		m.SetIsTemplate(*v)
 	}
 	if v := i.Enabled; v != nil {
 		m.SetEnabled(*v)

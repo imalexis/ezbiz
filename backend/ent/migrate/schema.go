@@ -84,6 +84,7 @@ var (
 		{Name: "name", Type: field.TypeString, Default: "Default Form"},
 		{Name: "cover", Type: field.TypeString, Nullable: true},
 		{Name: "description", Type: field.TypeString, Default: "This is a new form"},
+		{Name: "is_template", Type: field.TypeBool, Default: false},
 		{Name: "enabled", Type: field.TypeBool, Default: false},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
@@ -98,7 +99,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "form_specs_users_form_specs",
-				Columns:    []*schema.Column{FormSpecsColumns[8]},
+				Columns:    []*schema.Column{FormSpecsColumns[9]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

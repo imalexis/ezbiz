@@ -46,6 +46,7 @@ input CreateFormSpecInput {
   name: String
   cover: String
   description: String
+  isTemplate: Boolean
   enabled: Boolean
   createdAt: Time
   updatedAt: Time
@@ -431,6 +432,7 @@ type FormSpec implements Node {
   name: String!
   cover: String
   description: String!
+  isTemplate: Boolean!
   enabled: Boolean!
   createdAt: Time!
   updatedAt: Time!
@@ -543,6 +545,9 @@ input FormSpecWhereInput {
   descriptionHasSuffix: String
   descriptionEqualFold: String
   descriptionContainsFold: String
+  """is_template field predicates"""
+  isTemplate: Boolean
+  isTemplateNEQ: Boolean
   """enabled field predicates"""
   enabled: Boolean
   enabledNEQ: Boolean
@@ -1221,6 +1226,7 @@ input UpdateFormSpecInput {
   cover: String
   clearCover: Boolean
   description: String
+  isTemplate: Boolean
   enabled: Boolean
   createdAt: Time
   updatedAt: Time
