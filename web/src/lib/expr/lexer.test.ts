@@ -8,6 +8,7 @@ import {
   PLUS,
   RPAREN,
   SEMICOLON,
+  TRUE,
   Token,
 } from "./token";
 
@@ -33,6 +34,13 @@ test("lexer basic testings", () => {
         { type: ASSIGN, literal: "=" },
         { type: INT, literal: "123" },
         { type: SEMICOLON, literal: ";" },
+        { type: EOF, literal: "" },
+      ],
+    },
+    {
+      source: "true",
+      result: [
+        { type: TRUE, literal: "true" },
         { type: EOF, literal: "" },
       ],
     },

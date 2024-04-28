@@ -1,4 +1,5 @@
 import {
+  BooleanLiteral,
   Expression,
   ExpressionStatement,
   Identifier,
@@ -11,13 +12,13 @@ import {
 } from "./parser";
 
 export class Evaluator {
-  env: Map<string, number>;
+  env: Map<string, number | boolean>;
 
   constructor() {
-    this.env = new Map<string, number>();
+    this.env = new Map<string, number | boolean>();
   }
 
-  evalExpression(expr: Expression): number {
+  evalExpression(expr: Expression): number | boolean {
     if (expr instanceof Identifier) {
       const value = this.env.get(expr.tokenLiteral());
       if (value == null) {
@@ -30,6 +31,10 @@ export class Evaluator {
       return expr.value;
     }
 
+    if (expr instanceof BooleanLiteral) {
+      return expr.value;
+    }
+
     if (expr instanceof PrefixExpression) {
       switch (expr.operator) {
         case "-": {
@@ -39,8 +44,11 @@ export class Evaluator {
     }
 
     if (expr instanceof InflixExpression) {
-      const leftValue = this.evalExpression(expr.left!);
-      const rightValue = this.evalExpression(expr.right!);
+      // boolean -> int
+      // true = 1
+      // false = 0
+      let leftValue = Number(this.evalExpression(expr.left!));
+      const rightValue = Number(this.evalExpression(expr.right!));
       switch (expr.operator) {
         case "+":
           return leftValue + rightValue;
@@ -60,7 +68,7 @@ export class Evaluator {
     throw new Error("not supported, no such branch");
   }
 
-  eval(program: Program): Map<string, number> {
+  eval(program: Program): Map<string, number | boolean> {
     program.statements.forEach((stmt) => {
       if (stmt instanceof ExpressionStatement) {
         const expr = stmt.expression;

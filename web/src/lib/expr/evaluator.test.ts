@@ -15,6 +15,14 @@ test("evaluator testings", () => {
       input: "let visible = 8 / 2 - 2 * 2;",
       expect: 0,
     },
+    {
+      input: "let visible = 1 + true;",
+      expect: 2,
+    },
+    {
+      input: "let visible = true;",
+      expect: true,
+    },
   ];
   for (const testcase of testcases) {
     const parser = new Parser(testcase.input);

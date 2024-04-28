@@ -1,5 +1,5 @@
 import { Lexer } from "./lexer";
-import { TokenType } from "./token";
+import { FALSE, TRUE, TokenType } from "./token";
 import {
   ASSIGN,
   ASTERISK,
@@ -67,6 +67,22 @@ export class IntegerLiteral implements Expression {
   }
 
   constructor(token: Token, value: number) {
+    this.token = token;
+    this.value = value;
+  }
+}
+
+export class BooleanLiteral implements Expression {
+  token: Token;
+  value: boolean;
+  tokenLiteral(): string {
+    return this.token.literal;
+  }
+  toString(): string {
+    return this.value ? "true" : "false";
+  }
+
+  constructor(token: Token, value: boolean) {
     this.token = token;
     this.value = value;
   }
@@ -247,6 +263,8 @@ export class Parser {
     this.prefixParseFns.set(ID, this.__parseIdentifier);
     this.prefixParseFns.set(INT, this.__parseIntegerLiteral);
     this.prefixParseFns.set(MINUS, this.__parsePrefixExpression);
+    this.prefixParseFns.set(TRUE, this.__parseBooleanLiteral);
+    this.prefixParseFns.set(FALSE, this.__parseBooleanLiteral);
 
     this.inflixParseFns.set(PLUS, this.__parseInflixExpression);
     this.inflixParseFns.set(MINUS, this.__parseInflixExpression);
@@ -263,8 +281,14 @@ export class Parser {
   }
 
   __parseIntegerLiteral(): Expression {
+    // "3" -> 3
     const value = parseInt(this.curToken!.literal);
     return new IntegerLiteral(this.curToken!, value);
+  }
+
+  __parseBooleanLiteral(): Expression {
+    const value = this.curToken!.literal === "true" ? true : false;
+    return new BooleanLiteral(this.curToken!, value);
   }
 
   __parsePrefixExpression(): Expression {

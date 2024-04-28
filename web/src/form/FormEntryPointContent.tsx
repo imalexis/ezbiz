@@ -16,7 +16,6 @@ export function FormEntryPointContent() {
             height: "320px",
           }}
           align="flex-start"
-          justify="space-evenly"
           gap={20}
         >
           <FormTemplateCreateCard />

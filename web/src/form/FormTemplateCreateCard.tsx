@@ -36,16 +36,13 @@ export function FormTemplateCreateCard() {
       },
     });
   };
-  //   const CreateButton = (
-  //     <Flex onClick={handleClick}>
-  //       <PlusOutlined style={styles.plus} />
-  //     </Flex>
-  //   );
+
   return (
-    <Flex>
+    <Flex flex={1}>
       <Card
-        style={{ height: 205, width: 190 }}
+        style={{ height: 205, width: 160 }}
         cover={<Icon component={PlusSvg} style={{ marginTop: "60px" }} />}
+        onClick={handleClick}
       ></Card>
     </Flex>
   );

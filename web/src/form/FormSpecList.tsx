@@ -32,6 +32,9 @@ export default function FormSpecList() {
             defaultChecked
             onChange={onChange}
             size="default"
+            style={{
+              backgroundColor: "#287D7D",
+            }}
           />
         </Flex>
       </Flex>

@@ -20,6 +20,8 @@ import {
   ID,
   INT,
   ILLEGAL,
+  TRUE,
+  FALSE,
 } from "./token";
 
 export class Lexer {
@@ -172,7 +174,11 @@ export class Lexer {
         if (this.__isLetter()) {
           const identifier = this.__readIdentifier();
           if (identifier === KW_LET) {
-            tok = { type: KW_LET, literal: "let" };
+            tok = { type: KW_LET, literal: identifier };
+          } else if (identifier === TRUE) {
+            tok = { type: TRUE, literal: identifier };
+          } else if (identifier === FALSE) {
+            tok = { type: FALSE, literal: identifier };
           } else {
             tok = { type: ID, literal: identifier };
           }

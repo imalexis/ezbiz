@@ -30,7 +30,7 @@ export function FormSpecCard({ formSpec, index }: Props) {
   const data = useFragment(fragment, formSpec);
   const [commit] = useMutation<FormSpecCardMutation>(mutation);
   return (
-    <Card style={{ width: 600 }} tabIndex={index}>
+    <Card style={{ width: "25%" }} tabIndex={index}>
       <CardHeader
         image={<img src={resolveAsset("avatar_elvia.svg")} alt={""} />}
         header={

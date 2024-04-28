@@ -3,6 +3,8 @@ export type TokenType =
   | "eof"
   | "id"
   | "int"
+  | "true"
+  | "false"
   | "="
   | "+"
   | "-"
@@ -44,6 +46,9 @@ export const LPAREN: TokenType = "(";
 export const RPAREN: TokenType = ")";
 export const LBRACE: TokenType = "{";
 export const RBRACE: TokenType = "}";
+
+export const TRUE: TokenType = "true";
+export const FALSE: TokenType = "false";
 
 export const KW_LET: TokenType = "let";
 

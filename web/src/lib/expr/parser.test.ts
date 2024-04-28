@@ -54,6 +54,14 @@ test("parser testings", () => {
       input: "let a = 3 / 7 - 3;",
       expect: "let a = ((3 / 7) - 3)",
     },
+    {
+      input: "true;",
+      expect: "true",
+    },
+    {
+      input: "1 + true;",
+      expect: "(1 + true)",
+    },
   ];
   for (const testcase of testcases) {
     const parser = new Parser(testcase.input);
