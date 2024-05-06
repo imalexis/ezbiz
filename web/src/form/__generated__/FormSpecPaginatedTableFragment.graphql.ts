@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d9f53fd43aff34d0c3a3736c4259dfaa>>
+ * @generated SignedSource<<315d87687f7193efb3c9e7ab1fd8870e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,6 +14,7 @@ export type FormSpecPaginatedTableFragment$data = {
   readonly formSpecs: {
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly createdAt: any;
         readonly id: string;
         readonly name: string;
         readonly " $fragmentSpreads": FragmentRefs<"FormSpecCardFragment">;
@@ -116,6 +117,13 @@ return {
                   "storageKey": null
                 },
                 {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "createdAt",
+                  "storageKey": null
+                },
+                {
                   "args": null,
                   "kind": "FragmentSpread",
                   "name": "FormSpecCardFragment"
@@ -174,6 +182,6 @@ return {
 };
 })();
 
-(node as any).hash = "b1ee6a5df5106de0d9727b9aa08ffc45";
+(node as any).hash = "a83282c0ba8c33dad6a308205d5993f7";
 
 export default node;

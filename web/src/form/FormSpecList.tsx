@@ -7,13 +7,21 @@ import { FormSpecPaginatedTable } from "./FormSpecPaginatedTable";
 import { useState } from "react";
 
 export default function FormSpecList() {
-  const dataSource = useLazyLoadQuery<FormSpecListQuery>(query, {
-    first: 10,
-    orderBy: {
-      direction: "DESC",
-      field: "UPDATED_AT",
+  const [fetchKey, setFetchKey] = useState<number>(0);
+  const dataSource = useLazyLoadQuery<FormSpecListQuery>(
+    query,
+    {
+      first: 10,
+      orderBy: {
+        direction: "DESC",
+        field: "UPDATED_AT",
+      },
     },
-  });
+    {
+      fetchKey: fetchKey,
+      fetchPolicy: "store-and-network",
+    }
+  );
   const [isChecked, setIsChecked] = useState(false);
   const onChange = () => {
     setIsChecked(!isChecked);
@@ -41,7 +49,12 @@ export default function FormSpecList() {
       {isChecked ? (
         <FormSpecPaginatedTable fragmentKey={dataSource} />
       ) : (
-        <FormSpecPaginatedList fragmentKey={dataSource} />
+        <FormSpecPaginatedList
+          fragmentKey={dataSource}
+          setFetchKey={() => {
+            setFetchKey(fetchKey + 1);
+          }}
+        />
       )}
     </Flex>
   );

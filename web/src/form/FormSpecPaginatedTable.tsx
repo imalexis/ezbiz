@@ -13,6 +13,7 @@ const fragment = graphql`
         node {
           id
           name
+          createdAt
           ...FormSpecCardFragment
         }
       }
@@ -47,6 +48,7 @@ export function FormSpecPaginatedTable({ fragmentKey }: Props) {
         key: edge.node?.id,
         id: edge.node?.id,
         name: edge.node?.name,
+        createdAt: edge?.node.createdAt,
       };
     })
     .filter(isNotNull);

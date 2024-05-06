@@ -1462,6 +1462,7 @@ scalar Upload
 type Mutation {
   createFormSpec(input: CreateFormSpecInput!): FormSpec!
   updateFormSpec(id: ID!, input: UpdateFormSpecInput!): FormSpec!
+  deleteFormSpec(id: ID!): FormSpec!
   createFormInstance(input: CreateFormInstanceInput!): FormInstance!
   updateFormInstance(id: ID!, input: UpdateFormInstanceInput!): FormInstance!
   createQuestionGroup(input: CreateQuestionGroupInput!): QuestionGroup!

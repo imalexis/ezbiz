@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a39a7bc5f9d17962692d423fdfa261e5>>
+ * @generated SignedSource<<f009d49b94c168e62f8dee04d4653408>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,6 +12,7 @@ import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type FormSpecPaginatedListFragment$data = {
   readonly formSpecs: {
+    readonly __id: string;
     readonly edges: ReadonlyArray<{
       readonly node: {
         readonly id: string;
@@ -164,6 +165,18 @@ return {
             }
           ],
           "storageKey": null
+        },
+        {
+          "kind": "ClientExtension",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "__id",
+              "storageKey": null
+            }
+          ]
         }
       ],
       "storageKey": null
@@ -174,6 +187,6 @@ return {
 };
 })();
 
-(node as any).hash = "da61204082269f89bb2d80c8777f938c";
+(node as any).hash = "53cebe197b62666bf6d9eaa9838c857b";
 
 export default node;

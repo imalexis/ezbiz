@@ -12,8 +12,9 @@ import (
 	"log"
 	"os"
 
-	"ezbiz.com/ent"
 	"github.com/99designs/gqlgen/graphql"
+
+	"ezbiz.com/ent"
 )
 
 // CreateFormSpec is the resolver for the createFormSpec field.
@@ -24,6 +25,13 @@ func (r *mutationResolver) CreateFormSpec(ctx context.Context, input ent.CreateF
 // UpdateFormSpec is the resolver for the updateFormSpec field.
 func (r *mutationResolver) UpdateFormSpec(ctx context.Context, id int, input ent.UpdateFormSpecInput) (*ent.FormSpec, error) {
 	return r.client.FormSpec.UpdateOneID(id).SetInput(input).Save(ctx)
+}
+
+// DeleteFormSpec is the resolver for the deleteFormSpec field.
+func (r *mutationResolver) DeleteFormSpec(ctx context.Context, id int) (*ent.FormSpec, error) {
+	formSpec := r.client.FormSpec.GetX(ctx, id)
+	err := r.client.FormSpec.DeleteOneID(id).Exec(ctx)
+	return formSpec, err
 }
 
 // CreateFormInstance is the resolver for the createFormInstance field.

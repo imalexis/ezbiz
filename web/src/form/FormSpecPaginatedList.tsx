@@ -4,15 +4,16 @@ import { usePaginationFragment } from "react-relay";
 import { Flex, Typography } from "antd";
 import { FormSpecCard } from "./FormSpecCard";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Divider, Skeleton, Space } from "antd";
+import { Divider, Skeleton } from "antd";
 
 const { Text } = Typography;
 
 type Props = {
   fragmentKey: FormSpecPaginatedListFragment$key;
+  setFetchKey: () => void;
 };
 
-export function FormSpecPaginatedList({ fragmentKey }: Props) {
+export function FormSpecPaginatedList({ fragmentKey, setFetchKey }: Props) {
   const { data, hasNext, loadNext } = usePaginationFragment(
     fragment,
     fragmentKey
@@ -20,7 +21,7 @@ export function FormSpecPaginatedList({ fragmentKey }: Props) {
 
   const validData = data.formSpecs.edges ?? [];
 
-  const columnNumber = 4;
+  const columnNumber = 2;
 
   const chunks = Array.from(
     { length: Math.ceil(validData.length / columnNumber) },
@@ -31,16 +32,25 @@ export function FormSpecPaginatedList({ fragmentKey }: Props) {
     .filter((chunk) => chunk != null)
     .map((chunk, index) => {
       return (
-        <Flex key={index}>
-          {chunk.map((edge, index) => {
-            if (edge == null) {
-              return <></>;
-            }
-            if (edge.node == null) {
-              return <></>;
-            }
-            return <FormSpecCard formSpec={edge?.node} index={index} />;
-          })}
+        <Flex key={index} gap={12}>
+          {chunk
+            .map((edge, index) => {
+              if (edge == null) {
+                return null;
+              }
+              if (edge.node == null) {
+                return null;
+              }
+              return (
+                <FormSpecCard
+                  formSpec={edge?.node}
+                  index={index}
+                  key={index}
+                  onDelete={setFetchKey}
+                />
+              );
+            })
+            .filter((result) => result != null)}
         </Flex>
       );
     });
@@ -61,7 +71,9 @@ export function FormSpecPaginatedList({ fragmentKey }: Props) {
         endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         scrollableTarget="scrollableDiv"
       >
-        {items}
+        <Flex vertical gap={20}>
+          {items}
+        </Flex>
       </InfiniteScroll>
       {/* </Flex> */}
     </Flex>
@@ -73,6 +85,7 @@ const fragment = graphql`
   @refetchable(queryName: "FormSpecPaginatedListQuery") {
     formSpecs(first: $first, after: $after, orderBy: $orderBy)
       @connection(key: "FormSpecPaginatedListQuery_formSpecs") {
+      __id
       totalCount
       edges {
         node {

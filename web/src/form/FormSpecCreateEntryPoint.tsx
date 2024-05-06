@@ -112,6 +112,11 @@ export function FormSpecCreateEntryPoint() {
         id: formID ?? "",
         input: { name: formTitle, description: formDescription },
       },
+      onCompleted: () => {
+        if (localQuestions.length === 0) {
+          navigate("/admin/forms");
+        }
+      },
     });
     localQuestions
       .filter((q) => !newQuestions.includes(q.label))

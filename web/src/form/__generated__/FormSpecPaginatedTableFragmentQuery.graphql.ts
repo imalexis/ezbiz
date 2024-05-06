@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c105d21db9879069d4d1dbb5408680da>>
+ * @generated SignedSource<<6f3aef863b7e3d52852ce2014d7ff2d9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -129,6 +129,13 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "createdAt",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "cover",
                     "storageKey": null
                   },
@@ -144,13 +151,6 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "enabled",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "createdAt",
                     "storageKey": null
                   },
                   {
@@ -267,16 +267,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "dc3b80df1afa9c36ed35ef9877a8302e",
+    "cacheID": "fb28c12f3a09255ade05c86b96279837",
     "id": null,
     "metadata": {},
     "name": "FormSpecPaginatedTableFragmentQuery",
     "operationKind": "query",
-    "text": "query FormSpecPaginatedTableFragmentQuery(\n  $after: Cursor\n  $first: Int\n  $orderBy: FormSpecOrder\n) {\n  ...FormSpecPaginatedTableFragment\n}\n\nfragment FormSpecCardFragment on FormSpec {\n  id\n  name\n  cover\n  description\n  enabled\n  createdAt\n  updatedAt\n  createdBy\n  questionGroups {\n    id\n    question {\n      id\n      label\n      type\n    }\n  }\n}\n\nfragment FormSpecPaginatedTableFragment on Query {\n  formSpecs(first: $first, after: $after, orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        name\n        ...FormSpecCardFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query FormSpecPaginatedTableFragmentQuery(\n  $after: Cursor\n  $first: Int\n  $orderBy: FormSpecOrder\n) {\n  ...FormSpecPaginatedTableFragment\n}\n\nfragment FormSpecCardFragment on FormSpec {\n  id\n  name\n  cover\n  description\n  enabled\n  createdAt\n  updatedAt\n  createdBy\n  questionGroups {\n    id\n    question {\n      id\n      label\n      type\n    }\n  }\n}\n\nfragment FormSpecPaginatedTableFragment on Query {\n  formSpecs(first: $first, after: $after, orderBy: $orderBy) {\n    edges {\n      node {\n        id\n        name\n        createdAt\n        ...FormSpecCardFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "b1ee6a5df5106de0d9727b9aa08ffc45";
+(node as any).hash = "a83282c0ba8c33dad6a308205d5993f7";
 
 export default node;
