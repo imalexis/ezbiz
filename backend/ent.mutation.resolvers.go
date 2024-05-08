@@ -7,7 +7,6 @@ package ezbiz
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -97,12 +96,11 @@ func (r *mutationResolver) UpdateQuestionResponse(ctx context.Context, id int, i
 
 // SingleUpload is the resolver for the singleUpload field.
 func (r *mutationResolver) SingleUpload(ctx context.Context, file graphql.Upload) (*File, error) {
-	fmt.Println("SingleUpload", file.Filename)
 	content, err := io.ReadAll(file.File)
 	if err != nil {
 		log.Println("read file error", err)
 	}
-	err = os.WriteFile(file.Filename, content, 0644)
+	err = os.WriteFile("/Users/alexis/Documents/ezbiz/backend/cmd/fileserver/public/image/"+file.Filename, content, 0644)
 	if err != nil {
 		log.Println("write file error", err)
 	}

@@ -25,6 +25,7 @@ export function DynamicResponseModeDateQuestion({
   setLocalSharedValues,
 }: Props) {
   const question = useFragment(fragment, fragmentKey);
+  let isVisible = true;
   const parser = new Parser(question.rule);
   const program = parser.parse();
   const evaluator = new Evaluator();
@@ -33,7 +34,9 @@ export function DynamicResponseModeDateQuestion({
     evaluator.env.set(dep, parseInt(localSharedValues?.get(dep) ?? "0"));
   });
   const output = evaluator.eval(program);
-  const isVisible = (output.get("visible") ?? 0) > 0;
+  if (output.get("visible") != null) {
+    isVisible = output.get("visible") as boolean;
+  }
   if (isVisible) {
     return (
       <ResponseModeDateQuestion

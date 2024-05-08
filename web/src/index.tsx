@@ -14,6 +14,7 @@ import { Spin } from "antd";
 import { FormInstanceEntryPoint } from "./form/FormInstanceEntryPoint";
 import { FormInstanceResponseContainer } from "./form/FormInstanceResponseContainer";
 import FormSubmitted from "./form/FormSubmitted";
+import FormSpecShare from "./form/FormSpecShare";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <FormEntryPointContent />,
+      },
+      {
+        path: ":formID/share",
+        element: <FormSpecShare />,
       },
       {
         path: ":formID/detail",

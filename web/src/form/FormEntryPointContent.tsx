@@ -5,6 +5,7 @@ import FormSpecList from "./FormSpecList";
 import graphql from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay";
 import { FormEntryPointContentTemplateQuery } from "./__generated__/FormEntryPointContentTemplateQuery.graphql";
+import { Toaster } from "react-hot-toast";
 
 export function FormEntryPointContent() {
   const data = useLazyLoadQuery<FormEntryPointContentTemplateQuery>(query, {});
@@ -26,6 +27,7 @@ export function FormEntryPointContent() {
             return <FormTemplateCard key={index} fragmentKey={edge?.node} />;
           })}
         </Flex>
+        <Toaster />
         <FormSpecList />
       </Flex>
     </Flex>

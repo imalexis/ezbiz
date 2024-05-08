@@ -1,0 +1,14 @@
+.file-input {
+    padding: 8px 12px;
+    border: none;
+    background-color: #ffffff; /* light grey */
+    color: #1C344C; /* text color dark blue */
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .file-input:hover {
+    background-color: #91C46C; /* medium green */
+    border-color: #287D7D; /* teal */
+    color: #F2F2F2; /* light grey text on hover */
+  }

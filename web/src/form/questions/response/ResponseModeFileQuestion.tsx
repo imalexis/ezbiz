@@ -25,6 +25,16 @@ export function DynamicResponseModeFileQuestion({
   setLocalSharedValues,
 }: Props) {
   const question = useFragment(fragment, fragmentKey);
+  let isVisible = true;
+  if (question.rule.length === 0) {
+    return (
+      <ResponseModeFileQuestion
+        fragmentKey={fragmentKey}
+        localSharedValues={localSharedValues}
+        setLocalSharedValues={setLocalSharedValues}
+      />
+    );
+  }
   const parser = new Parser(question.rule);
   const program = parser.parse();
   const evaluator = new Evaluator();
@@ -33,7 +43,9 @@ export function DynamicResponseModeFileQuestion({
     evaluator.env.set(dep, parseInt(localSharedValues?.get(dep) ?? "0"));
   });
   const output = evaluator.eval(program);
-  const isVisible = (output.get("visible") ?? 0) > 0;
+  if (output.get("visible") != null) {
+    isVisible = output.get("visible") as boolean;
+  }
   if (isVisible) {
     return (
       <ResponseModeFileQuestion

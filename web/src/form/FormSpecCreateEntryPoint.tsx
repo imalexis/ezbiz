@@ -3,6 +3,7 @@ import {
   Card,
   Dropdown,
   Flex,
+  Image,
   Input,
   MenuProps,
   Modal,
@@ -11,6 +12,7 @@ import {
 
 import { DownOutlined, PlusCircleOutlined } from "@ant-design/icons";
 
+import "./FormSpecCreateEntryPointStyle.css";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import graphql from "babel-plugin-relay/macro";
@@ -23,6 +25,7 @@ import { FormSpecCreateEntryPointQuery } from "./__generated__/FormSpecCreateEnt
 import { FormSpecCreateEntryPointUpdateFormSpecMutation } from "./__generated__/FormSpecCreateEntryPointUpdateFormSpecMutation.graphql";
 import { FormSpecCreateEntryPointUpdateQuestionMutation } from "./__generated__/FormSpecCreateEntryPointUpdateQuestionMutation.graphql";
 import { GeneralQuestionMetadata } from "./GeneralQuestionMetadata";
+import { FormSpecCreateEntryPointUploadFileMutation } from "./__generated__/FormSpecCreateEntryPointUploadFileMutation.graphql";
 
 const { Text } = Typography;
 
@@ -213,6 +216,18 @@ export function FormSpecCreateEntryPoint() {
     </Modal>
   );
 
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadFileStatus, setUploadFileStatus] = useState<
+    "success" | "failed" | null
+  >(null);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files != null) {
+      setFile(e.target.files[0]);
+    }
+  };
+  const [uploadFile, uploadFileInFlight] =
+    useMutation<FormSpecCreateEntryPointUploadFileMutation>(uploadFileMutation);
+
   return (
     <Flex>
       <Flex flex={1}>
@@ -232,6 +247,10 @@ export function FormSpecCreateEntryPoint() {
           setFormDescription={setFormDescription}
           setFormTitle={setFormTitle}
         />
+        <Flex style={{ width: "80%" }}>
+          <Image src={data.node?.cover ?? ""} />
+        </Flex>
+
         {localQuestions.map((q, idx) => {
           return (
             <Card key={idx} title={q.title} style={styles.card}>
@@ -247,13 +266,77 @@ export function FormSpecCreateEntryPoint() {
         <Button onClick={onSubmit}>Submit</Button>
       </Flex>
 
-      <Flex flex={1}>
+      <Flex flex={1} vertical>
         <Button
           icon={<PlusCircleOutlined />}
           onClick={() => {
             setIsModalOpen(true);
           }}
         />
+        <Flex>
+          <form id="myform" encType="multipart/form-data">
+            {/* <input type="file" id="file" onChange={handleFileChange} multiple /> */}
+            <input
+              type="file"
+              id="file"
+              onChange={handleFileChange}
+              className="file-input"
+            />
+            {file != null && (
+              <div>
+                <p>filename: {file.name}</p>
+                <p>filesize: {file.size}</p>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (file == null) {
+                      return;
+                    }
+                    const form = document.getElementById(
+                      "myform"
+                    ) as HTMLFormElement;
+                    if (form == null) {
+                      return;
+                    }
+                    const formData = new FormData(form);
+                    formData.append("file", file);
+                    uploadFile({
+                      variables: {
+                        file: formData,
+                      },
+                      uploadables: {
+                        file,
+                      },
+                      onCompleted: (resp, err) => {
+                        if (err != null) {
+                          setUploadFileStatus("failed");
+                        } else {
+                          setUploadFileStatus("success");
+                          updateFormSpec({
+                            variables: {
+                              id: formID ?? "",
+                              input: {
+                                cover:
+                                  "http://localhost:8100/public/image/" +
+                                  resp.singleUpload.name,
+                              },
+                            },
+                          });
+                        }
+                      },
+                      onError: (err) => {
+                        setUploadFileStatus("failed");
+                      },
+                    });
+                  }}
+                  disabled={uploadFileInFlight}
+                >
+                  Upload
+                </button>
+              </div>
+            )}
+          </form>
+        </Flex>
       </Flex>
     </Flex>
   );
@@ -265,6 +348,7 @@ const query = graphql`
       ... on FormSpec {
         name
         description
+        cover
         questionGroups {
           id
           question {
@@ -351,31 +435,41 @@ function Header({
 }: HeaderProps) {
   return (
     <Card style={styles.card} tabIndex={1}>
-      <Flex>
-        <Flex flex={2}>
-          <Text>Form Title</Text>
+      <Flex vertical gap={12}>
+        <Flex>
+          <Flex flex={2}>
+            <Text>Form Title</Text>
+          </Flex>
+          <Flex flex={8}>
+            <Input
+              size="large"
+              value={formTitle}
+              onChange={(e) => setFormTitle(e.target.value)}
+            />
+          </Flex>
         </Flex>
-        <Flex flex={8}>
-          <Input
-            size="large"
-            value={formTitle}
-            onChange={(e) => setFormTitle(e.target.value)}
-          />
-        </Flex>
-      </Flex>
-      <Flex>
-        <Flex flex={2}>
-          <Text>Form Description</Text>
-        </Flex>
-        <Flex flex={8}>
-          <Input
-            value={formDescription}
-            onChange={(e) => {
-              setFormDescription(e.target.value);
-            }}
-          />
+        <Flex>
+          <Flex flex={2}>
+            <Text>Form Description</Text>
+          </Flex>
+          <Flex flex={8}>
+            <Input
+              value={formDescription}
+              onChange={(e) => {
+                setFormDescription(e.target.value);
+              }}
+            />
+          </Flex>
         </Flex>
       </Flex>
     </Card>
   );
 }
+
+const uploadFileMutation = graphql`
+  mutation FormSpecCreateEntryPointUploadFileMutation($file: Upload!) {
+    singleUpload(file: $file) {
+      name
+    }
+  }
+`;
