@@ -87,7 +87,8 @@ The following diagram highlights critical components central to understanding th
 
 ### File upload
 
-![File Upload Diagram](./docs/image/file_read_write.png)
+![File Upload Diagram](./docs/image/file_upload_diagram_1.png)
+![File Upload Diagram](./docs/image/file_upload_diagram_2.png)
 
 **How It Works**
 
