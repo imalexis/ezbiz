@@ -248,7 +248,7 @@ export function FormSpecCreateEntryPoint() {
           setFormTitle={setFormTitle}
         />
         <Flex style={{ width: "80%" }}>
-          <Image src={data.node?.cover ?? ""} />
+          <Image src={data.node?.cover ?? ""} alt="Image not found" />
         </Flex>
 
         {localQuestions.map((q, idx) => {
@@ -273,70 +273,68 @@ export function FormSpecCreateEntryPoint() {
             setIsModalOpen(true);
           }}
         />
-        <Flex>
-          <form id="myform" encType="multipart/form-data">
-            {/* <input type="file" id="file" onChange={handleFileChange} multiple /> */}
-            <input
-              type="file"
-              id="file"
-              onChange={handleFileChange}
-              className="file-input"
-            />
-            {file != null && (
-              <div>
-                <p>filename: {file.name}</p>
-                <p>filesize: {file.size}</p>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (file == null) {
-                      return;
-                    }
-                    const form = document.getElementById(
-                      "myform"
-                    ) as HTMLFormElement;
-                    if (form == null) {
-                      return;
-                    }
-                    const formData = new FormData(form);
-                    formData.append("file", file);
-                    uploadFile({
-                      variables: {
-                        file: formData,
-                      },
-                      uploadables: {
-                        file,
-                      },
-                      onCompleted: (resp, err) => {
-                        if (err != null) {
-                          setUploadFileStatus("failed");
-                        } else {
-                          setUploadFileStatus("success");
-                          updateFormSpec({
-                            variables: {
-                              id: formID ?? "",
-                              input: {
-                                cover:
-                                  "http://localhost:8100/public/image/" +
-                                  resp.singleUpload.name,
-                              },
-                            },
-                          });
-                        }
-                      },
-                      onError: (err) => {
+        <form id="myform" encType="multipart/form-data">
+          {/* <input type="file" id="file" onChange={handleFileChange} multiple /> */}
+          <input
+            type="file"
+            id="file"
+            onChange={handleFileChange}
+            className="file-input"
+          />
+          {file != null && (
+            <div>
+              <p>filename: {file.name}</p>
+              <p>filesize: {file.size}</p>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (file == null) {
+                    return;
+                  }
+                  const form = document.getElementById(
+                    "myform"
+                  ) as HTMLFormElement;
+                  if (form == null) {
+                    return;
+                  }
+                  const formData = new FormData(form);
+                  formData.append("file", file);
+                  uploadFile({
+                    variables: {
+                      file: formData,
+                    },
+                    uploadables: {
+                      file,
+                    },
+                    onCompleted: (resp, err) => {
+                      if (err != null) {
                         setUploadFileStatus("failed");
-                      },
-                    });
-                  }}
-                  disabled={uploadFileInFlight}
-                >
-                  Upload
-                </button>
-              </div>
-            )}
-          </form>
-        </Flex>
+                      } else {
+                        setUploadFileStatus("success");
+                        updateFormSpec({
+                          variables: {
+                            id: formID ?? "",
+                            input: {
+                              cover:
+                                "http://localhost:8100/public/image/" +
+                                resp.singleUpload.name,
+                            },
+                          },
+                        });
+                      }
+                    },
+                    onError: (err) => {
+                      setUploadFileStatus("failed");
+                    },
+                  });
+                }}
+                disabled={uploadFileInFlight}
+              >
+                Upload
+              </button>
+            </div>
+          )}
+        </form>
       </Flex>
     </Flex>
   );

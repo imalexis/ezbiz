@@ -5,8 +5,10 @@
   - [Frontend](#frontend)
 - [Featrures](#featrures)
 - [Getting Started](#getting-started)
-- [Key Componet Structure](#key-componet-structure)
-- [Usage Demo](#usage-demo)
+- [Structure](#structure)
+  - [Key Componet Structure](#key-componet-structure)
+- [Usage](#usage)
+  - [File upload](#file-upload)
 - [What's Next](#whats-next)
 
 
@@ -51,6 +53,7 @@ EZBIZ is a dynamic form builder which is designed to streamline the creation of 
     - Parser: Parses the tokenized script and generates a syntax tree.
     - Evaluator: Executes the script and evaluates conditions to determine question visibility and other dynamic behaviors.
 
+- **File Upload**: Users can upload files directly through the interface. These images/files are then stored on a dedicated file server. 
 
 ## Getting Started
 
@@ -73,14 +76,39 @@ cd web
 npm run start
 ```
 
-## Key Componet Structure
+## Structure
+### Key Componet Structure
 
 The following diagram highlights critical components central to understanding the project's architecture and functionality. It focuses on key elements such as `FormSpecCreateEntryPoint`, `GeneralQuestion`, and their subdivisions into design and respond modes, along with specific question types like `DesignModeMultiChoiceQuestion` and `DynamicResponseModeMultiChoiceQuestion`. 
 
 ![Component Structure Diagram](./docs/image/component_structure.png)
 
-## Usage Demo
-  // todo
+## Usage
+
+### File upload
+
+![File Upload Diagram](./docs/image/file_read_write.png)
+
+**How It Works**
+
+  1. **Client-Side Interaction**: The user selects a file to upload through the application's user interface. This action triggers a GraphQL mutation request.
+   
+  2. **GraphQL Request**: The client application constructs a GraphQL request embedding the file data. This request is sent to the GraphQL server where the UploadFile mutation is defined.
+   
+  3. **Server-Side Processing**:
+    - The server receives the file along with any metadata necessary for the upload process.
+    - It processes the file, typically involving validation (e.g., checking file type, size limits) and then storing the file on a designated file server.
+  
+  4. Response: After the file is successfully uploaded and stored, the server responds with details about the uploaded file, such as the file name and size. These details can be used by the client application for further processing or display to the user.
+   
+  - **Uploading a Cover**: To upload an image, follow these steps:
+    1. Navigate to the image upload section in the application.
+    2. Select an image file to upload.
+    3. Submit the form to upload the image. The application will handle the upload and provide feedback on success or failure.
+
+  - **Updating Form Specifications**: After an image is uploaded:
+    1. The system automatically updates the form specifications to include the uploaded image details.
+    2. You can view the updated form specifications in the form management interface.
 
 ## What's Next
 
