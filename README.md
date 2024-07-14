@@ -1,22 +1,23 @@
 
-- [My Video Demo](#my-video-demo)
-  - [Tech Stack](#tech-stack)
-    - [Backend](#backend)
-    - [Frontend](#frontend)
-  - [Featrures](#featrures)
-  - [Getting Started](#getting-started)
-  - [Structure](#structure)
-    - [Key Componet Structure](#key-componet-structure)
-  - [Usage](#usage)
-    - [File upload](#file-upload)
-  - [What's Next](#whats-next)
+- [Overview](#overview)
+- [My video demo](#my-video-demo)
+- [Tech Stack](#tech-stack)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [Featrures](#featrures)
+- [Getting Started](#getting-started)
+- [Structure](#structure)
+  - [Key Componet Structure](#key-componet-structure)
+- [Usage](#usage)
+  - [File upload](#file-upload)
+- [What's Next](#whats-next)
 
 
 ## Overview
 
 EZBIZ is a dynamic form builder which is designed to streamline the creation of questionnaires, surveys, and other forms. With this application, users can effortlessly generate custom forms with various question types and logic-based visibility settings. Whether it's a simple feedback form or a complex survey with conditional branching, EZBIZ provides the functionality needed to create engaging user experiences.
 
-# My Video Demo
+## My video demo
 
 Here is my demo presentation:
 
