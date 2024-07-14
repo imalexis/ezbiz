@@ -2,7 +2,6 @@ import graphql from "babel-plugin-relay/macro";
 import { useMutation } from "react-relay";
 import { FormSpecShareMutation } from "./__generated__/FormSpecShareMutation.graphql";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "antd";
 import { useEffect } from "react";
 
 export default function FormSpecShare() {

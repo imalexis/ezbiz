@@ -26,14 +26,14 @@ export function DesignModeShortTextQuestion({ questionMetadata }: Props) {
       </Flex>
     </Flex>,
 
-    <Flex gap={6}>
-      <Flex align="center">
-        <Text>Rule </Text>
-      </Flex>
-      <Flex>
-        <Input value={questionMetadata.rule} />
-      </Flex>
-    </Flex>,
+    // <Flex gap={6}>
+    //   <Flex align="center">
+    //     <Text>Rule </Text>
+    //   </Flex>
+    //   <Flex>
+    //     <Input value={questionMetadata.rule} />
+    //   </Flex>
+    // </Flex>,
   ];
 
   return (
